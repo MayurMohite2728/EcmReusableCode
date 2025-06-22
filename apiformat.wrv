@@ -1,0 +1,76 @@
+[/* Title: Blank Reportview */]
+
+
+
+[LL_WEBREPORT_STARTROW /]
+
+       [LL_REPTAG_'[LL_REPTAG_CRLF /]' SETVAR:Logger /]
+    [LL_REPTAG_'******************Execution Started****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+    
+     [LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /] [LL_REPTAG=DATAID /] - [LL_REPTAG=DATAID NODEINFO:NAME /] [LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+    
+    
+
+  [LL_REPTAG=DATAID CAT:"[LL_REPTAG_$Documents_info_Category /]":"Status":DISPLAY SETVAR:Status SHOW /]
+ 
+  [LL_WEBREPORT_IF '[LL_REPTAG=DATAID CAT:"[LL_REPTAG_$Documents_info_Category /]":"Status":DISPLAY /]' == "InProgress" /]
+
+[LL_REPTAG_'{"DocId":"[LL_REPTAG=DATAID /]","FileName":"[LL_REPTAG=DATAID NODEINFO:NAME /]","FileSize":"[LL_REPTAG=DATAID VERINFO:FILEDATASIZE /]"}' SETVAR:BODYPARAM /] <br><br>
+
+
+[LL_REPTAG_{ { "Content-Type", "application/json" },{"X-IBM-Client-ID","[LL_REPTAG_$X_IBM_Client_ID /]"},{"X-IBM-Client-Secret","[LL_REPTAG_$X_IBM_Client_Secret /]"}} ASSOCACTION:CREATE SETVAR:header /]
+
+
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_"Crafting the bodyParms for Sending for Inward REST API" /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!header /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!BODYPARAM /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_"Triggering the REST API Method" /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+
+[LL_WEBREPORT_RESTCLIENT
+@HOST:'[LL_REPTAG_$esla_host_url /]'
+@PORT:9443
+@SECURE:TRUE
+@URI:'[LL_REPTAG_$esla_endPont_url /]'
+@METHOD:POST
+@HEADER:[LL_REPTAG_!header /]
+@BODY:[LL_REPTAG_!BODYPARAM /]
+@TIMEOUT:10 
+@OUTPUT:Assoc:Res /]
+
+    [//LL_REPTAG_!Res /]
+
+  [LL_REPTAG_!Res Assoc:statusCode setvar:StatusCode /]
+
+  [LL_WEBREPORT_IF '[LL_REPTAG_!StatusCode /]' != "200" /]
+    
+  
+         [LL_REPTAG_'******************Response Failed****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+         [LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!Res /][LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+         [LL_REPTAG_'******************Execution Completed****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+         [LL_REPTAG_$InwardLogger RUNSWR:Logger:[LL_REPTAG_!Logger /] /]
+
+   [LL_WEBREPORT_ELSE /]
+     
+       
+  [LL_REPTAG=DATAID CATACTION:SETVALUE:"[LL_REPTAG_$Documents_info_Category /]":"Status":"Synced" /] 
+  
+      [LL_WEBREPORT_IF '[LL_REPTAG=DATAID CAT:"[LL_REPTAG_$Documents_info_Category /]":"Status":DISPLAY /]' == "Synced" /]
+           
+            [LL_REPTAG=DATAID PERMACTION:ACL:[LL_REPTAG_$InwardServiceGroupID /]:UPDATE:"SEE,SEECONTENTS" /]
+            
+                [LL_REPTAG_'******************Response Success****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+             [LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!Res /][LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+             [LL_REPTAG_'******************Execution Completed****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:Logger /]
+             [LL_REPTAG_$InwardLogger RUNSWR:Logger:[LL_REPTAG_!Logger /] /]
+
+  [LL_WEBREPORT_ENDIF /]
+  
+   
+   
+      
+  [LL_WEBREPORT_ENDIF /]
+  
+  
+[LL_WEBREPORT_ENDIF /]
+
+[LL_WEBREPORT_ENDROW /]

@@ -1,0 +1,109 @@
+[/* Title: Blank Reportview */]
+
+[LL_WEBREPORT_STARTROW /]
+
+
+[//LL_REPTAG_'' SETVAR:FilesArray /]
+
+
+[LL_REPTAG=VOLUMEID SETVAR:VOLUMEID /] <BR/>
+
+[LL_REPTAG=SequenceNum SETVAR:sequenceNum /] <BR/>
+
+[LL_REPTAG_$GetDocumentListArray RUNSWR:VOLUMEID:[LL_REPTAG=VOLUMEID /]:SetNumber:[LL_REPTAG=Setnumber /] SETVAR:FileArray /]
+
+
+
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"%Y%m%d" /]_DataRequest_TransferMFT_WR' SHOW SETVAR:LOG_FILE /]
+[LL_REPTAG_"" CDV:LOG:'====================================================' /]
+[LL_REPTAG_"" CDV:LOG:'' /]
+
+[LL_REPTAG_"" CDV:LOG:'Executing 02.01 Transfer Request WR' /]
+
+[LL_REPTAG_"" CDV:LOG:'Input SubworkID : [LL_REPTAG_!VOLUMEID /]' /]
+
+
+
+
+[//Get OTDS OTDSUserToken
+
+[LL_REPTAG_{{ "AuthenticateRecipients", true },{ "AutoInviteRecipients", true },{ "NotifyOnDownloadOfAllFilesByAllReceivers", false },{ "NotifyOnDownloadOfAllFilesByOneReceiver", false },{ "NotifyOnDownloadOfOneFileByAllReceivers", false },{ "NotifyOnDownloadOfOneFileByOneReceiver", false },{ "NotifyOnUploadFailure", false },{ "NotifyOnUploadSuccess", false },{"FileDownloadLimitValue",2000},{ "WantNotification", false }}  ASSOCACTION:CREATE SETVAR:payloadJSON /]
+[LL_REPTAG_$GetServiceOTDSToken RUNSWR SETVAR:OtdsToken /]
+[LL_REPTAG_"" CDV:LOG:'Recieved OTDS Token ' /]
+[LL_REPTAG_'' ASSOCACTION:CREATE SETVAR:MetaVal /]
+[LL_REPTAG_!MetaVal ASSOCACTION:ADD:"CSUserId":"[LL_REPTAG_ACTUALUSERID /]" SETVAR:MetaVal /]
+[LL_REPTAG_!MetaVal ASSOCACTION:ADD:"CSRestURL":"[LL_REPTAG_URLPREFIXFULL /]" SETVAR:MetaVal /]
+[LL_REPTAG_!MetaVal ASSOCACTION:ADD:"OTDSUserToken":"[LL_REPTAG_!OtdsToken TRIM /]" SETVAR:MetaVal /]
+[LL_REPTAG_!MetaVal ASSOCACTION:ADD:"OTDSResourceId":"[LL_REPTAG_$OTDSResourceID /]" SETVAR:MetaVal /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"Files":[LL_REPTAG_!FileArray FROMJSON ASSOC:myRows /] SETVAR:payloadJSON /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"Meta":[LL_REPTAG_!MetaVal TOJSON /] SETVAR:payloadJSON /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"ExternalServerID":[LL_REPTAG_$UniqueCSServerID /] SETVAR:payloadJSON /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"Subject":[LL_REPTAG=Subject /] SETVAR:payloadJSON /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"MessageBody":[LL_REPTAG=MessageBody /] SETVAR:payloadJSON /]
+[LL_REPTAG=Recipient TOLIST:";" SETVAR:RecipientsEmailIDs /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"Recipients":[LL_REPTAG_!RecipientsEmailIDs /] SETVAR:payloadJSON /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"AgreementTemplate":[LL_REPTAG_'NONE' /] SETVAR:payloadJSON /]
+
+
+
+[//LL_REPTAG_!RecipientsEmailIDs /]
+
+
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"Expiration":86385 SETVAR:payloadJSON /]
+[LL_REPTAG_!payloadJSON ASSOCACTION:ADD:"ExpirationMagnitude":3 SETVAR:payloadJSON /]
+
+
+
+[LL_REPTAG_'' ASSOCACTION:CREATE SETVAR:TransferRequest /]
+[LL_REPTAG_'' ASSOCACTION:CREATE SETVAR:Response /]
+
+
+
+
+[LL_REPTAG_'' ASSOCACTION:CREATE SETVAR:transferheader /]
+[LL_REPTAG_!transferheader ASSOCACTION:ADD:"X-UserToken":"[LL_REPTAG_!OtdsToken  TRIM /]" SETVAR:transferheader /]
+[LL_REPTAG_!transferheader ASSOCACTION:ADD:"Content-Type":"application/json" SETVAR:transferheader /]
+[LL_REPTAG_"" CDV:LOG:'Transfer Initiation ' /]
+[LL_REPTAG_"" CDV:LOG:'Transfer header : [LL_REPTAG_!transferheader /]' /]
+[LL_REPTAG_"" CDV:LOG:'Transfer Payload : [LL_REPTAG_!payloadJSON TOJSON /]' /]
+
+
+[LL_WEBREPORT_RESTCLIENT
+@HOST:[LL_REPTAG_$MFTEnpoint /]
+@PORT:80
+@HEADER:[LL_REPTAG_!transferheader /]
+@URI:/MFT/api/transactions
+@METHOD:POST
+@BODY:[LL_REPTAG_!payloadJSON TOJSON /] 
+@OUTPUT:ASSOC:Response /]
+
+
+[//LL_REPTAG_!Response /]
+
+[LL_WEBREPORT_IF "[LL_REPTAG_!Response ASSOC:success /]" == "false" /]
+ 
+
+  [LL_REPTAG_$UpdateTransactionSWR RUNSWR:VolumeID:[LL_REPTAG_!VOLUMEID /]:sequenceNum:[LL_REPTAG_!sequenceNum /] /]
+
+
+[LL_WEBREPORT_ENDIF /]
+
+[LL_REPTAG_"" CDV:LOG:'Transfer Response : [LL_REPTAG_!Response TOJSON /]' /]
+[LL_WEBREPORT_IF "[LL_REPTAG_!Response ASSOC:TransactionUrl DEF:'' /]" != "" /]
+[LL_REPTAG_$InsertTransferEvent RUNSWR:VolumeID:[LL_REPTAG_!VOLUMEID /]:ResponseJSON:[LL_REPTAG_!Response TOJSON /]:ExpiryDate:[LL_REPTAG_!Response ASSOC:ExpireDate /]:Recipients:[LL_REPTAG=Recipient /]:Downloadurl:[LL_REPTAG_!Response ASSOC:TransactionUrl /]:sequenceNum:[LL_REPTAG_!sequenceNum /] TRim SETVAR:sequenceNumFinal /]
+ 
+   [LL_WEBREPORT_IF "[LL_REPTAG_!sequenceNumFinal /]" != "NULL" /] 
+     
+       [LL_REPTAG_$UpdateTableAfterEventApiSuccesWR RUNSWR:sequenceNum:[LL_REPTAG_!sequenceNum /] /]
+
+   [LL_WEBREPORT_ENDIF /]
+  
+[LL_REPTAG_!Response TOJSON /]
+[LL_WEBREPORT_ELSE /]
+[LL_REPTAG_!Response TOJSON /]
+[LL_WEBREPORT_ENDIF /]
+
+ 
+
+
+[LL_WEBREPORT_ENDROW /]

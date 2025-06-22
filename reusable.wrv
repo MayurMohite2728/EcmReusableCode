@@ -1,0 +1,48 @@
+[/* content 
+  1.Create bussiness workspace using tag 
+  2.Hide add item using csui method -Web report css.
+  3.Create groups and subgroups to the folder.
+
+
+ */]
+
+
+
+
+[//  1. to create bussiness workspace using web report tag /]
+[LL_REPTAG_"" CWSACTION:CREATE:130535048:130534828:130462761:'[LL_REPTAG_!Month /][LL_REPTAG_!Year /]':'':130452959 /]
+[// ===========================================================================================================================
+
+[// 2. to hide the add iteam iteam using web report . 
+'csui/utils/toolitem.masks/creation.toolitems.mask':{
+                'custom': { blacklist: [
+                    {signature: 'AddEmailFolder',commandData: {type: 751}},
+                    {signature: 'Add',commandData: {type: 298}},
+                    {signature: 'Add',commandData: {type: 144}},
+                    {signature: 'AddWiki',commandData: {type: 5573}}
+                ]}
+                },
+
+[//  
+  
+
+  [// 3. Create groups and subgroups to the folder. /]
+
+
+  [LL_REPTAG_&FOLDER_ID SETVAR:FOLDERID /]
+[LL_REPTAG_&GRPBASENAME SETVAR:ROOTPERM /]
+
+[LL_REPTAG_'[LL_REPTAG_!ROOTPERM /]:04 Workspace Manager' USERACTION:CREATEGROUP SHOW SETVAR:WorkspaceManager /] 
+[LL_REPTAG_'[LL_REPTAG_!ROOTPERM /]:02 Contributor' USERACTION:CREATEGROUP:LEADERID:[LL_REPTAG_!WorkspaceManager /] SHOW SETVAR:Contributor /]
+[LL_REPTAG_'[LL_REPTAG_!ROOTPERM /]:03 ContributorFull' USERACTION:CREATEGROUP:LEADERID:[LL_REPTAG_!WorkspaceManager /] SHOW SETVAR:ContributorFull /]
+[LL_REPTAG_'[LL_REPTAG_!ROOTPERM /]:01 Consumer' USERACTION:CREATEGROUP:LEADERID:[LL_REPTAG_!WorkspaceManager /] SHOW SETVAR:Consumer /]
+
+[//APPLY PERMISSION ON CREATED FOLDER
+[LL_REPTAG_!FOLDERID PERMACTION:ACL:[LL_REPTAG_!Consumer /]:UPDATE:"SEE,SEECONTENTS" /]
+[LL_REPTAG_!FOLDERID PERMACTION:ACL:[LL_REPTAG_!Contributor /]:UPDATE:"SEE,SEECONTENTS,MODIFY,EDITATTRS,ADDITEMS,RESERVE,ADDMAJORVERSION" /]
+[LL_REPTAG_!FOLDERID PERMACTION:ACL:[LL_REPTAG_!ContributorFull /]:UPDATE:"SEE,SEECONTENTS,MODIFY,EDITATTRS,ADDITEMS,RESERVE,ADDMAJORVERSION,DELETEVERS,DELETE" /]
+[LL_REPTAG_!FOLDERID PERMACTION:ACL:[LL_REPTAG_!WorkspaceManager /]:UPDATE:"SEE,SEECONTENTS,MODIFY,EDITATTRS,ADDITEMS,RESERVE,ADDMAJORVERSION,DELETEVERS,DELETE,EDITPERMS" /]
+
+[// 
+
+
