@@ -2,7 +2,9 @@
   1.Create bussiness workspace using tag 
   2.Hide add item using csui method -Web report css.
   3.Create groups and subgroups to the folder.
-
+  4.Aunthetication api call to the same content server restclient format 
+  5. runninginworkflow workflow paratmeter
+  6.To hide the add item paramter (whole code)
 
  */]
 
@@ -43,6 +45,96 @@
 [LL_REPTAG_!FOLDERID PERMACTION:ACL:[LL_REPTAG_!ContributorFull /]:UPDATE:"SEE,SEECONTENTS,MODIFY,EDITATTRS,ADDITEMS,RESERVE,ADDMAJORVERSION,DELETEVERS,DELETE" /]
 [LL_REPTAG_!FOLDERID PERMACTION:ACL:[LL_REPTAG_!WorkspaceManager /]:UPDATE:"SEE,SEECONTENTS,MODIFY,EDITATTRS,ADDITEMS,RESERVE,ADDMAJORVERSION,DELETEVERS,DELETE,EDITPERMS" /]
 
-[// 
+[// 4.Authentication api call to the same api call restclient 
+
+
+[LL_REPTAG_{ { "content-type", "application/json" } } ASSOCACTION:CREATE SETVAR:otheader /]
+    [LL_WEBREPORT_RESTCLIENT
+    @HOST:'[LL_REPTAG_$OTDSEndpoint /]'
+    @SECURE:FALSE
+    @PORT:80
+    @URI:'/otdsws/rest/authentication/credentials'
+    @METHOD:POST
+    @TIMEOUT:10
+    @HEADER:[LL_REPTAG_!otheader /]
+    @BODY:'{"userName":"[LL_REPTAG_$OTDSServiceAccount /]","password":"[LL_REPTAG_$OTDSServiceAccountPassword /]"}'
+    @OUTPUT:ASSOC:AuthAssoc /]
+    [LL_REPTAG_!AuthAssoc ASSOC:ticket SETVAR:otdsticket /]
+[LL_REPTAG_!otdsticket /]
+
+[// ================================================================== 5 =======================================================
+
+
+[// when we call worfflow from outside of web report we have to use the paramter. runninginworkflow /]
+
+
+[// 6.To hide the add item paramter
+
+[/* Title: Blank Reportview */]
+[LL_WEBREPORT_EXCLUDEHTML /]
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+[// Load below two Supporting files for SMART UI to work
+[//<script src="[LL_REPTAG_URLPREFIX /]/widgets?crossOrigin=true"></script>
+<script src="http://eimsdemo.mannaicorp.com.qa[LL_REPTAG_URLPREFIX /]/widgets?crossOrigin=true"></script>   
+<link rel="stylesheet" href="http://eimsdemo.mannaicorp.com.qa[LL_REPTAG_SUPPORTDIR /]csui/themes/carbonfiber/theme.css">
+[// HTML Section 
+<title>[LL_REPTAG_&folderid NODEINFO:NAME /]</title>
+ 
+[// Initializing the Folder Browser Widget with default Parameters
+<script>
+    csui.onReady2([
+                'csui/integration/folderbrowser/folderbrowser.widget'
+            ], function (FolderBrowser) {
+                [// To Add the Back Button Start
+                var config = new csui.require.config({
+          config: {
+            "csui/integration/folderbrowser/commands/go.to.node.history": {
+              enabled: true,
+                }, 
+            },
+            });
+            [// To Add the Back Button End
+                var folderBrowser = new FolderBrowser({
+                     connection: {
+                         url: 'http://eimsdemo.mannaicorp.com.qa[LL_REPTAG_URLPREFIX /]/api/v1', [// API Endpoint for initialization 
+                         supportPath: 'http://eimsdemo.mannaicorp.com.qa[LL_REPTAG_SUPPORTDIR /]', [// Support Path Folder
+                         session:{
+                             ticket:'[LL_REPTAG_OTCSTICKET /]'  [// Logged in users ticket
+                         }
+                          },
+                    start: {
+                        id: [LL_REPTAG_&folderid /]  [// Folder ID to Load is send as a parameter
+                    },
+                    breadcrumb: false,   [// change to true if breadcrumd is required
+                    showPageInfo:true,
+                    config:config  [// To Add the Back Button
+                });
+                folderBrowser.show({
+                    placeholder: '#content'  [//ID for the DIV to load this Widget
+                })
+            });
+</script>
+</head>
+[//HTML Section , where we have create the DIV using the CarbonTheeme CSS Classes
+<body >
+<div class="binf-container-fluid grid-rows">
+<div class="binf-row">
+<div id="content" class="row-xs-full"></div>
+</div>
+</div>
+</body>
+</html>
+
+[LL_WEBREPORT_STARTROW /]
+[LL_WEBREPORT_ENDROW /]
+
+[// =============================================================== 6 ============================================================
+
 
 
