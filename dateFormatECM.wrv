@@ -1,0 +1,95 @@
+[/* Title: Blank Reportview */]
+ 
+[LL_WEBREPORT_STARTROW /]
+ 
+        [LL_WEBREPORT_IF "[LL_REPTAG=Frequency /]" == "Monthly" or '[LL_REPTAG=Frequency /]'== "adhoc" /]
+        DataSet_FolderName=>[LL_REPTAG=DataSet_FolderName /]<br/>
+        NotificationDates=>[LL_REPTAG=NotificationDates /]<br/>
+        SubmissionDate =>[LL_REPTAG=SubmissionDate  /]<br/>
+
+       [LL_REPTAG_DATE  DATE:"%b %d" SETVAR:CurrentDateMonth /]
+        CurrentDate==>[LL_REPTAG_!CurrentDateMonth /] <br>
+        [LL_REPTAG=NotificationDates Date:'%b %d' Setvar:ExtractedDateMonth /]
+        ExtractMonthy=>[LL_REPTAG_!ExtractedDateMonth /] <br>
+
+        [LL_WEBREPORT_IF "[LL_REPTAG_!CurrentDateMonth /]" == "[LL_REPTAG_!ExtractedDateMonth /]" /]
+
+        [LL_REPTAG_$SendEmailNotification RUNSWR:DATASET:'[LL_REPTAG=DataSet_FolderName /]':CDMSLink:'[LL_REPTAG_URLPREFIXFULL /][LL_REPTAG=CDMSLink TRIM LLURL:BROWSE /]':SubmissionDate:[LL_REPTAG=SubmissionDate /]:FocalPoint:[LL_REPTAG=Focal_Point TRIM /] /]  
+        [LL_REPTAG=NotificationDates DATE:'%d' /]<br/>
+        [LL_REPTAG=NotificationDates DATE:'%m' /]<br/>
+        [LL_REPTAG=NotificationDates DATE:'%Y' /]<br/>
+
+        [LL_WEBREPORT_IF "[LL_REPTAG=NotificationDates DATE:'%m' /]" == "12" /]
+            [LL_REPTAG_'1' SETVAR:NextMonthVal /]
+        [LL_WEBREPORT_ELSE /]
+            [LL_REPTAG=NotificationDates DATE:'%m' INC:1 SETVAR:NextMonthVal /]
+        [LL_WEBREPORT_ENDIF /]
+        [LL_REPTAG_"[LL_REPTAG=NotificationDates DATE:'%d' /]-[LL_REPTAG_!NextMonthVal /]-[LL_REPTAG=NotificationDates DATE:'%Y' /]" TODATE:"%d-%m-%Y"  DATE:INPUT SETVAR:newNotificationDate /]
+        [LL_REPTAG_"[LL_REPTAG=SubmissionDate DATE:'%d' /]-[LL_REPTAG_!NextMonthVal /]-[LL_REPTAG=SubmissionDate DATE:'%Y' /]" TODATE:"%d-%m-%Y"  DATE:INPUT SETVAR:newSubmissionDate /]
+        newNotificationDate=>[LL_REPTAG_!newNotificationDate /] <br>
+        newSubmissionDate=>[LL_REPTAG_!newSubmissionDate /] <br>
+        [LL_REPTAG_$UpdateNotificationDate RUNSWR:NotificationDates:'[LL_REPTAG_!newNotificationDate /]':SubmissionDate:'[LL_REPTAG_!newSubmissionDate /]':LastSendDate:'[LL_REPTAG_DATETIME /]':NextSendDate:'[LL_REPTAG_!newNotificationDate /]':'DataSet_FolderName':'[LL_REPTAG=DataSet_FolderName /]' /]
+        [LL_WEBREPORT_ENDIF /]
+        -------------------
+        [LL_WEBREPORT_ELSEIF "[LL_REPTAG=Frequency /]" == 'Semi-Annual' /]
+
+                 [LL_REPTAG_DATE  DATE:"%b %d" SETVAR:CurrentDateMonth /]
+        CurrentDate==>[LL_REPTAG_!CurrentDateMonth /] <br>
+        [LL_REPTAG=NotificationDates Date:'%b %d' Setvar:ExtractedDateMonth /]
+        ExtractMonthy=>[LL_REPTAG_!ExtractedDateMonth /] <br>
+
+        [LL_WEBREPORT_IF "[LL_REPTAG_!CurrentDateMonth /]" == "[LL_REPTAG_!ExtractedDateMonth /]" /]
+
+        [LL_REPTAG_$SendEmailNotification RUNSWR:DATASET:'[LL_REPTAG=DataSet_FolderName /]':CDMSLink:'[LL_REPTAG_URLPREFIXFULL /][LL_REPTAG=CDMSLink TRIM LLURL:BROWSE /]':SubmissionDate:[LL_REPTAG=SubmissionDate /]:FocalPoint:[LL_REPTAG=Focal_Point TRIM /] /]  
+        [LL_REPTAG=NotificationDates DATE:'%d' /]<br/>
+        [LL_REPTAG=NotificationDates DATE:'%m' /]<br/>
+        [LL_REPTAG=NotificationDates DATE:'%Y' /]<br/>
+
+        [LL_WEBREPORT_IF "[LL_REPTAG=NotificationDates DATE:'%m' /]" == "12" /]
+            [LL_REPTAG_'1' SETVAR:NextMonthVal /]
+        [LL_WEBREPORT_ELSE /]
+            [LL_REPTAG=NotificationDates DATE:'%m' INC:1 SETVAR:NextMonthVal /]
+        [LL_WEBREPORT_ENDIF /]
+        [LL_REPTAG_"[LL_REPTAG=NotificationDates DATE:'%d' /]-[LL_REPTAG_!NextMonthVal /]-[LL_REPTAG=NotificationDates DATE:'%Y' /]" TODATE:"%d-%m-%Y"  DATE:INPUT SETVAR:newNotificationDate /]
+        [LL_REPTAG_"[LL_REPTAG=SubmissionDate DATE:'%d' /]-[LL_REPTAG_!NextMonthVal /]-[LL_REPTAG=SubmissionDate DATE:'%Y' /]" TODATE:"%d-%m-%Y"  DATE:INPUT SETVAR:newSubmissionDate /]
+        newNotificationDate=>[LL_REPTAG_!newNotificationDate /] <br>
+        newSubmissionDate=>[LL_REPTAG_!newSubmissionDate /] <br>
+        [LL_REPTAG_$UpdateNotificationDate RUNSWR:NotificationDates:'[LL_REPTAG_!newNotificationDate /]':SubmissionDate:'[LL_REPTAG_!newSubmissionDate /]':LastSendDate:'[LL_REPTAG_DATETIME /]':NextSendDate:'[LL_REPTAG_!newNotificationDate /]':'DataSet_FolderName':'[LL_REPTAG=DataSet_FolderName /]' /]
+        [LL_WEBREPORT_ENDIF /]
+
+
+        [LL_WEBREPORT_ELSEIF "[LL_REPTAG=Frequency /]" == 'Yearly' /] 
+
+                    [LL_REPTAG_DATE  DATE:"%b %d" SETVAR:CurrentDateMonth /]
+        CurrentDate==>[LL_REPTAG_!CurrentDateMonth /] <br>
+        [LL_REPTAG=NotificationDates Date:'%b %d' Setvar:ExtractedDateMonth /]
+        ExtractMonthy=>[LL_REPTAG_!ExtractedDateMonth /] <br>
+
+            [LL_WEBREPORT_IF "[LL_REPTAG_!CurrentDateMonth /]" == "[LL_REPTAG_!ExtractedDateMonth /]" /]
+
+        [LL_REPTAG_$SendEmailNotification RUNSWR:DATASET:'[LL_REPTAG=DataSet_FolderName /]':CDMSLink:'[LL_REPTAG_URLPREFIXFULL /][LL_REPTAG=CDMSLink TRIM LLURL:BROWSE /]':SubmissionDate:[LL_REPTAG=SubmissionDate /]:FocalPoint:[LL_REPTAG=Focal_Point TRIM /] /]  
+        [LL_REPTAG=NotificationDates DATE:'%d' /]<br/>
+        [LL_REPTAG=NotificationDates DATE:'%m' /]<br/>
+        [LL_REPTAG=NotificationDates DATE:'%Y' /]<br/>
+
+         [LL_WEBREPORT_IF "[LL_REPTAG=NotificationDates DATE:'%m' /]" == "12" /]
+            [LL_REPTAG_'1' SETVAR:NextMonthVal /]
+        [LL_WEBREPORT_ELSE /]
+            [LL_REPTAG=NotificationDates DATE:'%m' INC:1 SETVAR:NextMonthVal /]
+        [LL_WEBREPORT_ENDIF /]
+        [LL_REPTAG_"[LL_REPTAG=NotificationDates DATE:'%d' /]-[LL_REPTAG=NotificationDates DATE:'%m' /]-[LL_REPTAG=NotificationDates DATE:'%Y' INC:1 /]" TODATE:"%d-%m-%Y"  DATE:INPUT SETVAR:newNotificationDate /]
+        [LL_REPTAG_"[LL_REPTAG=SubmissionDate DATE:'%d' /]-[LL_REPTAG_!NextMonthVal /]-[LL_REPTAG=SubmissionDate DATE:'%Y' INC:1 /]" TODATE:"%d-%m-%Y"  DATE:INPUT SETVAR:newSubmissionDate /]
+        newNotificationDate=>[LL_REPTAG_!newNotificationDate /] <br>
+        newSubmissionDate=>[LL_REPTAG_!newSubmissionDate /] <br>
+
+        [LL_REPTAG_$UpdateNotificationDate RUNSWR:NotificationDates:'[LL_REPTAG_!newNotificationDate /]':SubmissionDate:'[LL_REPTAG_!newSubmissionDate /]':LastSendDate:'[LL_REPTAG_DATETIME /]':NextSendDate:'[LL_REPTAG_!newNotificationDate /]':'DataSet_FolderName':'[LL_REPTAG=DataSet_FolderName /]' /]
+        [LL_WEBREPORT_ENDIF /]
+
+ 
+                 
+        [LL_WEBREPORT_ENDIF /]
+
+
+
+
+[LL_WEBREPORT_ENDROW /]
