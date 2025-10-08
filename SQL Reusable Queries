@@ -1,0 +1,36 @@
+Reusuable Sql Queries .
+
+1. Get Attributes infromation based on wf title 
+SELECT 
+    wf3.WF_ValStr AS ParentNodeID,
+    dtParent.Name AS ParentFolderName,
+    wf.WF_ValStr AS SrcNodeId,
+    dtSrcFileName.Name AS SrcFileName,
+    wf4.WF_ValStr AS StampedNodeId,
+    dtStamped.Name AS StampedFileName,
+    laFileType.ValStr AS FileType,
+    laReviewAgency.ValStr AS ReviewAgency
+FROM 
+    WSubWork ws
+    LEFT JOIN WFAttrData wf  ON wf.WF_ID  = ws.SubWork_SubWorkID
+    LEFT JOIN WFAttrData wf3 ON wf3.WF_ID = ws.SubWork_SubWorkID
+    LEFT JOIN WFAttrData wf4 ON wf4.WF_ID = ws.SubWork_SubWorkID
+    LEFT JOIN DTree dt       ON dt.DataID = wf.WF_ValStr
+    LEFT JOIN DVersData dc   ON dc.DocID  = dt.DataID AND dc.Version = dt.VersionNum
+    LEFT JOIN DTree dtParent ON dtParent.DataID = wf3.WF_ValStr      -- Parent folder
+    LEFT JOIN DTree dtStamped ON dtStamped.DataID = wf4.WF_ValStr    -- Stamped file
+    LEFT JOIN DTree dtSrcFileName ON dtSrcFileName.DataID = wf.WF_ValStr -- Source file
+    LEFT JOIN LLAttrData laFileType 
+        ON laFileType.ID = dtStamped.DataID and laFileType.VerNum=dtStamped.VersionNum
+    LEFT JOIN LLAttrData laReviewAgency 
+        ON laReviewAgency.ID = dtStamped.DataID and laReviewAgency.VerNum=dtStamped.VersionNum
+WHERE 
+    ws.SubWork_Title LIKE '%QPro_Double_Stamp_%'
+    AND wf.WF_AttrID  = 2      -- SrcNodeID
+    AND wf3.WF_AttrID = 3      -- ParentNodeID
+    AND wf4.WF_AttrID = 9      -- StampedNodeId 
+    AND ws.SubWork_DateInitiated BETWEEN '2025-09-01' AND '2025-09-28'
+	AND laFileType.AttrID = 3  -- FileType attribute
+	AND laReviewAgency.AttrID = 11  -- ReviewAgency attribute
+ORDER BY 
+    ws.SubWork_DateInitiated DESC;
