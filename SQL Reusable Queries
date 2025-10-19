@@ -34,3 +34,44 @@ WHERE
 	AND laReviewAgency.AttrID = 11  -- ReviewAgency attribute
 ORDER BY 
     ws.SubWork_DateInitiated DESC;
+
+
+
+
+select count(id) from kuaf where (MailAddress like '%@ashghal.gov.qa%' or MailAddress is null ) and type=0 and Deleted=0
+
+ 
+select count(distinct ID) from kuaf where (MailAddress not like '%@ashghal.gov.qa%' and  mailaddress is not null) and type=0 and Deleted=0 and MailAddress
+
+in(select euemailid from CT_IM_External_Users where EUEMAILID is not null)
+
+union
+
+select count(distinct ID) from kuaf where (MailAddress not like '%@ashghal.gov.qa%' and  mailaddress is not null) and type=0 and Deleted=0 and MailAddress
+
+not in(select euemailid from CT_IM_External_Users where EUEMAILID is not null);
+ 
+--Total Docs--
+
+select SUM(dv.DataSize) SizeOfDocsCreated,count(dt.dataid) NumberOfDocumentsCreated from DTree dt
+
+inner join DVersData dv on dt.DataID=dv.DocID and dt.VersionNum=dv.Version
+
+where 
+
+dv.VerType is null and dt.SubType in(143,144,145,749,736);
+
+
+ 
+--Total docs including versions--
+
+select count(dv.versionid) from DTreeCore dt
+
+inner join DVersData dv on dt.DataID=dv.DocID 
+
+where  
+
+dt.SubType in(143,144,145,749,736);
+ 
+
+
