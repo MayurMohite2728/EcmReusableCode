@@ -72,6 +72,13 @@ inner join DVersData dv on dt.DataID=dv.DocID
 where  
 
 dt.SubType in(143,144,145,749,736);
+
+
+
+----To get list of users in each group --------------
+
+select k.ID,Name,count(kc.ChildID) NoOfUsers,kc.ID as userID from kuaf k,KUAFChildren kc  where k.id in(
+select distinct GroupID from kuaf where type=0) and k.id=kc.ID group by k.id,k.name,kc.ID order by 2 ;
  
 
 
