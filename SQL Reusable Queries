@@ -164,6 +164,37 @@ where dv.VerType is null and dt.ParentID=@WorkflowParentID and dt.SubType in(144
 
 
 
+//modified query. 
+
+DECLARE @WorkflowParentID INT;
+SET @WorkflowParentID = '587489338';  -- pass ParentID here
+
+SELECT *
+FROM (
+    SELECT DISTINCT
+        dt.Name AS Filename,
+        ISNULL(NULLIF([otcs].[CT_GetLLNodePath](dt.DataID, @WorkflowParentID), ''), '') 
+          + CASE WHEN [otcs].[CT_GetLLNodePath](dt.DataID, @WorkflowParentID) IS NULL THEN '' ELSE '/' END
+          + REPLACE(dt.Name, '/', '_') AS FilePath
+    FROM DTree dt
+    JOIN DVersData dv
+        ON dv.DocID = dt.DataID
+       AND dv.Version = dt.VersionNum
+       AND dv.VerType IS NULL
+    WHERE dt.SubType IN (144, 736)
+      AND (
+            dt.ParentID = @WorkflowParentID
+         OR EXISTS (
+             SELECT 1 FROM DTreeAncestors da
+             WHERE da.AncestorID = @WorkflowParentID
+               AND da.DataID = dt.DataID
+         )
+      )
+) AS X
+ORDER BY X.FilePath, X.Filename;
+
+
+
 
  
 
