@@ -79,6 +79,92 @@ dt.SubType in(143,144,145,749,736);
 
 select k.ID,Name,count(kc.ChildID) NoOfUsers,kc.ID as userID from kuaf k,KUAFChildren kc  where k.id in(
 select distinct GroupID from kuaf where type=0) and k.id=kc.ID group by k.id,k.name,kc.ID order by 2 ;
+
+
+//get FIle path from Parent folder . 
+DECLARE @WorkflowParentID int;
+DECLARE @DataRequestName varchar(200);
+SET @WorkflowParentID='587489338';
+SET @DataRequestName =(select name from dtree where dataid=@WorkflowParentID)
+/*Collection Set */
+select distinct dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',@DataRequestName+'/'+DTp.Name+'/'+[otcs].[CT_GetLLNodePath](dt.DataID,c.DataID) 'TargetPath',dt.ModifyDate LastModified from
+DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors dta on dta.AncestorID=c.DataID
+left join dtree dt on dt.DataID=dta.DataID
+left join DVersData dv on dt.DataID=dv.DocID
+join DTree ct on ct.DataID=c.DataID
+where c.CollectionID=DTp.DataID and dv.VerType is null and dv.Version=dt.VersionNum
+and dt.DataID is not null and dt.SubType in(144,736) and DTp.ParentID=@WorkflowParentID and DTp.SubType=298
+and ct.SubType not in(144,736)
+UNION ALL
+/*Collection inside Collection */
+select distinct dtrc.DataID 'ExternalObjectID',dtrc.Name 'Filename',
+dtrc.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',@DataRequestName+'/'+DTp.Name+'/'+
+[otcs].[CT_GetLLNodePath](dt.ParentID,c.DataID)
++'/'+dt.Name+'/'+
+[otcs].[CT_GetLLNodePath](dtrc.DataID,c2.DataID) 'TargetPath',dtrc.ModifyDate LastModified
+from DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors da on da.AncestorID=c.DataID
+left join dtree dt on dt.DataID=da.DataID
+left join Collections c2 on c2.CollectionID=dt.DataID
+left join dtree dt2 on dt2.dataid=c2.DataID
+left join DTreeAncestors dtc on dtc.AncestorID=c2.DataID
+left join dtree dtrc on dtrc.DataID=dtc.DataID  and dtrc.SubType=144
+left join DVersData dv on dtrc.DataID=dv.DocID
+where  dtp.ParentID=@WorkflowParentID and 
+dt.SubType=298 and  dtp.SubType=298   and dv.VerType is null and dv.Version=dtrc.VersionNum and dt2.SubType!=144
+UNION all
+select distinct dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',@DataRequestName+'/'+REPLACE(DTp.Name,'/','_')  'TargetPath',dt.ModifyDate LastModified from
+DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors dta on dta.AncestorID=c.DataID
+left join dtree dt on dt.DataID=dta.DataID
+left join DVersData dv on dt.DataID=dv.DocID
+join DTree ct on ct.DataID=c.DataID
+where c.CollectionID=DTp.DataID and dv.VerType is null and dv.Version=dt.VersionNum
+and dt.DataID is not null and dt.SubType in(144,736) and DTp.ParentID=@WorkflowParentID and DTp.SubType=298
+and ct.SubType in(144,736)
+UNION ALL
+/*Collection inside Collection with direct Documents */
+select distinct dtrc.DataID 'ExternalObjectID',dtrc.Name 'Filename',
+dtrc.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',@DataRequestName+'/'+DTp.Name+'/'+
+[otcs].[CT_GetLLNodePath](dt.ParentID,c.DataID)
++'/'+REPLACE(dt.Name,'/','_') 'TargetPath',dtrc.ModifyDate LastModified
+from DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors da on da.AncestorID=c.DataID
+left join dtree dt on dt.DataID=da.DataID
+left join Collections c2 on c2.CollectionID=dt.DataID
+left join dtree dtrc on dtrc.DataID=c2.DataID and dtrc.SubType!=0
+left join DVersData dv on dtrc.DataID=dv.DocID
+where c.CollectionID=DTp.DataID 
+and dt.DataID is not null and DTp.ParentID=@WorkflowParentID and DTp.SubType=298
+and dt.SubType=298 and dv.VerType is null and dv.Version=dtrc.VersionNum
+UNION all
+/*Folder Set */
+select dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',@DataRequestName+'/'+[otcs].[CT_GetLLNodePath](dt.DataID,DTp.DataID) 'TargetPath',dt.ModifyDate LastModified
+from
+DTree DTp join
+DTreeAncestors da on dtp.DataID=da.AncestorID
+join
+DTree dt on dt.DataID=da.DataID
+join DVersData dv on dv.DocID=dt.DataID and dv.Version=dt.VersionNum
+where DTp.ParentID=@WorkflowParentID and DTp.SubType=0 and dv.VerType is null and dt.SubType in(144,736)
+UNION all
+/*Files Set */
+select dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',@DataRequestName+'/Additional Documents' 'TargetPath',dt.ModifyDate LastModified from DTree dt
+join DVersData dv on dt.DataID=dv.DocID and dt.VersionNum=dv.Version
+where dv.VerType is null and dt.ParentID=@WorkflowParentID and dt.SubType in(144,736)
+
+
+
+
  
 
 
