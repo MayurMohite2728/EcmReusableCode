@@ -1,0 +1,190 @@
+copy / move large set of files with path SWR 
+
+
+
+   [LL_REPTAG_'589550966' RUNSWR:attchFoldId:[LL_REPTAG_&ParentID /] SETVAR:getData /]
+                    
+                    [LL_REPTAG_!getData FROMJSON Assoc:data SETVAR:data /]
+                    [LL_WEBREPORT_FOR DATA:[LL_REPTAG_!data /] VAR:i /]
+                    
+                     [LL_REPTAG_!i Assoc:ExternalObjectID  SETVAR:docID /]
+                     
+                      
+                      
+                    [LL_REPTAG_!i ASSOC:TargetPath TOLIST:'/' SETVAR:PATHSTRING /]
+                    
+                    [// testing Initialize parent folder
+                    [LL_REPTAG_&sharedFolID SETVAR:currentParent /]
+                    
+                    [LL_WEBREPORT_FOR DATA:[LL_REPTAG_!PATHSTRING /] VAR:i /]
+                    
+                      [// Create subfolder under current parent 
+                        [LL_REPTAG_'' NODEACTION:CREATE:FOLDER:[LL_REPTAG_!currentParent /]:[LL_REPTAG_!i /]:UNIQUEONLY SHOW SETVAR:currentParent /]
+                    [LL_WEBREPORT_ENDFOR /]
+                    
+                    [//  Copy document to the final created folder
+                    [LL_REPTAG_!docID NODEACTION:MOVE:[LL_REPTAG_!currentParent /] /]
+                    
+                    
+                    
+    [LL_WEBREPORT_ENDFOR /]
+
+==============================================================================================================================================
+//get data 589550966 swr code . 
+
+[LL_WEBREPORT_EXCLUDEHTML /]{
+  "data": [
+[LL_WEBREPORT_STARTROW /]
+{
+"ExternalObjectID":"[LL_REPTAG='ExternalObjectID' DEF:'' ESCAPEJSON /]",
+"Filename":"[LL_REPTAG='Filename' DEF:'' ESCAPEJSON /]",
+"TargetPath":"[LL_REPTAG='TargetPath' DEF:'' ESCAPEJSON /]"
+}
+[LL_WEBREPORT_IF "[LL_REPTAG_ROWNUM /]" != "[LL_REPTAG_TOTALROWS /]" /],
+[LL_WEBREPORT_ENDIF /][LL_WEBREPORT_ENDROW /]  ]
+}
+
+=============================================================================================
+
+
+//LR Querry to get parent ID 
+
+DECLARE @WorkflowParentID int;
+DECLARE @DataRequestName varchar(200);
+SET @WorkflowParentID=%1;
+SET @DataRequestName =(select name from dtree where dataid=@WorkflowParentID);
+
+/*Collection Set */
+with allSet as
+(
+select distinct dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',
+@DataRequestName+'/'+DTp.Name+'/'+
+CASE WHEN DTp.Name = 'Documents from CDMS' THEN ISNULL(CAST(dto.Name AS VARCHAR) + '/', '') ELSE '' END +
+[OTCS].[CT_GetLLNodePath](dt.DataID,c.DataID) 'TargetPath',
+dt.ModifyDate LastModified
+from DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors dta on dta.AncestorID=c.DataID
+left join dtree dt on dt.DataID=dta.DataID
+left join dtree dto on dt.OwnerID=dto.DataID
+left join DVersData dv on dt.DataID=dv.DocID
+join DTree ct on ct.DataID=c.DataID
+where c.CollectionID=DTp.DataID and dv.VerType is null and dv.Version=dt.VersionNum
+and dt.DataID is not null and dt.SubType in(144,736,749)
+and DTp.ParentID=@WorkflowParentID and DTp.SubType=298
+and ct.SubType not in(144,736,749)
+
+UNION ALL
+/*Collection inside Collection */
+select distinct dtrc.DataID 'ExternalObjectID',dtrc.Name 'Filename',
+dtrc.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',
+@DataRequestName+'/'+DTp.Name+'/' +
+[OTCS].[CT_GetLLNodePath](dt.ParentID,c.DataID)
++'/'+dt.Name+'/' +
+[OTCS].[CT_GetLLNodePath](dtrc.DataID,c2.DataID) 'TargetPath',
+dtrc.ModifyDate LastModified
+from DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors da on da.AncestorID=c.DataID
+left join dtree dt on dt.DataID=da.DataID
+left join Collections c2 on c2.CollectionID=dt.DataID
+left join dtree dt2 on dt2.dataid=c2.DataID
+left join DTreeAncestors dtc on dtc.AncestorID=c2.DataID
+left join dtree dtrc on dtrc.DataID=dtc.DataID and dtrc.SubType=144
+left join DVersData dv on dtrc.DataID=dv.DocID
+where dtp.ParentID=@WorkflowParentID and
+dt.SubType=298 and dtp.SubType=298 and dv.VerType is null and dv.Version=dtrc.VersionNum
+and dt2.SubType!=144
+
+UNION all
+select distinct dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',
+@DataRequestName+'/'+DTp.Name 'TargetPath',
+dt.ModifyDate LastModified
+from DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors dta on dta.AncestorID=c.DataID
+left join dtree dt on dt.DataID=dta.DataID
+left join DVersData dv on dt.DataID=dv.DocID
+join DTree ct on ct.DataID=c.DataID
+where c.CollectionID=DTp.DataID and dv.VerType is null and dv.Version=dt.VersionNum
+and dt.DataID is not null and dt.SubType in(144,736,749)
+and DTp.ParentID=@WorkflowParentID and DTp.SubType=298
+and ct.SubType in(144,736,749)
+
+UNION ALL
+/*Collection inside Collection with direct Documents */
+select distinct dtrc.DataID 'ExternalObjectID',dtrc.Name 'Filename',
+dtrc.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',
+@DataRequestName+'/'+DTp.Name+'/' +
+[OTCS].[CT_GetLLNodePath](dt.ParentID,c.DataID)
++'/'+dt.Name 'TargetPath',
+dtrc.ModifyDate LastModified
+from DTree DTp
+join Collections c on DTp.DataID=c.CollectionID
+left join DTreeAncestors da on da.AncestorID=c.DataID
+left join dtree dt on dt.DataID=da.DataID
+left join Collections c2 on c2.CollectionID=dt.DataID
+left join dtree dtrc on dtrc.DataID=c2.DataID and dtrc.SubType!=0
+left join DVersData dv on dtrc.DataID=dv.DocID
+where c.CollectionID=DTp.DataID
+and dt.DataID is not null and DTp.ParentID=@WorkflowParentID
+and DTp.SubType=298 and dt.SubType=298
+and dv.VerType is null and dv.Version=dtrc.VersionNum
+
+UNION all
+/*Folder Set */
+select dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',
+@DataRequestName+'/'+[OTCS].[CT_GetLLNodePath](dt.DataID,DTp.DataID) 'TargetPath',
+dt.ModifyDate LastModified
+from DTree DTp
+join DTreeAncestors da on dtp.DataID=da.AncestorID
+join DTree dt on dt.DataID=da.DataID
+join DVersData dv on dv.DocID=dt.DataID and dv.Version=dt.VersionNum
+where DTp.ParentID=@WorkflowParentID and DTp.SubType=0
+and dv.VerType is null and dt.SubType in(144,736,749)
+
+UNION all
+/*Files Set */
+select dt.DataID 'ExternalObjectID',dt.Name 'Filename',
+dt.versionnum 'ExternalObjectVersionID', dv.DataSize 'Size',
+@DataRequestName+'/Additional Documents' 'TargetPath',
+dt.ModifyDate LastModified
+from DTree dt
+join DVersData dv on dt.DataID=dv.DocID and dt.VersionNum=dv.Version
+where dv.VerType is null and dt.ParentID=@WorkflowParentID
+and dt.SubType in(144,736,749)
+)
+
+
+select 
+    ExternalObjectID,
+    Filename,
+    ExternalObjectVersionID,
+    Size,
+    CASE 
+        WHEN TargetPath like @DataRequestName + '/%' 
+        THEN SUBSTRING(TargetPath, LEN(@DataRequestName) + 2, LEN(TargetPath))
+        ELSE TargetPath 
+    END as TargetPath,
+    LastModified
+from allSet 
+--where TargetPath like '%' + %2 + '%'
+order by TargetPath;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
