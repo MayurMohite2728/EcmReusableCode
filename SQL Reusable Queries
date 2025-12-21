@@ -195,6 +195,23 @@ ORDER BY X.FilePath, X.Filename;
 
 
 
+//get users from the spacific name of the group . 
+
+SELECT distinct 
+    u.MailAddress
+FROM KUAF g
+JOIN KUAFChildren gc 
+    ON gc.ID = g.ID        -- group
+JOIN KUAF u 
+    ON u.ID = gc.ChildID         -- users inside the group
+WHERE g.Name = '01 Workspace Manager'
+  AND u.MailAddress IS NOT NULL
+  AND u.Type = 0 
+  AND u.Deleted = 0
+  and u.MailAddress like '%@ashghal.gov.qa'
+
+
+
 
  
 
