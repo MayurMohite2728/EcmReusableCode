@@ -211,6 +211,11 @@ WHERE g.Name = '01 Workspace Manager'
   and u.MailAddress like '%@ashghal.gov.qa'
 
 
+//getting based on attvalue need to change other value 
+
+SELECT i.ProposedProjectID FROM CT_PWA_PCUProject i WHERE EXISTS (SELECT 1 FROM CT_EDM_IsProject WHERE documenttype='Yes' AND documenttype=<ProjectRelated>) UNION ALL SELECT 'NA' WHERE NOT EXISTS (SELECT 1 FROM CT_EDM_IsProject WHERE documenttype='Yes' AND documenttype=<ProjectRelated>)
+
+
 
 
  
