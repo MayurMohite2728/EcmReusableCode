@@ -1,0 +1,52 @@
+//folder browse 2 -SWR
+
+
+<script>
+    
+    var activeWindow = 'editorDiv';
+    
+    $("#editorDiv").css("display", "block");
+    $( "#editorBTN" ).on( "click", function() {
+        $("#CSTEMPNODE").attr("src","");
+        $("#mainContent").css("min-height", "400px");
+        $("#attachDiv").css("display", "none");
+        $("#editorDiv").css("display", "block");
+        activeWindow = 'editorDiv';
+    } );
+    
+    $( "#attBTN" ).on( "click", function() {
+        $("#CSTEMPNODE").attr("src","[LL_REPTAG_'3887885' LLURL:REPORT /]&WIDGETCONTAINERID="+TEMPFOLDERID);
+        $("#mainContent").css("min-height", "600px");
+        $("#attachDiv").css("display", "block");
+        $("#editorDiv").css("display", "none");
+        activeWindow = 'attachDiv';
+    } );
+    
+    [LL_REPTAG_'' NODEACTION:CREATE:FOLDER:3888232:'[LL_REPTAG_ACTUALUSERID /]_Cover Letter':UNIQUEONLY SHOW SETVAR:TEMPFOLDERID /]
+
+    var TEMPFOLDERID = '[LL_REPTAG_!TEMPFOLDERID /]';
+    $("#CSTEMPNODE").attr("src","[LL_REPTAG_'3887885' LLURL:REPORT /]&WIDGETCONTAINERID="+TEMPFOLDERID);
+    
+    function handleAttachment(bwsID){
+        var attachDivID = '[LL_REPTAG_!TEMPFOLDERID /]';
+        if(activeWindow==='attachDiv'){
+           moveDocument(bwsID,[LL_REPTAG_!TEMPFOLDERID /]);
+        }
+        return true;
+    }
+    
+async    function moveDocument(bwsID,folderID){
+        const url = "[LL_REPTAG_'3893136' LLURL:REPORT /]&bwsID=" + bwsID + "&folderID=" + folderID;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+        } catch (error) {
+            console.error("Error ", error);
+            return "Error";  // Return a default value in case of error
+        }
+    }
+</script>
+
