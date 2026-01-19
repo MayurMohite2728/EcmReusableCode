@@ -136,5 +136,14 @@
 
 [// =============================================================== 6 ============================================================
 
+7.Giving Permisson to workflow all users role for attachment. 
+
+[/* This webreport will provide EDITATTRS permissions to all workflow roles on attachments folder and its subitems */]
+[LL_WEBREPORT_FOR DATA:[LL_REPTAG_{[LL_REPTAG_&WorkID /],[LL_REPTAG_&WorkID /],0} WFTASKINFO:TASKINFO RECORD:map_userdata ASSOC:LL_Role ASSOC:Data ASSOC:RolePerformers  /] VAR:iRole /]
+    [LL_REPTAG_&WorkID WFINFO:ATTACHFOLDER SETVAR:AttchFolderID SHOW PERMACTION:ACL:[LL_REPTAG_!iRole /]:UPDATE:EDITATTRS /]
+    [LL_WEBREPORT_FOR DATA:[LL_REPTAG_&WorkID WFINFO:ATTACHFOLDER NODEINFO:CHILDREN /] VAR:iDoc /]
+        [LL_REPTAG_!iDoc RECORD:DataID PERMACTION:ACL:[LL_REPTAG_!iRole /]:UPDATE:EDITATTRS /]
+    [LL_WEBREPORT_ENDFOR /]
+[LL_WEBREPORT_ENDFOR /]
 
 
