@@ -30,3 +30,25 @@ app.use((req, res) => {
 });
  
 app.listen(3002, () => console.log('✅ Proxy running on http://localhost:3002'));
+
+
+====================================================================================================================================
+
+const BASE_PROXY = "http://localhost:3002";
+const baseUrl = `${BASE_PROXY}/api/v3/work_packages`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
