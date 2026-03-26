@@ -6,7 +6,7 @@
   5. runninginworkflow workflow paratmeter
   6.To hide the add item paramter (whole code)
   7.Giving Permisson to workflow all users role for attachment.
-
+  8.Setting category values based on CSV with multifiled value comma seperated . 
  */]
 
 
@@ -146,5 +146,39 @@
         [LL_REPTAG_!iDoc RECORD:DataID PERMACTION:ACL:[LL_REPTAG_!iRole /]:UPDATE:EDITATTRS /]
     [LL_WEBREPORT_ENDFOR /]
 [LL_WEBREPORT_ENDFOR /]
+
+
+[// =======================================================================7 ==========================================================
+
+
+8.CSV Multifield value setting . 
+
+   
+   [LL_WEBREPORT_FOR DATA:[LL_REPTAG_DATASOURCE /] VAR:i /]
+   
+        [LL_REPTAG_!i RECORD:'Proposed project code' SETVAR:PPC /]<br>
+         
+        [LL_REPTAG_!i RECORD:'project request code' SETVAR:PRCCODE /]<br>
+         
+          [LL_REPTAG_!i RECORD:'CdmsNodeID' SETVAR:CDMSID /]<br>
+   
+   
+            [LL_WEBREPORT_FOR DATA:[LL_REPTAG_!PRCCODE TOLIST:"," /] VAR:j /]
+          
+         
+                 [LL_WEBREPORT_IF "[LL_REPTAG_!j_index SUBTRACT:1  /]" == "0" /]
+                 
+                  [LL_REPTAG_!CDMSID CATACTION:SETVALUE:"Proposed Project":"Project Request":[LL_REPTAG_!j_index /]:"[LL_REPTAG_%j CURRENTVAL /]" /]
+        
+                 [LL_WEBREPORT_ELSE /]
+         
+                   [LL_REPTAG_!CDMSID CATACTION:INSERTVALUE:"Proposed Project":"Project Request":[LL_REPTAG_!j_index /]:"[LL_REPTAG_%j CURRENTVAL /]" /]
+                
+                 [LL_WEBREPORT_ENDIF /]
+        
+            [LL_WEBREPORT_ENDFOR /]
+      
+   [LL_WEBREPORT_ENDFOR /]
+
 
 
