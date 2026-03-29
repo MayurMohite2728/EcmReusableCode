@@ -7,6 +7,7 @@
   6.To hide the add item paramter (whole code)
   7.Giving Permisson to workflow all users role for attachment.
   8.Setting category values based on CSV with multifiled value comma seperated . 
+  9.Bulk wfaction
  */]
 
 
@@ -180,5 +181,21 @@
       
    [LL_WEBREPORT_ENDFOR /]
 
+=============================================== 8 =====================================================================================
 
+[//Bulk workflow action
+
+[/* Title: Blank Reportview */]
+
+[LL_WEBREPORT_STARTROW /]
+[LL_REPTAG_1 /],[LL_REPTAG_2 /],[LL_REPTAG_3 /],[LL_REPTAG_4 /] <BR>
+[// Delete latest Version : [LL_REPTAG_'453493569' RUNSWR:NODEID:[LL_REPTAG_3 /] /] <BR>
+[// Rename Cover Doc  : [LL_REPTAG_'453483362' RUNSWR:NODEID:[LL_REPTAG_3 /]:NEWNAME:'[LL_REPTAG_4 /] - Cover Letter.pdf' /] <BR>
+[// Rename Corrid : [LL_REPTAG_'453483362' RUNSWR:NODEID:[LL_REPTAG_2 /]:NEWNAME:'[LL_REPTAG_4 /]' /] <BR>
+ReameWF : [LL_REPTAG_'453473891' RUNSWR:WorkID:[LL_REPTAG_1 /]:SubWorkID:'[LL_REPTAG_1 /]':WFTITLE:'[LL_REPTAG_4 /] - Internal':runninginworkflow:'true' /] <BR>
+[// sendOnWF : [LL_REPTAG_'453476000' RUNSWR:workid:[LL_REPTAG_1 /]:subworkid:'[LL_REPTAG_1 /]' /] <BR>
+
+<BR>========================================================================================<BR>
+<BR>========================================================================================<BR>
+[LL_WEBREPORT_ENDROW /]
 
