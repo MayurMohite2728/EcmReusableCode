@@ -1,0 +1,51 @@
+1.GET MS TOKEN 
+
+
+
+
+
+
+
+
+
+
+=======================================================1=================================================================================
+1. [LL_REPTAG_'{ { "Content-Type", "application/x-www-form-urlencoded" }}' ASSOCACTION:CREATE SETVAR:headerAssoc /]
+[LL_REPTAG_'{ { "client_id", "[LL_REPTAG_$msclient_id /]" }, { "scope", "[LL_REPTAG_$msscope /]" }, { "client_secret", "[LL_REPTAG_$msclient_secret /]" }, { "grant_type", "[LL_REPTAG_$msgrant_type /]" } }' ASSOCACTION:CREATE SETVAR:bodyAssoc /] 
+[LL_WEBREPORT_RESTCLIENT 
+@HOST:[LL_REPTAG_$msauthenticatehost /]
+@PORT:443
+@URI:[LL_REPTAG_$msauthenticateendpoint /]
+@METHOD:POST
+@SECURE:TRUE 
+@HEADER:[LL_REPTAG_!headerAssoc /]
+@POSTPARAMS:[LL_REPTAG_!bodyAssoc /]
+@RESPONSE:responseVal
+@OUTPUT:ASSOC:tokenValue /]
+[LL_REPTAG_!tokenValue Assoc:'access_token' /]
+[LL_REPTAG_!responseVal TOJSON Setvar:ResponseLogs /]
+[LL_REPTAG_!ResponseLogs FROMJSON Assoc:status SETVAR:status /]
+[LL_REPTAG_'[LL_REPTAG_CRLF /]' Setvar:logs /]
+[LL_REPTAG_'******************Execution Started****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'******************Inside Generate Token Webreport****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' concatvar:logs  /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_"Crafting the bodyParms for Sending generate token  REST API" /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!headerAssoc /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!bodyAssoc /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_WEBREPORT_IF '[LL_REPTAG_!ResponseLogs FROMJSON Assoc:status /]' !='200' /]
+[LL_REPTAG_'****Response Failed****[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' concatvar:logs  /]
+[LL_REPTAG_!ResponseLogs concatvar:logs /]
+[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] :" concatvar:logs /]
+Failed to generate Access token.
+[LL_REPTAG_$ESDLogger RUNSWR:Logger:[LL_REPTAG_!logs /] /]
+[LL_WEBREPORT_ELSE /]
+[LL_REPTAG_'******************Response Success****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_"Generated MS Teams Token" /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!tokenValue Assoc:access_token /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'[LL_REPTAG_DATETIME DATE:"[%d/%m/%Y %I:%M:%S %p] : " /][LL_REPTAG_!status /][LL_REPTAG_CRLF /]' CONCATVAR:logs /]
+[LL_REPTAG_'******************END of Generate Token Webreport****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' concatvar:logs  /]
+[LL_REPTAG_$ESDLogger RUNSWR:Logger:[LL_REPTAG_!logs /] /]
+[LL_WEBREPORT_ENDIF /]
+[LL_WEBREPORT_STARTROW /]
+[LL_WEBREPORT_ENDROW /]
+
+========================================================================== 1 ==================================================================================
