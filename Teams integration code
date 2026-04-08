@@ -1,5 +1,5 @@
 1.GET MS TOKEN 
-
+2.Trigger MS Teams
 
 
 
@@ -45,7 +45,58 @@ Failed to generate Access token.
 [LL_REPTAG_'******************END of Generate Token Webreport****************************[LL_REPTAG_CRLF /][LL_REPTAG_CRLF /]' concatvar:logs  /]
 [LL_REPTAG_$ESDLogger RUNSWR:Logger:[LL_REPTAG_!logs /] /]
 [LL_WEBREPORT_ENDIF /]
+
 [LL_WEBREPORT_STARTROW /]
 [LL_WEBREPORT_ENDROW /]
 
 ========================================================================== 1 ==================================================================================
+
+
+
+2.=========================================Trigger Teams ===============================================
+
+[/* Title: Blank Reportview */]
+[// Get Authenticated
+[LL_REPTAG_$msgetauttoken RUNSWR TRIM SETVAR:accesstoken /]
+[//accesstoken:[LL_REPTAG_!accesstoken /]<br/>
+
+[// Get the TeamID and DriveID
+[LL_REPTAG_$getteamsanddriveid RUNSWR:SharedFolderID:[LL_REPTAG_&SharedFolderID /] FROMJSON LIST:1 SETVAR:ChannelInfo /]
+
+
+
+
+[//LL_REPTAG_!ChannelInfo /]<br/>
+
+[//TEAMID:[LL_REPTAG_!ChannelInfo ASSOC:teamid /] 
+
+[//Get the Site ID
+[LL_REPTAG_$msgetSiteInfo RUNSWR:TeamID:[LL_REPTAG_!ChannelInfo ASSOC:teamid /]:accesstoken:[LL_REPTAG_!accesstoken /] TRIM SETVAR:SiteIDValue /]
+ 
+
+[/*
+<br/>
+Send Email
+<br/><br/>
+
+RUNSWR:recipientEmailID:[LL_REPTAG_&RecipientEmailID /]:itemid:[LL_REPTAG_!ChannelInfo ASSOC:itemid /]:driveid:[LL_REPTAG_!ChannelInfo ASSOC:driveid /]:SiteID:[LL_REPTAG_!SiteIDValue /]:accesstoken:[LL_REPTAG_!accesstoken /]
+
+<br/><br/><br/>
+*/]
+[//Send Email
+
+
+[LL_REPTAG_$mssendemailtorecipient RUNSWR:itemid:[LL_REPTAG_!ChannelInfo ASSOC:itemid /]:driveid:[LL_REPTAG_!ChannelInfo ASSOC:driveid /]:SiteID:[LL_REPTAG_!SiteIDValue /]:accesstoken:[LL_REPTAG_!accesstoken /]:VolumeID:[LL_REPTAG_&VolumeID /] /]
+
+
+[//LL_REPTAG_$generateNewLinkAPi RUNSWR:recipientEmailID:[LL_REPTAG_&RecipientEmailID /]:itemid:[LL_REPTAG_!ChannelInfo ASSOC:itemid /]:driveid:[LL_REPTAG_!ChannelInfo ASSOC:driveid /]:SiteID:[LL_REPTAG_!SiteIDValue /]:accesstoken:[LL_REPTAG_!accesstoken /]:VolumeID:[LL_REPTAG_&VolumeID /] /]
+
+
+
+
+
+[LL_WEBREPORT_STARTROW /]
+[LL_WEBREPORT_ENDROW /]
+=============================================================================2===============================================================
+
+
