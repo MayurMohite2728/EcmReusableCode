@@ -1,6 +1,6 @@
 1.GET MS TOKEN 
 2.Trigger MS Teams
-
+3.Enable teams code . 
 
 
 
@@ -98,5 +98,13 @@ RUNSWR:recipientEmailID:[LL_REPTAG_&RecipientEmailID /]:itemid:[LL_REPTAG_!Chann
 [LL_WEBREPORT_STARTROW /]
 [LL_WEBREPORT_ENDROW /]
 =============================================================================2===============================================================
+
+
+3.Enable teams code . use sql to insert into Teams table 
+
+[/* Title: Blank Reportview */]
+[LL_REPTAG_&WorkspaceID CDMSENABLETEAMS /]
+[LL_WEBREPORT_STARTROW /]
+[LL_WEBREPORT_ENDROW /]
 
 
