@@ -217,7 +217,14 @@ SELECT i.ProposedProjectID FROM CT_PWA_PCUProject i WHERE EXISTS (SELECT 1 FROM 
 
 
 
+==========================================================================================================================================
 
+3. Insert query for syncing teams chanel when we convert the project to workspace 
+
+INSERT INTO 
+CWSTeamShareInstanceMappings(DataID, SharedItemID, ShareType, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy) 
+select OwnerID,dataid,1,CreateDate,CreatedBy,ModifyDate,ModifiedBy from dtree where OwnerID=%1 and name in(select dt.Name from CWSTeamShareTemplateMappings ct  join dtree dt on dt.DataID=ct.SharedItemID
+where ct.dataid=%2) and abs(ParentID)=OwnerID
  
 
 
