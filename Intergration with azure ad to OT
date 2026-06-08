@@ -14,3 +14,10 @@ Step 4. If you want map the attributer from azure to OTDS then check the cn attr
 
 Step 5: To sync with azure ad to OTDS . We need to do provisioning . So provisioning it will sync perodically with azure . 
 
+
+//Steps from OTDS provisioning configuration
+
+Step 1 : Create the Oauth client for configuration. 
+Step 2 : Checked the confidential tickmarks . 
+Step 3 : Once Oauth client will saved . Copy the secret code . 
+Step 4 : 
