@@ -1,1 +1,16 @@
+//Steps from the azure side . 
+
+Step 1 : Browse Azure ad gallery and search the Opentext . we can see opentext directory services . 
+Step 2 : configure the single sign on . Needs to create the saml file . 
+Enter https://<OTDSHost>/otdsws/login for the identifier
+Enter https://<OTDSHost>/otdsws/login?authhandler=<handlerName> for the Reply URL
+o The authhandler query parameter is the name of the authentication handler you will 
+create in OTDS (e.g. AzureSAML)Enter https://<OTDSHost>/otdsws/login?authhandler=<handlerName> for the Reply URL
+o The authhandler query parameter is the name of the authentication handler you will 
+create in OTDS (e.g. AzureSAML)
+We need to create the file in azure saml in OTDS in auth Handler . 
+Step 3: Once the configureation done . download SAML XML file . 
+Step 4. If you want map the attributer from azure to OTDS then check the cn attribute . 
+
+Step 5: To sync with azure ad to OTDS . We need to do provisioning . So provisioning it will sync perodically with azure . 
 
