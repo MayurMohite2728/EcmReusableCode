@@ -1,7 +1,7 @@
 1. List donw all the documents in system with most recent version in sysytem . 
 2. what are the documents are most popular and ofter user view in cs .
 3. Get all Project or any subtype from parent child . 
-
+4. Who has the most items in personal workspace 
 
 
 
@@ -32,7 +32,9 @@ and i.subtype =202
 
 ================================================ 4 ============================================================================
 
-
+4.select p.dataid ,p.name, count(i.dataid) "count of iteams" from dtree p ,dtree i where p.subtype =142 and i.ownerid = -(p.dataid)
+group by p.dataid ,p.name 
+order by count(i.dataid)desc
 
 
 
