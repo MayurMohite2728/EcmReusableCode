@@ -9,8 +9,12 @@
 
 
 
-
+=================================================  0  ============================================================================
 
 1. select dtree.Name "doc name" ,(dversdata.datasize /1000) "File In KB" from   dtree , dversdata where dvers.docid = dtree.dataid
   and dversdata.version =dtree.versionnum 
-  and dversdata.mimetype ="application/pdf" 
+  and dversdata.mimetype ="application/pdf";
+=================================================  1  =====================================================================================
+
+
+  ================================================ 2 ============================================================================
