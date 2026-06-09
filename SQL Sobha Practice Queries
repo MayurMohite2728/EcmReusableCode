@@ -1,5 +1,6 @@
 1. List donw all the documents in system with most recent version in sysytem . 
-2. what are the documents are most popular and ofter user view in cs . 
+2. what are the documents are most popular and ofter user view in cs .
+3. Get all Project or any subtype from parent child . 
 
 
 
@@ -24,4 +25,27 @@
          and dauditnew.subtype =144 
          group by dauditnew.dataid ,dtree.name 
 order by count(dauditnew.auditstr)desc
-================================================ 2 ============================================================================
+================================================ 3 ============================================================================
+3. select i.name , p.name as "parentid" from dtree i , dtree p 
+where i.parentid = p.dataid 
+and i.subtype =202 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
