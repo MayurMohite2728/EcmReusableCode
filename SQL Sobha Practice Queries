@@ -2,7 +2,7 @@
 2. what are the documents are most popular and ofter user view in cs .
 3. Get all Project or any subtype from parent child . 
 4. Who has the most items in personal workspace 
-
+5. Get all folder counts based on subtypes 
 
 
 
@@ -38,9 +38,20 @@ order by count(i.dataid)desc
 
 ================================================ 5 ============================================================================
 5.
+SELECT
+    CASE subtype
+        WHEN 0 THEN 'Folder'
+        WHEN 144 THEN 'Document'
+        WHEN 202 THEN 'Project'
+        ELSE 'Not Specified'
+    END AS Type,
+    COUNT(subtype) AS Number
+FROM DTree
+WHERE subtype IN (0, 144, 202)
+GROUP BY subtype
+ORDER BY Number DESC;
 
-
-
+================================================ 6 ============================================================================
 
 
 
