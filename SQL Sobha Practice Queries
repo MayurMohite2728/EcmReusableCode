@@ -3,7 +3,7 @@
 3. Get all Project or any subtype from parent child . 
 4. Who has the most items in personal workspace 
 5. Get all folder counts based on subtypes 
-
+6.Get username and department . 
 
 
 
@@ -52,6 +52,27 @@ GROUP BY subtype
 ORDER BY Number DESC;
 
 ================================================ 6 ============================================================================
+6.SELECT
+    U.NAME AS UserName,
+    G.NAME AS Department
+FROM KUAF U
+JOIN KUAFCHILDREN KC ON U.ID = KC.CHILDID
+JOIN KUAF G ON KC.ID = G.ID
+WHERE G.NAME IN (
+    'PMO Office',
+    'Project Execution',
+    'Planning',
+    'BE',
+    'Commercial',
+    'Technical',
+    'Project Admin',
+    'Stores',
+    'QAD',
+    'Estimation',
+    'QAQC',
+    'P&M',
+    'HSSE'
+);
 
 
 
