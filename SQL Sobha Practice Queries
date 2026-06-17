@@ -4,6 +4,7 @@
 4. Who has the most items in personal workspace 
 5. Get all folder counts based on subtypes 
 6.Get username and department . 
+7.Get subtypes count and list of all in sql .
 
 
 
@@ -74,8 +75,17 @@ WHERE G.NAME IN (
     'HSSE'
 );
 
+======================================================== 7 =============================================================
 
+select (case subtype 
+when 0 then 'Folder '
+when 144 then 'document'
+when 202 then 'project'
+else 'not specified'
+end ) "Type" ,
+count(subtype) from dtree where subtype in (0,144,202) group by subtype
 
+============================================================= 8 ============================================================
 
 
 
