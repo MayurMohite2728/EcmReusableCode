@@ -5,6 +5,7 @@
 5. Get all folder counts based on subtypes 
 6.Get username and department . 
 7.Get subtypes count and list of all in sql .
+8.Mostly active users in cs 
 
 
 
@@ -86,8 +87,20 @@ end ) "Type" ,
 count(subtype) from dtree where subtype in (0,144,202) group by subtype
 
 ============================================================= 8 ============================================================
-
-
+SELECT 
+    k.Name AS "Login Name",
+    k.FirstName  as  "Full Name",
+    COUNT(d.AuditStr) AS "Count of Actions"
+FROM DAuditNew d
+INNER JOIN KUAF k
+    ON k.ID = d.PerformerID
+WHERE k.ID <> 1000
+GROUP BY 
+    k.Name,
+    k.FirstName,
+    k.LastName,
+    k.mailaddress
+order by count(d.auditstr)
 
 
 
