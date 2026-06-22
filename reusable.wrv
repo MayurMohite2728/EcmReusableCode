@@ -10,6 +10,7 @@
   9.Bulk wfaction
   10.Delete latest version
   11.Redirect workflow through power view . 
+  12.Listing iteams in Perspectives
  */]
 
 
@@ -215,3 +216,83 @@ ReameWF : [LL_REPTAG_'453473891' RUNSWR:WorkID:[LL_REPTAG_1 /]:SubWorkID:'[LL_RE
 <script>
     window.location.href = '[LL_REPTAG_URLPREFIXFULL /]/app'
 </script>
+====================================================================================================12 =======================================================================================
+
+<div class="tour-lp">
+<table class="binf-table binf-table-hover">
+<tr href="#" onclick='window.open("[LL_REPTAG_$Construction_Form LLURL:DEFAULTHREF /]");return false;' title="Inititate Construction Workflow">
+<td width="50">
+<!-- Inline SVG Form Icon -->
+<div class="csui-icon-group csui-icon-v2-size-contain" title="Form">
+<svg role="presentation" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               class="csui-icon-v2 csui-icon-v2-size-contain csui-icon-v2__csui_mime_form csui-node-type-icon"
+               width="24" height="24">
+<g>
+<g>
+<path fill="#FFFFFF"
+                      d="M4.096,23.5c-1.983,0-3.596-1.613-3.596-3.596V4.096C0.5,2.113,2.113,0.5,4.096,0.5h15.809
+                         c1.983,0,3.596,1.613,3.596,3.596v15.809c0,1.983-1.613,3.596-3.596,3.596H4.096z"></path>
+<g>
+<path fill="#6D6E71"
+                        d="M19.904,1C21.611,1,23,2.389,23,4.096v15.809C23,21.611,21.611,23,19.904,23H4.096
+                           C2.389,23,1,21.611,1,19.904V4.096C1,2.389,2.389,1,4.096,1H19.904
+                           M19.904,0H4.096C1.834,0,0,1.834,0,4.096v15.809
+                           C0,22.166,1.834,24,4.096,24h15.809C22.166,24,24,22.166,24,19.904V4.096
+                           C24,1.834,22.166,0,19.904,0L19.904,0z"></path>
+</g>
+</g>
+<g>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="4.25" x2="20" y2="4.25"></line>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="8.75" x2="20" y2="8.75"></line>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="13.5" x2="20" y2="13.5"></line>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="18.5" x2="20" y2="18.5"></line>
+</g>
+</g>
+</svg>
+</div>
+</td>
+ 
+      <td align="left">
+<span style="font-size: 15px;">Business Process Construction Form</span>
+</td>
+<tr href="#" onclick='window.open("[LL_REPTAG_$GenericReport LLURL:DEFAULTHREF /]");return false;' title="Exception Reports">
+<td width="50">
+<!-- Inline SVG Form Icon -->
+<div class="csui-icon-group csui-icon-v2-size-contain" title="Form">
+<svg role="presentation" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               class="csui-icon-v2 csui-icon-v2-size-contain csui-icon-v2__csui_mime_form csui-node-type-icon"
+               width="24" height="24">
+<g>
+<g>
+<path fill="#FFFFFF"
+                      d="M4.096,23.5c-1.983,0-3.596-1.613-3.596-3.596V4.096C0.5,2.113,2.113,0.5,4.096,0.5h15.809
+                         c1.983,0,3.596,1.613,3.596,3.596v15.809c0,1.983-1.613,3.596-3.596,3.596H4.096z"></path>
+<g>
+<path fill="#6D6E71"
+                        d="M19.904,1C21.611,1,23,2.389,23,4.096v15.809C23,21.611,21.611,23,19.904,23H4.096
+                           C2.389,23,1,21.611,1,19.904V4.096C1,2.389,2.389,1,4.096,1H19.904
+                           M19.904,0H4.096C1.834,0,0,1.834,0,4.096v15.809
+                           C0,22.166,1.834,24,4.096,24h15.809C22.166,24,24,22.166,24,19.904V4.096
+                           C24,1.834,22.166,0,19.904,0L19.904,0z"></path>
+</g>
+</g>
+<g>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="4.25" x2="20" y2="4.25"></line>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="8.75" x2="20" y2="8.75"></line>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="13.5" x2="20" y2="13.5"></line>
+<line fill="none" stroke="#6D6E71" stroke-linecap="round" stroke-miterlimit="10" x1="4" y1="18.5" x2="20" y2="18.5"></line>
+</g>
+</g>
+</svg>
+</div>
+</td>
+ 
+      <td align="left">
+<span style="font-size: 15px;">Generic Report</span>
+</td>
+</tr>
+</tr>
+</table>
+</div>
+ 
+[LL_WEBREPORT_STARTROW /][LL_WEBREPORT_ENDROW /]
