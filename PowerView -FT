@@ -1,0 +1,2247 @@
+
+<!DOCTYPE html>
+<HTML LANG="en-US">
+
+<HEAD>
+
+
+
+<META http-equiv="content-type" content="text/html; charset=UTF-8">
+<script>var csThemeSupportPath = "/cssupport/style/images/";</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/cssupport/style/screen.css?v=5798.0" id="primaryCSS">
+<LINK REL="stylesheet" TYPE="text/css" HREF="/cssupport/style/csform.css?v=5798.0">
+<link rel="shortcut icon" href="https://otcs.sa11-test.opentext.cloud/cssupport/favicon.ico" type="image/x-icon">
+<input name="LL_WFATTURL" style="width:40rem; " type="hidden" value="[LL_WFATTURL /]"/>
+<style id="userStyles">
+
+/* ===== Reset & Page ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body.pageBody {
+  background: #eef2f7 !important;
+  font-family: 'Segoe UI', Tahoma, sans-serif !important;
+  padding: 20px;
+  margin: 0;
+}
+
+/* ===== Main Container ===== */
+.cs-pattern {
+  background: #fff !important;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.08);
+  max-width: 1400px;
+  margin: auto;
+}
+
+/* ===== Form Card ===== */
+.tblForeground {
+  background: #fff !important;
+  border-radius: 12px;
+  padding: 15px !important;
+}
+
+/* ===== Form Header Banner ===== */
+.formHeader {
+  background: linear-gradient(135deg, #1565c0, #42a5f5);
+  color: #fff;
+  padding: 20px 28px;
+  font-size: 22px;
+  font-weight: 700;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 16px;
+  letter-spacing: 0.2px;
+}
+.formHeader span {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* ===== Section Headers ===== */
+.cs-fon-table-header-background3,
+table.tightTable.cs-fon-table-header-background3 {
+  background: linear-gradient(90deg, #0d47a1, #1976d2) !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+}
+.cs-fon-table-header-background3 td { background: transparent !important; }
+
+.browseBoxHeader {
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+  padding: 0 14px !important;
+  font-family: 'Segoe UI', sans-serif !important;
+}
+
+/* ===== Labels ===== */
+.label, td.label {
+  width: 240px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  padding: 11px 15px !important;
+  vertical-align: middle !important;
+  background: #f1f5fb !important;
+  border-right: 2px solid #dde3f0 !important;
+}
+
+/* ===== Value Cells ===== */
+.nowrap { padding: 8px 14px !important; }
+
+/* ===== Inputs ===== */
+.valueEditable, input[name^="_datepicker_"] {
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  font-family: 'Segoe UI', sans-serif !important;
+  transition: border-color .2s, box-shadow .2s;
+  height: 36px;
+  vertical-align: middle;
+}
+input[id^="_datepicker_"] {
+  width: 130px !important;
+  border-radius: 8px 0 0 8px !important;
+  border-right: none !important;
+}
+.valueEditable:focus, input[name^="_datepicker_"]:focus {
+  border-color: #2196f3 !important;
+  box-shadow: 0 0 0 3px rgba(33,150,243,.15);
+  outline: none;
+}
+
+/* ===== Textarea ===== */
+textarea.valueEditable {
+  min-height: 100px;
+  width: 480px !important;
+  max-width: 100%;
+  border-radius: 8px !important;
+  resize: vertical;
+  height: auto !important;
+}
+
+/* ===== Dropdowns ===== */
+select:not(#ui-datepicker-div select) {
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  height: 36px;
+  cursor: pointer;
+}
+select:focus { border-color: #2196f3 !important; outline: none; }
+
+/* ===== Dividers ===== */
+tr.horizontalCellDivider { display: none !important; }
+
+/* ===== Clear Button ===== */
+input.button, INPUT.button {
+  background: #fff !important;
+  color: #e53935 !important;
+  border: 1px solid #e53935 !important;
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  height: 36px !important;
+  vertical-align: middle !important;
+  transition: background .15s, color .15s !important;
+  margin-left: 6px !important;
+}
+input.button:hover, INPUT.button:hover {
+  background: #e53935 !important;
+  color: #fff !important;
+}
+
+/* ===== Calendar Trigger Button ===== */
+/* jQuery UI renders a <button class="ui-datepicker-trigger"> next to the input */
+button.ui-datepicker-trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #1565c0 !important;
+  border: 1px solid #1565c0 !important;
+  border-radius: 0 8px 8px 0 !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  transition: background .15s !important;
+  color: transparent !important;  /* hide any default text */
+  position: relative !important;
+}
+button.ui-datepicker-trigger::after {
+  content: "📅" !important;
+  font-size: 16px !important;
+  position: absolute !important;
+  color: initial !important;
+}
+button.ui-datepicker-trigger:hover {
+  background: #0d47a1 !important;
+  border-color: #0d47a1 !important;
+}
+
+/* ===== Apply / Reset Buttons ===== */
+input.applyButton, INPUT.applyButton {
+  background: linear-gradient(135deg, #1565c0, #1976d2) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 28px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(21,101,192,.25) !important;
+  transition: background .2s, transform .1s !important;
+  margin-right: 10px !important;
+}
+input.applyButton:hover, INPUT.applyButton:hover {
+  background: linear-gradient(135deg, #0d47a1, #1565c0) !important;
+  transform: translateY(-1px) !important;
+}
+input.resetButton, INPUT.resetButton {
+  background: #fff !important;
+  color: #1565c0 !important;
+  border: 2px solid #1565c0 !important;
+  border-radius: 8px !important;
+  padding: 9px 24px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background .2s !important;
+}
+input.resetButton:hover, INPUT.resetButton:hover {
+  background: #e3f0ff !important;
+}
+
+/* ===== Button bar ===== */
+.cs-fon-table-header-divider td {
+  padding: 20px 8px 24px !important;
+  background: transparent !important;
+}
+
+/* ===== Preserve jQuery UI Datepicker popup ===== */
+#ui-datepicker-div, #ui-datepicker-div * { box-sizing: content-box !important; }
+#ui-datepicker-div {
+  width: auto !important;
+  min-width: 220px !important;
+  background: #fff !important;
+  z-index: 99999 !important;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+}
+#ui-datepicker-div table { width: auto !important; border-collapse: collapse !important; }
+#ui-datepicker-div tbody { display: table-row-group !important; }
+#ui-datepicker-div tr { display: table-row !important; background: none !important; }
+#ui-datepicker-div td, #ui-datepicker-div th { display: table-cell !important; width: auto !important; padding: 2px !important; }
+#ui-datepicker-div select { width: auto !important; min-width: 70px !important; padding: 0 !important; }
+#ui-datepicker-div .ui-datepicker-group { float: left !important; }
+
+.browseRow1 { background-color: #FFFFFF; }
+.browseRow2 { background-color: #FFFFFF; }
+
+</style>
+[LL_HEAD_RESOURCES /]
+<TITLE>Form</TITLE>
+</HEAD>
+
+<SCRIPT SRC="[LL_SUPPORTPATH /]core/ajax_dhtml_util.js"></SCRIPT>
+<SCRIPT SRC="[LL_SUPPORTPATH /]webform/formssupport.js"></SCRIPT>
+<BODY Class="pageBody">
+<FORM NAME="myForm" ACTION="[LL_CGIPATH /]" ENCTYPE="multipart/form-data" METHOD="POST">
+
+<INPUT TYPE="hidden" NAME="func" VALUE="[LL_FUNC /]">
+<INPUT TYPE="hidden" NAME="LL_FUNC_VALUES" VALUE="[LL_FUNC_VALUES /]">
+<INPUT TYPE="hidden" NAME="LL_AttrFieldName" VALUE="">
+<INPUT TYPE="hidden" NAME="LL_AttrFieldIndex" VALUE="">
+<INPUT TYPE="hidden" NAME="LL_WFATTURL" VALUE="[LL_WFATTURL /]">
+
+<TABLE CLASS="tightTable cs-pattern" STYLE="background-color: #FFFFFF;">
+<TR>
+<TD STYLE="height: 100%;" CLASS="pageBody cs-valign-top">
+
+<table ALIGN="CENTER" class="tightTable">
+<TR>
+<TD CLASS="cs-valign-top" style="padding:15px;">
+
+<TABLE CLASS="tightTable">
+<TR>
+<TD CLASS="tblBackground">
+
+<table class="tightTable" style="border-collapse:separate;border-spacing:1px;">
+
+<TR>
+<TD STYLE="width: 100%;" CLASS="tblBackground">
+<TABLE CLASS="tightTable">
+
+<TR>
+<TD CLASS="tblForeground">
+<div class="formHeader">Manpower Request Form<span>Full-Time Position Request</span></div>
+<TABLE CLASS="tightTable">
+<TR>
+<TD CLASS="label cs-valign-middle">
+&nbsp;Business Unit:
+&nbsp;
+</TD>
+<TD CLASS="nowrap">
+<SCRIPT>
+
+function stringSelect_1_1_3_1()
+{
+
+var		w;
+var		url;
+
+url = "/cs/cs?func=attrtable.StringSelectDialog"
+url = url + "&formname=myForm";
+url = url + "&Field=_1_1_3_1";
+url = url + "&AttrID=3";
+url = url + "&IsForm=true";
+url = url + "&mapID=0";
+url = url + "&workID=0";
+url = url + "&subworkID=0";
+url = url + "&objID=84177";
+url = url + "&VerNum=0";
+url = url + "&CacheID=0";
+url = url + "&AttrValues=";
+url = url + "&attrHandler=form";
+
+w = window.open( url ,"attrTableLookup" , "height=340,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
+if ( w.focus ) {w.focus()}
+}
+
+</SCRIPT>
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_3_1"
+VALUE="[LL_FormTag_1_1_3_1 /]" SIZE="32" TABINDEX="-1" ONFOCUS="this.blur()">
+
+<A HREF="javascript:void(0);" onClick="stringSelect_1_1_3_1()">
+<IMG SRC="/cssupport/webattribute/stringselect.gif"
+ALT="Select Business Unit"
+TITLE="Select Business Unit"
+BORDER="0">
+</A>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+<TD CLASS="label cs-valign-middle">
+&nbsp;Date Requested:
+&nbsp;
+</TD>
+<TD CLASS="nowrap">
+<!-- File: datefield.html (Begin - _1_1_4_1) -->
+
+<input type="hidden" id="_1_1_4_1" name="_1_1_4_1" value="[LL_FormTag_1_1_4_1 /]" />
+<input type="hidden" name="_1_1_4_1_dirtyFlag" value="0" />
+
+<script>
+
+$(window ).on("load", function(){ $( "input:reset" ).on("click", function(){
+_1_1_4_1_resetDate( this.form );
+});
+});
+
+
+
+
+function _1_1_4_1_getDate( form )
+{
+
+
+var		retDate = null;
+var		oscriptDateString = form._1_1_4_1.value;
+
+if ( oscriptDateString != '?' )
+{
+var		temp = oscriptDateString.split( "/" );
+var		temp2 = temp[ 3 ].split( ":" );
+
+var		yearX = parseInt( temp[ 1 ] );
+var		monthX = parseInt( temp[ 2 ] ) - 1;
+var		dayX = parseInt( temp2[ 0 ] );
+var		hourX = parseInt( temp2[ 1 ] );
+var		minuteX = parseInt( temp2[ 2 ] );
+var		secondX = parseInt( temp2[ 3 ] );
+
+retDate = new Date( yearX, monthX, dayX, hourX, minuteX, secondX );
+}
+
+return retDate;
+}
+
+
+
+
+function __1_1_4_1_updateMinuteHour( form, newDate )
+{
+form._1_1_4_1_hour.value = newDate.getHours();
+form._1_1_4_1_minute.value = newDate.getMinutes();
+form._1_1_4_1_second.value = newDate.getSeconds();
+}
+
+</script>
+
+<script>
+
+
+
+
+
+var __1_1_4_1_jsDate = new Date( "06/20/2026" );
+var doClear = false; // global used by _clearDate to indicate to _update() a clear is needed.
+
+function __1_1_4_1_update( changedField, form, newDate )
+{
+var		t;
+var 	fieldType;
+var		regExp;
+
+form._1_1_4_1_dirtyFlag.value = '1';
+
+if ( null == changedField )
+{
+t = form;
+}
+else
+{
+t = changedField.form;
+}
+
+
+
+if ( ( null != changedField ) && ( changedField.selectedIndex == 0 ) )
+{
+__1_1_4_1_noSelection( t )
+}
+else
+{
+var		year;
+var		theDate = newDate;
+
+
+if ( newDate == null )
+{
+theDate = new Date( 2026, 5, 20, 0, 0, 0  );
+}
+
+
+
+
+if ( form._datepicker__1_1_4_1.value == "" )
+{
+__1_1_4_1_jsDate = new Date( "06/20/2026" );
+form._datepicker__1_1_4_1.value = "06/20/2026";
+__1_1_4_1_scriptDate( form, theDate.getFullYear(), theDate.getMonth() + 1, theDate.getDate() );
+form._1_1_4_1.value += '0:0:0';
+}
+
+__1_1_4_1_updateMinuteHour( t, theDate );
+__1_1_4_1__constructOScriptDate( t );
+}
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+doClear = false;
+}
+
+function __1_1_4_1__constructOScriptDate( form )
+{
+var jsDate = __1_1_4_1_jsDate;
+
+__1_1_4_1_constructDate( form, jsDate )
+}
+
+function __1_1_4_1_constructTime( form )
+{
+var timeArray = new Array("0","0","0");
+
+return timeArray;
+
+}
+
+function __1_1_4_1_constructDate( form, jsDate )
+{
+var		timeSegment;
+
+__1_1_4_1_scriptDate( form, jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate() );
+
+timeArray = __1_1_4_1_constructTime( form );
+
+
+form._1_1_4_1.value = form._1_1_4_1.value + timeArray[0] + ':' + timeArray[1] + ':' + timeArray[2];
+
+
+if ( timeArray[0] > -1 )
+{
+__1_1_4_1_jsDate = new Date( jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), timeArray[0], timeArray[1], timeArray[2], 0);
+}
+else
+{
+__1_1_4_1_jsDate = jsDate
+}
+
+form._1_1_4_1_dirtyFlag.value = '1';
+
+}
+
+function __1_1_4_1_scriptDate( form, year, month, day )
+{
+var 	val;
+
+form._1_1_4_1.value = 'D/' + year + '/';
+form._1_1_4_1.value = form._1_1_4_1.value + month + '/';
+form._1_1_4_1.value = form._1_1_4_1.value + day + ':';
+}
+
+function _1_1_4_1_clearDate( form )
+{
+doClear = true;
+
+$( "#_datepicker__1_1_4_1" ).datepicker( "setDate", "" );
+form._datepicker__1_1_4_1.value = "";
+document.getElementsByName("_1_1_4_1")[0].value = "";
+
+document.getElementsByName("_1_1_4_1_dirtyFlag")[0].value = "1";
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+form._1_1_4_1.value = "?";
+}
+
+function __1_1_4_1_noSelection( form )
+{
+_1_1_4_1_clearDate( form );
+
+if ( typeof( form._1_1_4_1_hour ) != "undefined" )
+{
+form._1_1_4_1_hour.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_4_1_minute ) != "undefined" )
+{
+form._1_1_4_1_minute.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_4_1_second ) != "undefined" )
+{
+form._1_1_4_1_second.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_4_1_ampm ) != "undefined" )
+{
+form._1_1_4_1_ampm.selectedIndex = 0;
+}
+form._1_1_4_1.value = "?";
+}
+
+
+
+
+function _1_1_4_1_changeTo( newDate, form )
+{
+$( "#_datepicker__1_1_4_1" ).datepicker( "setDate", newDate );
+
+if ( newDate != null )
+{
+__1_1_4_1_update( null , form, newDate );
+}
+}
+
+$(function() {
+
+monthNamesShortArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+monthNamesArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+$( "#_datepicker__1_1_4_1" ).datepicker({
+numberOfMonths: 2,
+showButtonPanel: false,
+showAnim: "show",
+dateFormat: "mm/dd/yy",
+showOn: "button",
+changeMonth:true,
+changeYear:true,
+buttonImageOnly: false,
+buttonText: "&#128197;",
+autoSize: true,
+minDate: new Date(0, 0, 1),
+maxDate: new Date(9999, 11, 31),
+monthNamesShort: monthNamesShortArray,
+monthNames: monthNamesArray,
+dayNamesMin: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+dayNamesShort: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+prevText: 'Previous',
+nextText: 'Next',
+beforeShow: function() {
+setTimeout(function(){
+$('.ui-datepicker').css('z-index', 1000);
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+onChangeMonthYear: function() {
+setTimeout(function() {
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+});
+
+var datePicker = new aria.DatePicker( '_datepicker__1_1_4_1', monthNamesArray, monthNamesShortArray );
+});
+
+function _1_1_4_1_resetDate( form )
+{
+$('#_1_1_4_1').val('[LL_FormTag_1_1_4_1 /]');
+}
+</script>
+
+<div id="_datepicker__1_1_4_1_labelledBy" style="display:none;">Date Field</div>
+<input readonly class="valueEditable" type="text" name="_datepicker__1_1_4_1" id="_datepicker__1_1_4_1" value ="" onChange='__1_1_4_1_constructDate( this.form, $( "#_datepicker__1_1_4_1" ).datepicker( "getDate") );__1_1_4_1_update(this, this.form, null);' style="position: relative; z-index: 4;" aria-labelledby="_datepicker__1_1_4_1_labelledBy">&nbsp;
+
+<input type="hidden" name="_1_1_4_1_hour" value="5" />
+<input type="hidden" name="_1_1_4_1_minute" value="44" />
+<input type="hidden" name="_1_1_4_1_second" value="0" />
+<input type="hidden" name="_1_1_4_1_ampm" value="0" />
+<input class="button" type="BUTTON" value="Clear"  name="_clearDate__1_1_4_1" id="_clearDate__1_1_4_1" title="Clear Date" onclick='_1_1_4_1_clearDate( this.form );' />
+<!-- End File: datefield.html (End - _1_1_4_1) -->
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+<TD CLASS="label cs-valign-middle">
+&nbsp;Priority:
+&nbsp;
+</TD>
+<TD CLASS="nowrap">
+<SELECT CLASS="selectMenu" ID="_1_1_5_1" NAME="_1_1_5_1" ONCHANGE="markDirty();">
+<OPTION VALUE="" >&lt;None&gt;</OPTION>
+
+<OPTION VALUE="Urgent" >Urgent</OPTION>
+<OPTION VALUE="Regular" >Regular</OPTION>
+</SELECT>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+<TD CLASS="label cs-valign-middle">
+&nbsp;Date Needed:
+&nbsp;
+</TD>
+<TD CLASS="nowrap">
+<!-- File: datefield.html (Begin - _1_1_6_1) -->
+
+<input type="hidden" id="_1_1_6_1" name="_1_1_6_1" value="[LL_FormTag_1_1_6_1 /]" />
+<input type="hidden" name="_1_1_6_1_dirtyFlag" value="0" />
+
+<script>
+
+$(window ).on("load", function(){ $( "input:reset" ).on("click", function(){
+_1_1_6_1_resetDate( this.form );
+});
+});
+
+
+
+
+function _1_1_6_1_getDate( form )
+{
+
+
+var		retDate = null;
+var		oscriptDateString = form._1_1_6_1.value;
+
+if ( oscriptDateString != '?' )
+{
+var		temp = oscriptDateString.split( "/" );
+var		temp2 = temp[ 3 ].split( ":" );
+
+var		yearX = parseInt( temp[ 1 ] );
+var		monthX = parseInt( temp[ 2 ] ) - 1;
+var		dayX = parseInt( temp2[ 0 ] );
+var		hourX = parseInt( temp2[ 1 ] );
+var		minuteX = parseInt( temp2[ 2 ] );
+var		secondX = parseInt( temp2[ 3 ] );
+
+retDate = new Date( yearX, monthX, dayX, hourX, minuteX, secondX );
+}
+
+return retDate;
+}
+
+
+
+
+function __1_1_6_1_updateMinuteHour( form, newDate )
+{
+form._1_1_6_1_hour.value = newDate.getHours();
+form._1_1_6_1_minute.value = newDate.getMinutes();
+form._1_1_6_1_second.value = newDate.getSeconds();
+}
+
+</script>
+
+<script>
+
+
+
+
+
+var __1_1_6_1_jsDate = new Date( "06/20/2026" );
+var doClear = false; // global used by _clearDate to indicate to _update() a clear is needed.
+
+function __1_1_6_1_update( changedField, form, newDate )
+{
+var		t;
+var 	fieldType;
+var		regExp;
+
+form._1_1_6_1_dirtyFlag.value = '1';
+
+if ( null == changedField )
+{
+t = form;
+}
+else
+{
+t = changedField.form;
+}
+
+
+
+if ( ( null != changedField ) && ( changedField.selectedIndex == 0 ) )
+{
+__1_1_6_1_noSelection( t )
+}
+else
+{
+var		year;
+var		theDate = newDate;
+
+
+if ( newDate == null )
+{
+theDate = new Date( 2026, 5, 20, 0, 0, 0  );
+}
+
+
+
+
+if ( form._datepicker__1_1_6_1.value == "" )
+{
+__1_1_6_1_jsDate = new Date( "06/20/2026" );
+form._datepicker__1_1_6_1.value = "06/20/2026";
+__1_1_6_1_scriptDate( form, theDate.getFullYear(), theDate.getMonth() + 1, theDate.getDate() );
+form._1_1_6_1.value += '0:0:0';
+}
+
+__1_1_6_1_updateMinuteHour( t, theDate );
+__1_1_6_1__constructOScriptDate( t );
+}
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+doClear = false;
+}
+
+function __1_1_6_1__constructOScriptDate( form )
+{
+var jsDate = __1_1_6_1_jsDate;
+
+__1_1_6_1_constructDate( form, jsDate )
+}
+
+function __1_1_6_1_constructTime( form )
+{
+var timeArray = new Array("0","0","0");
+
+return timeArray;
+
+}
+
+function __1_1_6_1_constructDate( form, jsDate )
+{
+var		timeSegment;
+
+__1_1_6_1_scriptDate( form, jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate() );
+
+timeArray = __1_1_6_1_constructTime( form );
+
+
+form._1_1_6_1.value = form._1_1_6_1.value + timeArray[0] + ':' + timeArray[1] + ':' + timeArray[2];
+
+
+if ( timeArray[0] > -1 )
+{
+__1_1_6_1_jsDate = new Date( jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), timeArray[0], timeArray[1], timeArray[2], 0);
+}
+else
+{
+__1_1_6_1_jsDate = jsDate
+}
+
+form._1_1_6_1_dirtyFlag.value = '1';
+
+}
+
+function __1_1_6_1_scriptDate( form, year, month, day )
+{
+var 	val;
+
+form._1_1_6_1.value = 'D/' + year + '/';
+form._1_1_6_1.value = form._1_1_6_1.value + month + '/';
+form._1_1_6_1.value = form._1_1_6_1.value + day + ':';
+}
+
+function _1_1_6_1_clearDate( form )
+{
+doClear = true;
+
+$( "#_datepicker__1_1_6_1" ).datepicker( "setDate", "" );
+form._datepicker__1_1_6_1.value = "";
+document.getElementsByName("_1_1_6_1")[0].value = "";
+
+document.getElementsByName("_1_1_6_1_dirtyFlag")[0].value = "1";
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+form._1_1_6_1.value = "?";
+}
+
+function __1_1_6_1_noSelection( form )
+{
+_1_1_6_1_clearDate( form );
+
+if ( typeof( form._1_1_6_1_hour ) != "undefined" )
+{
+form._1_1_6_1_hour.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_6_1_minute ) != "undefined" )
+{
+form._1_1_6_1_minute.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_6_1_second ) != "undefined" )
+{
+form._1_1_6_1_second.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_6_1_ampm ) != "undefined" )
+{
+form._1_1_6_1_ampm.selectedIndex = 0;
+}
+form._1_1_6_1.value = "?";
+}
+
+
+
+
+function _1_1_6_1_changeTo( newDate, form )
+{
+$( "#_datepicker__1_1_6_1" ).datepicker( "setDate", newDate );
+
+if ( newDate != null )
+{
+__1_1_6_1_update( null , form, newDate );
+}
+}
+
+$(function() {
+
+monthNamesShortArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+monthNamesArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+$( "#_datepicker__1_1_6_1" ).datepicker({
+numberOfMonths: 2,
+showButtonPanel: false,
+showAnim: "show",
+dateFormat: "mm/dd/yy",
+showOn: "button",
+changeMonth:true,
+changeYear:true,
+buttonImageOnly: false,
+buttonText: "&#128197;",
+autoSize: true,
+minDate: new Date(0, 0, 1),
+maxDate: new Date(9999, 11, 31),
+monthNamesShort: monthNamesShortArray,
+monthNames: monthNamesArray,
+dayNamesMin: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+dayNamesShort: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+prevText: 'Previous',
+nextText: 'Next',
+beforeShow: function() {
+setTimeout(function(){
+$('.ui-datepicker').css('z-index', 1000);
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+onChangeMonthYear: function() {
+setTimeout(function() {
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+});
+
+var datePicker = new aria.DatePicker( '_datepicker__1_1_6_1', monthNamesArray, monthNamesShortArray );
+});
+
+function _1_1_6_1_resetDate( form )
+{
+$('#_1_1_6_1').val('[LL_FormTag_1_1_6_1 /]');
+}
+</script>
+
+<div id="_datepicker__1_1_6_1_labelledBy" style="display:none;">Date Field</div>
+<input readonly class="valueEditable" type="text" name="_datepicker__1_1_6_1" id="_datepicker__1_1_6_1" value ="" onChange='__1_1_6_1_constructDate( this.form, $( "#_datepicker__1_1_6_1" ).datepicker( "getDate") );__1_1_6_1_update(this, this.form, null);' style="position: relative; z-index: 4;" aria-labelledby="_datepicker__1_1_6_1_labelledBy">&nbsp;
+
+<input type="hidden" name="_1_1_6_1_hour" value="5" />
+<input type="hidden" name="_1_1_6_1_minute" value="44" />
+<input type="hidden" name="_1_1_6_1_second" value="0" />
+<input type="hidden" name="_1_1_6_1_ampm" value="0" />
+<input class="button" type="BUTTON" value="Clear"  name="_clearDate__1_1_6_1" id="_clearDate__1_1_6_1" title="Clear Date" onclick='_1_1_6_1_clearDate( this.form );' />
+<!-- End File: datefield.html (End - _1_1_6_1) -->
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE CLASS="tightTable cs-fon-table-header-background3">
+<TR>
+<TD STYLE="width: 1%;"><IMG SRC="/cssupport/spacer.gif" ALT="" HEIGHT="28" WIDTH="1"></TD>
+<TD CLASS="browseBoxHeader">
+&nbsp;SECTION 1: REQUESTING DEPARTMENT INFORMATION
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD CLASS="tblForeground">
+<TABLE CLASS="tightTable">
+
+[LL_LOOP_BEGIN_1_1_7 /]
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Department:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SCRIPT>
+
+function stringSelect_1_1_7_8_1()
+{
+
+var		w;
+var		url;
+
+url = "/cs/cs?func=attrtable.StringSelectDialog"
+url = url + "&formname=myForm";
+url = url + "&Field=_1_1_7_8_1";
+url = url + "&AttrID=8";
+url = url + "&IsForm=true";
+url = url + "&mapID=0";
+url = url + "&workID=0";
+url = url + "&subworkID=0";
+url = url + "&objID=84177";
+url = url + "&VerNum=0";
+url = url + "&CacheID=0";
+url = url + "&AttrValues=";
+url = url + "&attrHandler=form";
+
+w = window.open( url ,"attrTableLookup" , "height=340,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
+if ( w.focus ) {w.focus()}
+}
+
+</SCRIPT>
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_7_8_1"
+VALUE="[LL_FormTag_1_1_7_8_1 /]" SIZE="32" TABINDEX="-1" ONFOCUS="this.blur()">
+
+<A HREF="javascript:void(0);" onClick="stringSelect_1_1_7_8_1()">
+<IMG SRC="/cssupport/webattribute/stringselect.gif"
+ALT="Select Department"
+TITLE="Select Department"
+BORDER="0">
+</A>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;SubDepartment:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SCRIPT>
+
+function stringSelect_1_1_7_32_1()
+{
+
+var		w;
+var		url;
+
+url = "/cs/cs?func=attrtable.StringSelectDialog"
+url = url + "&formname=myForm";
+url = url + "&Field=_1_1_7_32_1";
+url = url + "&AttrID=32";
+url = url + "&IsForm=true";
+url = url + "&mapID=0";
+url = url + "&workID=0";
+url = url + "&subworkID=0";
+url = url + "&objID=84177";
+url = url + "&VerNum=0";
+url = url + "&CacheID=0";
+url = url + "&AttrValues=";
+url = url + "&attrHandler=form";
+
+w = window.open( url ,"attrTableLookup" , "height=340,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
+if ( w.focus ) {w.focus()}
+}
+
+</SCRIPT>
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_7_32_1"
+VALUE="[LL_FormTag_1_1_7_32_1 /]" SIZE="32" TABINDEX="-1" ONFOCUS="this.blur()">
+
+<A HREF="javascript:void(0);" onClick="stringSelect_1_1_7_32_1()">
+<IMG SRC="/cssupport/webattribute/stringselect.gif"
+ALT="Select SubDepartment"
+TITLE="Select SubDepartment"
+BORDER="0">
+</A>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Division/Unit:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SCRIPT>
+
+function stringSelect_1_1_7_9_1()
+{
+
+var		w;
+var		url;
+
+url = "/cs/cs?func=attrtable.StringSelectDialog"
+url = url + "&formname=myForm";
+url = url + "&Field=_1_1_7_9_1";
+url = url + "&AttrID=9";
+url = url + "&IsForm=true";
+url = url + "&mapID=0";
+url = url + "&workID=0";
+url = url + "&subworkID=0";
+url = url + "&objID=84177";
+url = url + "&VerNum=0";
+url = url + "&CacheID=0";
+url = url + "&AttrValues=";
+url = url + "&attrHandler=form";
+
+w = window.open( url ,"attrTableLookup" , "height=340,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
+if ( w.focus ) {w.focus()}
+}
+
+</SCRIPT>
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_7_9_1"
+VALUE="[LL_FormTag_1_1_7_9_1 /]" SIZE="32" TABINDEX="-1" ONFOCUS="this.blur()">
+
+<A HREF="javascript:void(0);" onClick="stringSelect_1_1_7_9_1()">
+<IMG SRC="/cssupport/webattribute/stringselect.gif"
+ALT="Select Division/Unit"
+TITLE="Select Division/Unit"
+BORDER="0">
+</A>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Requesting Manager:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SCRIPT>
+function chooseUser_1_1_7_12_1()
+{
+var		url;
+var		w;
+
+url = '/cs/cs?func=user.SelectUserDlg&formname=myForm&fieldprefix=_1_1_7_12_1&title=Select%20User&DisplayUserName&NoGroups=FALSE';
+
+url = url + '&NoGroupsSelectable=TRUE'
+w = window.open(url,"","height=340,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=yes,status=yes");
+
+if ( w.focus )
+{
+w.focus();
+}
+}
+
+function KeepFieldSet_1_1_7_12_1( nameField, savedValue )
+{
+if ( nameField.value != '' )
+{
+alert( "You can't enter text in by hand. Use the link to the right." );
+nameField.value = savedValue;
+}
+else if ( markDirty != null )
+{
+markDirty();
+}
+
+if ( nameField.value == savedValue.value )
+{
+savedValue.value = nameField.value;
+}
+}
+</SCRIPT>
+
+<INPUT TYPE="hidden" NAME="_1_1_7_12_1_ID" VALUE="[LL_FormTag_1_1_7_12_1 /]">
+<INPUT TYPE="hidden" NAME="_1_1_7_12_1_SavedName" VALUE="[LL_FormTag_1_1_7_12_1_SavedName /]">
+
+<LABEL FOR="_1_1_7_12_1_Name"></LABEL>
+<INPUT CLASS="valueEditable" TYPE="TEXT" NAME="_1_1_7_12_1_Name" ID="_1_1_7_12_1_Name" VALUE="[LL_FormTag_1_1_7_12_1_SavedName /]" ALT="Select User" SIZE="23" ONCHANGE="KeepFieldSet_1_1_7_12_1( this, this.form._1_1_7_12_1_SavedName.value )">
+<A HREF="javascript:chooseUser_1_1_7_12_1()"><IMG SRC="/cssupport/guy_select.gif" TITLE="Select User" ALT="Select User" BORDER="0"></A>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;CostCenter:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SCRIPT>
+
+function stringSelect_1_1_7_13_1()
+{
+
+var		w;
+var		url;
+
+url = "/cs/cs?func=attrtable.StringSelectDialog"
+url = url + "&formname=myForm";
+url = url + "&Field=_1_1_7_13_1";
+url = url + "&AttrID=13";
+url = url + "&IsForm=true";
+url = url + "&mapID=0";
+url = url + "&workID=0";
+url = url + "&subworkID=0";
+url = url + "&objID=84177";
+url = url + "&VerNum=0";
+url = url + "&CacheID=0";
+url = url + "&AttrValues=";
+url = url + "&attrHandler=form";
+
+w = window.open( url ,"attrTableLookup" , "height=340,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
+if ( w.focus ) {w.focus()}
+}
+
+</SCRIPT>
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_7_13_1"
+VALUE="[LL_FormTag_1_1_7_13_1 /]" SIZE="32" TABINDEX="-1" ONFOCUS="this.blur()">
+
+<A HREF="javascript:void(0);" onClick="stringSelect_1_1_7_13_1()">
+<IMG SRC="/cssupport/webattribute/stringselect.gif"
+ALT="Select CostCenter"
+TITLE="Select CostCenter"
+BORDER="0">
+</A>
+</TD>
+</TR>
+[LL_LOOP_END_1_1_7 /]
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD>
+<TABLE CLASS="tightTable cs-fon-table-header-background3">
+<TR>
+<TD STYLE="width: 1%;"><IMG SRC="/cssupport/spacer.gif" ALT="" HEIGHT="28" WIDTH="1"></TD>
+<TD CLASS="browseBoxHeader">
+&nbsp;SECTION 2: POSITION DETAILS
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD CLASS="tblForeground">
+<TABLE CLASS="tightTable">
+
+[LL_LOOP_BEGIN_1_1_14 /]
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Position Title:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_14_15_1"	TITLE="Position Title" ID="_1_1_14_15_1" VALUE="[LL_FormTag_1_1_14_15_1 /]" SIZE="32" MAXLENGTH="50" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Job Level / Grade:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_14_16_1"	TITLE="Job Level / Grade" ID="_1_1_14_16_1" VALUE="[LL_FormTag_1_1_14_16_1 /]" SIZE="32" MAXLENGTH="50" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Employment Type:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SELECT CLASS="selectMenu" ID="_1_1_14_17_1" NAME="_1_1_14_17_1" ONCHANGE="markDirty();">
+<OPTION VALUE="" >&lt;None&gt;</OPTION>
+
+<OPTION VALUE="Regular" >Regular</OPTION>
+<OPTION VALUE="Contractual" >Contractual</OPTION>
+</SELECT>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;No. of Headcount:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" pattern="[-+]?[0-9]*[.,]?[0-9]+" NAME="_1_1_14_18_1" TITLE="The value of the attribute 'No. of Headcount' must be an integer in the range of -9223372036854775808 to 9223372036854775807." ID="_1_1_14_18_1" VALUE="[LL_FormTag_1_1_14_18_1 /]" SIZE="20" MAXLENGTH="20" ONCHANGE="markDirty();">
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Salary Range:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_14_19_1"	TITLE="Salary Range" ID="_1_1_14_19_1" VALUE="[LL_FormTag_1_1_14_19_1 /]" SIZE="32" MAXLENGTH="100" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Work Location:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_14_20_1"	TITLE="Work Location" ID="_1_1_14_20_1" VALUE="[LL_FormTag_1_1_14_20_1 /]" SIZE="32" MAXLENGTH="50" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Reason for Request:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<SELECT CLASS="selectMenu" ID="_1_1_14_21_1" NAME="_1_1_14_21_1" ONCHANGE="markDirty();">
+<OPTION VALUE="" >&lt;None&gt;</OPTION>
+
+<OPTION VALUE="New Position" >New Position</OPTION>
+<OPTION VALUE="Replacement" >Replacement</OPTION>
+<OPTION VALUE="Additional Headcount" >Additional Headcount</OPTION>
+<OPTION VALUE="Project-Based" >Project-Based</OPTION>
+</SELECT>
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;If Replacement – Previous Employee Details:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_14_22_1"	TITLE="If Replacement – Previous Employee Details" ID="_1_1_14_22_1" VALUE="[LL_FormTag_1_1_14_22_1 /]" SIZE="50" MAXLENGTH="50" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+[LL_LOOP_END_1_1_14 /]
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD>
+<TABLE CLASS="tightTable cs-fon-table-header-background3">
+<TR>
+<TD STYLE="width: 1%;"><IMG SRC="/cssupport/spacer.gif" ALT="" HEIGHT="28" WIDTH="1"></TD>
+<TD CLASS="browseBoxHeader">
+&nbsp;SECTION 3: BUSINESS JUSTIFICATION
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD CLASS="tblForeground">
+<TABLE CLASS="tightTable">
+
+[LL_LOOP_BEGIN_1_1_23 /]
+<TR>
+
+
+
+<TD CLASS="label cs-valign-top">
+&nbsp;Comments:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<TEXTAREA CLASS="valueEditable multiline" ID="_1_1_23_24_1" NAME="_1_1_23_24_1" TITLE="Comments" WRAP="soft" ROWS="5" COLS="50"  ONCHANGE="markDirty();">[LL_FormTag_1_1_23_24_1 /]</TEXTAREA>
+
+</TD>
+</TR>
+[LL_LOOP_END_1_1_23 /]
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD>
+<TABLE CLASS="tightTable cs-fon-table-header-background3">
+<TR>
+<TD STYLE="width: 1%;"><IMG SRC="/cssupport/spacer.gif" ALT="" HEIGHT="28" WIDTH="1"></TD>
+<TD CLASS="browseBoxHeader">
+&nbsp;SECTION 4: APPROVAL / AUTHORIZATION
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD CLASS="tblForeground">
+<TABLE CLASS="tightTable">
+
+[LL_LOOP_BEGIN_1_1_25 /]
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Requested By:Name:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_25_26_1"	TITLE="Requested By:Name" ID="_1_1_25_26_1" VALUE="[LL_FormTag_1_1_25_26_1 /]" SIZE="32" MAXLENGTH="32" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Requested By:Designation:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_25_27_1"	TITLE="Requested By:Designation" ID="_1_1_25_27_1" VALUE="[LL_FormTag_1_1_25_27_1 /]" SIZE="32" MAXLENGTH="50" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Requested By:Date:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<!-- File: datefield.html (Begin - _1_1_25_28_1) -->
+
+<input type="hidden" id="_1_1_25_28_1" name="_1_1_25_28_1" value="[LL_FormTag_1_1_25_28_1 /]" />
+<input type="hidden" name="_1_1_25_28_1_dirtyFlag" value="0" />
+
+<script>
+
+$(window ).on("load", function(){ $( "input:reset" ).on("click", function(){
+_1_1_25_28_1_resetDate( this.form );
+});
+});
+
+
+
+
+function _1_1_25_28_1_getDate( form )
+{
+
+
+var		retDate = null;
+var		oscriptDateString = form._1_1_25_28_1.value;
+
+if ( oscriptDateString != '?' )
+{
+var		temp = oscriptDateString.split( "/" );
+var		temp2 = temp[ 3 ].split( ":" );
+
+var		yearX = parseInt( temp[ 1 ] );
+var		monthX = parseInt( temp[ 2 ] ) - 1;
+var		dayX = parseInt( temp2[ 0 ] );
+var		hourX = parseInt( temp2[ 1 ] );
+var		minuteX = parseInt( temp2[ 2 ] );
+var		secondX = parseInt( temp2[ 3 ] );
+
+retDate = new Date( yearX, monthX, dayX, hourX, minuteX, secondX );
+}
+
+return retDate;
+}
+
+
+
+
+function __1_1_25_28_1_updateMinuteHour( form, newDate )
+{
+form._1_1_25_28_1_hour.value = newDate.getHours();
+form._1_1_25_28_1_minute.value = newDate.getMinutes();
+form._1_1_25_28_1_second.value = newDate.getSeconds();
+}
+
+</script>
+
+<script>
+
+
+
+
+
+var __1_1_25_28_1_jsDate = new Date( "06/20/2026" );
+var doClear = false; // global used by _clearDate to indicate to _update() a clear is needed.
+
+function __1_1_25_28_1_update( changedField, form, newDate )
+{
+var		t;
+var 	fieldType;
+var		regExp;
+
+form._1_1_25_28_1_dirtyFlag.value = '1';
+
+if ( null == changedField )
+{
+t = form;
+}
+else
+{
+t = changedField.form;
+}
+
+
+
+if ( ( null != changedField ) && ( changedField.selectedIndex == 0 ) )
+{
+__1_1_25_28_1_noSelection( t )
+}
+else
+{
+var		year;
+var		theDate = newDate;
+
+
+if ( newDate == null )
+{
+theDate = new Date( 2026, 5, 20, 0, 0, 0  );
+}
+
+
+
+
+if ( form._datepicker__1_1_25_28_1.value == "" )
+{
+__1_1_25_28_1_jsDate = new Date( "06/20/2026" );
+form._datepicker__1_1_25_28_1.value = "06/20/2026";
+__1_1_25_28_1_scriptDate( form, theDate.getFullYear(), theDate.getMonth() + 1, theDate.getDate() );
+form._1_1_25_28_1.value += '0:0:0';
+}
+
+__1_1_25_28_1_updateMinuteHour( t, theDate );
+__1_1_25_28_1__constructOScriptDate( t );
+}
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+doClear = false;
+}
+
+function __1_1_25_28_1__constructOScriptDate( form )
+{
+var jsDate = __1_1_25_28_1_jsDate;
+
+__1_1_25_28_1_constructDate( form, jsDate )
+}
+
+function __1_1_25_28_1_constructTime( form )
+{
+var timeArray = new Array("0","0","0");
+
+return timeArray;
+
+}
+
+function __1_1_25_28_1_constructDate( form, jsDate )
+{
+var		timeSegment;
+
+__1_1_25_28_1_scriptDate( form, jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate() );
+
+timeArray = __1_1_25_28_1_constructTime( form );
+
+
+form._1_1_25_28_1.value = form._1_1_25_28_1.value + timeArray[0] + ':' + timeArray[1] + ':' + timeArray[2];
+
+
+if ( timeArray[0] > -1 )
+{
+__1_1_25_28_1_jsDate = new Date( jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), timeArray[0], timeArray[1], timeArray[2], 0);
+}
+else
+{
+__1_1_25_28_1_jsDate = jsDate
+}
+
+form._1_1_25_28_1_dirtyFlag.value = '1';
+
+}
+
+function __1_1_25_28_1_scriptDate( form, year, month, day )
+{
+var 	val;
+
+form._1_1_25_28_1.value = 'D/' + year + '/';
+form._1_1_25_28_1.value = form._1_1_25_28_1.value + month + '/';
+form._1_1_25_28_1.value = form._1_1_25_28_1.value + day + ':';
+}
+
+function _1_1_25_28_1_clearDate( form )
+{
+doClear = true;
+
+$( "#_datepicker__1_1_25_28_1" ).datepicker( "setDate", "" );
+form._datepicker__1_1_25_28_1.value = "";
+document.getElementsByName("_1_1_25_28_1")[0].value = "";
+
+document.getElementsByName("_1_1_25_28_1_dirtyFlag")[0].value = "1";
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+form._1_1_25_28_1.value = "?";
+}
+
+function __1_1_25_28_1_noSelection( form )
+{
+_1_1_25_28_1_clearDate( form );
+
+if ( typeof( form._1_1_25_28_1_hour ) != "undefined" )
+{
+form._1_1_25_28_1_hour.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_25_28_1_minute ) != "undefined" )
+{
+form._1_1_25_28_1_minute.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_25_28_1_second ) != "undefined" )
+{
+form._1_1_25_28_1_second.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_25_28_1_ampm ) != "undefined" )
+{
+form._1_1_25_28_1_ampm.selectedIndex = 0;
+}
+form._1_1_25_28_1.value = "?";
+}
+
+
+
+
+function _1_1_25_28_1_changeTo( newDate, form )
+{
+$( "#_datepicker__1_1_25_28_1" ).datepicker( "setDate", newDate );
+
+if ( newDate != null )
+{
+__1_1_25_28_1_update( null , form, newDate );
+}
+}
+
+$(function() {
+
+monthNamesShortArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+monthNamesArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+$( "#_datepicker__1_1_25_28_1" ).datepicker({
+numberOfMonths: 2,
+showButtonPanel: false,
+showAnim: "show",
+dateFormat: "mm/dd/yy",
+showOn: "button",
+changeMonth:true,
+changeYear:true,
+buttonImageOnly: false,
+buttonText: "&#128197;",
+autoSize: true,
+minDate: new Date(0, 0, 1),
+maxDate: new Date(9999, 11, 31),
+monthNamesShort: monthNamesShortArray,
+monthNames: monthNamesArray,
+dayNamesMin: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+dayNamesShort: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+prevText: 'Previous',
+nextText: 'Next',
+beforeShow: function() {
+setTimeout(function(){
+$('.ui-datepicker').css('z-index', 1000);
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+onChangeMonthYear: function() {
+setTimeout(function() {
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+});
+
+var datePicker = new aria.DatePicker( '_datepicker__1_1_25_28_1', monthNamesArray, monthNamesShortArray );
+});
+
+function _1_1_25_28_1_resetDate( form )
+{
+$('#_1_1_25_28_1').val('[LL_FormTag_1_1_25_28_1 /]');
+}
+</script>
+
+<div id="_datepicker__1_1_25_28_1_labelledBy" style="display:none;">Date Field</div>
+<input readonly class="valueEditable" type="text" name="_datepicker__1_1_25_28_1" id="_datepicker__1_1_25_28_1" value ="" onChange='__1_1_25_28_1_constructDate( this.form, $( "#_datepicker__1_1_25_28_1" ).datepicker( "getDate") );__1_1_25_28_1_update(this, this.form, null);' style="position: relative; z-index: 4;" aria-labelledby="_datepicker__1_1_25_28_1_labelledBy">&nbsp;
+
+<input type="hidden" name="_1_1_25_28_1_hour" value="5" />
+<input type="hidden" name="_1_1_25_28_1_minute" value="44" />
+<input type="hidden" name="_1_1_25_28_1_second" value="0" />
+<input type="hidden" name="_1_1_25_28_1_ampm" value="0" />
+<input class="button" type="BUTTON" value="Clear"  name="_clearDate__1_1_25_28_1" id="_clearDate__1_1_25_28_1" title="Clear Date" onclick='_1_1_25_28_1_clearDate( this.form );' />
+<!-- End File: datefield.html (End - _1_1_25_28_1) -->
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Department Head Approval:Name:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_25_29_1"	TITLE="Department Head Approval:Name" ID="_1_1_25_29_1" VALUE="[LL_FormTag_1_1_25_29_1 /]" SIZE="32" MAXLENGTH="32" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Department Head Approval:Designation:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<INPUT CLASS="valueEditable" TYPE="text" NAME="_1_1_25_30_1"	TITLE="Department Head Approval:Designation" ID="_1_1_25_30_1" VALUE="[LL_FormTag_1_1_25_30_1 /]" SIZE="32" MAXLENGTH="50" ONCHANGE="markDirty();">
+
+</TD>
+</TR>
+<TR CLASS="horizontalCellDivider" >
+<TD CLASS="labelHorizontalDivider" COLSPAN="1"><IMG HEIGHT="1" ALT="" SRC="/cssupport/spacer.gif" WIDTH="1" BORDER="0"></TD>
+<TD CLASS="valueHorizontalDivider" COLSPAN="2"><IMG HEIGHT="1" ALT="" SRC="/cssupport/tbl-divider-hor.gif" WIDTH="3" BORDER="0"></TD>
+</TR>
+<TR>
+
+
+
+<TD CLASS="label cs-valign-middle">
+&nbsp;Department Head Approval:Date:
+&nbsp;
+</TD>
+
+
+
+<TD CLASS="nowrap">
+
+<!-- File: datefield.html (Begin - _1_1_25_31_1) -->
+
+<input type="hidden" id="_1_1_25_31_1" name="_1_1_25_31_1" value="[LL_FormTag_1_1_25_31_1 /]" />
+<input type="hidden" name="_1_1_25_31_1_dirtyFlag" value="0" />
+
+<script>
+
+$(window ).on("load", function(){ $( "input:reset" ).on("click", function(){
+_1_1_25_31_1_resetDate( this.form );
+});
+});
+
+
+
+
+function _1_1_25_31_1_getDate( form )
+{
+
+
+var		retDate = null;
+var		oscriptDateString = form._1_1_25_31_1.value;
+
+if ( oscriptDateString != '?' )
+{
+var		temp = oscriptDateString.split( "/" );
+var		temp2 = temp[ 3 ].split( ":" );
+
+var		yearX = parseInt( temp[ 1 ] );
+var		monthX = parseInt( temp[ 2 ] ) - 1;
+var		dayX = parseInt( temp2[ 0 ] );
+var		hourX = parseInt( temp2[ 1 ] );
+var		minuteX = parseInt( temp2[ 2 ] );
+var		secondX = parseInt( temp2[ 3 ] );
+
+retDate = new Date( yearX, monthX, dayX, hourX, minuteX, secondX );
+}
+
+return retDate;
+}
+
+
+
+
+function __1_1_25_31_1_updateMinuteHour( form, newDate )
+{
+form._1_1_25_31_1_hour.value = newDate.getHours();
+form._1_1_25_31_1_minute.value = newDate.getMinutes();
+form._1_1_25_31_1_second.value = newDate.getSeconds();
+}
+
+</script>
+
+<script>
+
+
+
+
+
+var __1_1_25_31_1_jsDate = new Date( "06/20/2026" );
+var doClear = false; // global used by _clearDate to indicate to _update() a clear is needed.
+
+function __1_1_25_31_1_update( changedField, form, newDate )
+{
+var		t;
+var 	fieldType;
+var		regExp;
+
+form._1_1_25_31_1_dirtyFlag.value = '1';
+
+if ( null == changedField )
+{
+t = form;
+}
+else
+{
+t = changedField.form;
+}
+
+
+
+if ( ( null != changedField ) && ( changedField.selectedIndex == 0 ) )
+{
+__1_1_25_31_1_noSelection( t )
+}
+else
+{
+var		year;
+var		theDate = newDate;
+
+
+if ( newDate == null )
+{
+theDate = new Date( 2026, 5, 20, 0, 0, 0  );
+}
+
+
+
+
+if ( form._datepicker__1_1_25_31_1.value == "" )
+{
+__1_1_25_31_1_jsDate = new Date( "06/20/2026" );
+form._datepicker__1_1_25_31_1.value = "06/20/2026";
+__1_1_25_31_1_scriptDate( form, theDate.getFullYear(), theDate.getMonth() + 1, theDate.getDate() );
+form._1_1_25_31_1.value += '0:0:0';
+}
+
+__1_1_25_31_1_updateMinuteHour( t, theDate );
+__1_1_25_31_1__constructOScriptDate( t );
+}
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+doClear = false;
+}
+
+function __1_1_25_31_1__constructOScriptDate( form )
+{
+var jsDate = __1_1_25_31_1_jsDate;
+
+__1_1_25_31_1_constructDate( form, jsDate )
+}
+
+function __1_1_25_31_1_constructTime( form )
+{
+var timeArray = new Array("0","0","0");
+
+return timeArray;
+
+}
+
+function __1_1_25_31_1_constructDate( form, jsDate )
+{
+var		timeSegment;
+
+__1_1_25_31_1_scriptDate( form, jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate() );
+
+timeArray = __1_1_25_31_1_constructTime( form );
+
+
+form._1_1_25_31_1.value = form._1_1_25_31_1.value + timeArray[0] + ':' + timeArray[1] + ':' + timeArray[2];
+
+
+if ( timeArray[0] > -1 )
+{
+__1_1_25_31_1_jsDate = new Date( jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), timeArray[0], timeArray[1], timeArray[2], 0);
+}
+else
+{
+__1_1_25_31_1_jsDate = jsDate
+}
+
+form._1_1_25_31_1_dirtyFlag.value = '1';
+
+}
+
+function __1_1_25_31_1_scriptDate( form, year, month, day )
+{
+var 	val;
+
+form._1_1_25_31_1.value = 'D/' + year + '/';
+form._1_1_25_31_1.value = form._1_1_25_31_1.value + month + '/';
+form._1_1_25_31_1.value = form._1_1_25_31_1.value + day + ':';
+}
+
+function _1_1_25_31_1_clearDate( form )
+{
+doClear = true;
+
+$( "#_datepicker__1_1_25_31_1" ).datepicker( "setDate", "" );
+form._datepicker__1_1_25_31_1.value = "";
+document.getElementsByName("_1_1_25_31_1")[0].value = "";
+
+document.getElementsByName("_1_1_25_31_1_dirtyFlag")[0].value = "1";
+
+if ( typeof( window.markDirty ) != "undefined" )
+{
+markDirty();
+}
+
+form._1_1_25_31_1.value = "?";
+}
+
+function __1_1_25_31_1_noSelection( form )
+{
+_1_1_25_31_1_clearDate( form );
+
+if ( typeof( form._1_1_25_31_1_hour ) != "undefined" )
+{
+form._1_1_25_31_1_hour.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_25_31_1_minute ) != "undefined" )
+{
+form._1_1_25_31_1_minute.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_25_31_1_second ) != "undefined" )
+{
+form._1_1_25_31_1_second.selectedIndex = 0;
+}
+
+if ( typeof( form._1_1_25_31_1_ampm ) != "undefined" )
+{
+form._1_1_25_31_1_ampm.selectedIndex = 0;
+}
+form._1_1_25_31_1.value = "?";
+}
+
+
+
+
+function _1_1_25_31_1_changeTo( newDate, form )
+{
+$( "#_datepicker__1_1_25_31_1" ).datepicker( "setDate", newDate );
+
+if ( newDate != null )
+{
+__1_1_25_31_1_update( null , form, newDate );
+}
+}
+
+$(function() {
+
+monthNamesShortArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+monthNamesArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+$( "#_datepicker__1_1_25_31_1" ).datepicker({
+numberOfMonths: 2,
+showButtonPanel: false,
+showAnim: "show",
+dateFormat: "mm/dd/yy",
+showOn: "button",
+changeMonth:true,
+changeYear:true,
+buttonImageOnly: false,
+buttonText: "&#128197;",
+autoSize: true,
+minDate: new Date(0, 0, 1),
+maxDate: new Date(9999, 11, 31),
+monthNamesShort: monthNamesShortArray,
+monthNames: monthNamesArray,
+dayNamesMin: ["Su","Mo","Tu","We","Th","Fr","Sa"],
+dayNamesShort: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+prevText: 'Previous',
+nextText: 'Next',
+beforeShow: function() {
+setTimeout(function(){
+$('.ui-datepicker').css('z-index', 1000);
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+onChangeMonthYear: function() {
+setTimeout(function() {
+$('.ui-datepicker-year').css('padding', '3px 6px');
+$('.ui-datepicker-month').css('padding', '3px 6px');
+}, 0);
+},
+});
+
+var datePicker = new aria.DatePicker( '_datepicker__1_1_25_31_1', monthNamesArray, monthNamesShortArray );
+});
+
+function _1_1_25_31_1_resetDate( form )
+{
+$('#_1_1_25_31_1').val('[LL_FormTag_1_1_25_31_1 /]');
+}
+</script>
+
+<div id="_datepicker__1_1_25_31_1_labelledBy" style="display:none;">Date Field</div>
+<input readonly class="valueEditable" type="text" name="_datepicker__1_1_25_31_1" id="_datepicker__1_1_25_31_1" value ="" onChange='__1_1_25_31_1_constructDate( this.form, $( "#_datepicker__1_1_25_31_1" ).datepicker( "getDate") );__1_1_25_31_1_update(this, this.form, null);' style="position: relative; z-index: 4;" aria-labelledby="_datepicker__1_1_25_31_1_labelledBy">&nbsp;
+
+<input type="hidden" name="_1_1_25_31_1_hour" value="5" />
+<input type="hidden" name="_1_1_25_31_1_minute" value="44" />
+<input type="hidden" name="_1_1_25_31_1_second" value="0" />
+<input type="hidden" name="_1_1_25_31_1_ampm" value="0" />
+<input class="button" type="BUTTON" value="Clear"  name="_clearDate__1_1_25_31_1" id="_clearDate__1_1_25_31_1" title="Clear Date" onclick='_1_1_25_31_1_clearDate( this.form );' />
+<!-- End File: datefield.html (End - _1_1_25_31_1) -->
+</TD>
+</TR>
+[LL_LOOP_END_1_1_25 /]
+</TABLE>
+</TD>
+</TR>
+
+</TABLE>
+</TD>
+</TR>
+
+<TR>
+<TD>
+    
+    
+    <div style="width:100%; clear:both; float:none; margin-top:20px; margin-bottom:15px;">
+<iframe
+        src="[LL_WFATTURL /]"
+        style="display:block;
+               width:100%;
+               height:400px;
+               border:1px solid #ccc;
+               border-radius:4px;">
+</iframe>
+</div>
+    
+<TABLE CLASS="tightTable cs-fon-table-header-divider">
+<TR>
+<TD><IMG SRC="[LL_SUPPORTPATH /]spacer.gif" alt="" HEIGHT="28" WIDTH="1"></TD>
+<TD ALIGN="LEFT">
+<INPUT CLASS="applyButton" TYPE="BUTTON" VALUE="Apply" NAME="IgnoreMe" ONCLICK="doFormSubmit( document.myForm );">
+<INPUT CLASS="resetButton" TYPE="RESET" VALUE="Reset">
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+</TABLE>
+
+</TD>
+</TR>
+</TABLE>
+
+</TD>
+</TR>
+</TABLE>
+
+</TD>
+</TR>
+</TABLE>
+
+</FORM>
+
+</BODY>
+
+</HTML>
