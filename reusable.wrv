@@ -9,6 +9,7 @@
   8.Setting category values based on CSV with multifiled value comma seperated . 
   9.Bulk wfaction
   10.Delete latest version
+  11.Redirect workflow through power view . 
  */]
 
 
@@ -208,3 +209,9 @@ ReameWF : [LL_REPTAG_'453473891' RUNSWR:WorkID:[LL_REPTAG_1 /]:SubWorkID:'[LL_RE
 [LL_REPTAG_&NODEID NODEACTION:PURGEVERSIONS:[LL_REPTAG_&NODEID NODEINFO:VERSIONNUM /] /]
 [LL_WEBREPORT_STARTROW /] 
 [LL_WEBREPORT_ENDROW /]
+
+====================================================================================================11 ======================================================================================
+
+<script>
+    window.location.href = '[LL_REPTAG_URLPREFIXFULL /]/app'
+</script>
