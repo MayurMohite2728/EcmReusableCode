@@ -11,6 +11,7 @@
   10.Delete latest version
   11.Redirect workflow through power view . 
   12.Listing iteams in Perspectives
+13.Attahcment iteams action on this : any action 
  */]
 
 
@@ -296,3 +297,20 @@ ReameWF : [LL_REPTAG_'453473891' RUNSWR:WorkID:[LL_REPTAG_1 /]:SubWorkID:'[LL_RE
 </div>
  
 [LL_WEBREPORT_STARTROW /][LL_WEBREPORT_ENDROW /]
+
+================================================================================================13================================================================================
+
+   [LL_REPTAG_&SUBWORKID WFINFO:ATTACHFOLDER SETVAR:AttachID show /]<br>
+
+[LL_REPTAG_!AttachID NODEINFO:CHILDREN SETVAR:ChildID show /]<br>
+
+[LL_REPTAG_!ChildID LENGTH SETVAR:Leng show /]<br>
+
+[LL_WEBREPORT_FOR DATA:[LL_REPTAG_!Leng INTLIST /] var:i /]
+
+[LL_REPTAG_!ChildID RECARRAY:[LL_REPTAG_!i /]:DataID SETVAR:ID show /]<br>
+
+[LL_REPTAG_!ID NODEACTION:RESERVE /]
+
+[LL_WEBREPORT_ENDFOR /] 
+
