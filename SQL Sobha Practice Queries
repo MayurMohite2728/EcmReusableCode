@@ -6,6 +6,7 @@
 6.Get username and department . 
 7.Get subtypes count and list of all in sql .
 8.Mostly active users in cs 
+9.get current performer from workflow 
 
 
 
@@ -101,7 +102,19 @@ GROUP BY
     k.LastName,
     k.mailaddress
 order by count(d.auditstr)
+====================================================================================9=========================================================
 
+SELECT
+    T.Work_WorkID                AS WorkflowID,
+    T.SubWorkTask_TaskID         AS TaskID,
+    T.SubWorkTask_Title          AS CurrentTask,
+    T.SubWorkTask_PerformerID    AS PerformerID,
+    K.Name                       AS PerformerName,
+    K.MailAddress                AS Email
+FROM Todo T
+INNER JOIN KUAF K
+    ON K.ID = T.SubWorkTask_PerformerID
+WHERE T.Work_WorkID = 102797;
 
 
 
