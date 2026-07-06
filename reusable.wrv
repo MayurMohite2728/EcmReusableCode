@@ -12,7 +12,8 @@
   11.Redirect workflow through power view . 
   12.Listing iteams in Perspectives
 13.Attahcment iteams action on this : any action 
-14.Generic report dashboard for workflows
+14.Generic report dashboard for workflows.
+15. Generic constant for insertjson . 
  */]
 
 
@@ -1043,3 +1044,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+===========================================================================================15==============================================
+
+[LL_WEBREPORT_INSERTJSON @ALLDATASOURCE /]
