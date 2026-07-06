@@ -12,6 +12,7 @@
   11.Redirect workflow through power view . 
   12.Listing iteams in Perspectives
 13.Attahcment iteams action on this : any action 
+14.Generic report dashboard for workflows
  */]
 
 
@@ -314,3 +315,731 @@ ReameWF : [LL_REPTAG_'453473891' RUNSWR:WorkID:[LL_REPTAG_1 /]:SubWorkID:'[LL_RE
 
 [LL_WEBREPORT_ENDFOR /] 
 
+=========================================================================14=============================================================
+
+
+
+[LL_WEBREPORT_EXCLUDEHTML /]
+<html>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/bootstrap-table-filter-control.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+
+
+<style>
+    .ui-widget-header {
+        border: 1px solid #aed0ea;
+        background: green !important;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .ui-dialog-titlebar-close {
+        visibility: hidden;
+    }
+
+    .ui-dialog-buttonset button {
+        background: #B2DEB9;
+    }
+
+    .ui-dialog.ui-widget {
+        top: 10px !important;
+    }
+
+.export-btn-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 10;
+}
+
+
+    .loadingMessage {
+        font-size: 15px;
+        color: red;
+        position: absolute;
+        width: 380px;
+        height: 150px;
+        z-index: 105;
+        top: 65%;
+        left: 41%;
+        margin-top: -50px;
+        margin-left: -50px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .header .header-logo {
+        display: inline-block;
+        width: 55px;
+        height: 50px;
+    }
+
+    .header-container .icon {
+        font-size: 40px;
+    }
+
+   .header-container {
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;      /* Centers vertically */
+    height: 50px;             /* Adjust height if needed */
+    background-color: green;  /* Maintain background color */
+    width: 100%;              /* Ensures full width */
+    position: relative;       /* Helps with alignment */
+}
+
+    .header-body {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px;
+        width: 100%;
+        background: #2F972F;
+
+        color: white;
+    }
+
+.header-title {
+    font-size: 20px;          /* Adjust size if needed */
+    font-weight: bold;
+    color: white;             /* Ensures contrast */
+    text-align: center;
+    width: 100%;              /* Ensures text stays centered */
+}
+
+.user-login {
+    position: absolute;
+    right: 15px;              /* Keeps login info on the right */
+    color: white;             /* Ensures contrast */
+}
+
+    .fixed-table-container {
+    width: 100%;
+    height: calc(100vh - 120px); /* Adjusts height dynamically */
+    overflow: hidden; /* Prevent scrolling */
+    display: flex;
+    flex-direction: column;
+}
+.fixed-table-toolbar .search .glyphicon {
+    display: none !important;
+}
+
+.fixed-table-toolbar .search i {
+    display: none !important;
+}
+
+.header-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+    background-color: #5cb85c;  /* Lighter green */
+    color: white;
+}
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+    .fixed-table-pagination
+    {
+        
+    
+    position: relative;
+    margin-top: 20px;
+
+    }
+    #loading {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: block;
+        opacity: 0.7;
+        background-color: #dee2e6;
+        z-index: 99;
+        text-align: center;
+        position: absolute;
+    }
+
+    #loading-image {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        z-index: 100;
+
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -50px;
+    }
+#report {
+    font-size: 12px; /* Adjust the font size as needed */
+    border: 2px solid black;
+}
+
+#report td, #report th {
+    line-height: 1.2; /* Adjust the line height */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+    border: 1px solid black !important;
+}
+
+.table-main-row,
+.table-sub-row {
+    height: auto; /* Ensure height adjusts based on content */
+}
+#report thead th {
+    background-color: #d2f5d2 !important;  /* Light green shade */
+    color: #000;  /* Black text */
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+}
+
+#report td {
+    padding: 5px; /* Reduce padding to minimize height */
+}
+
+#report td:nth-child(1), /* Example: first column */
+#report td:nth-child(2) { /* Example: second column */
+    width: 100px; /* Set specific widths to control layout */
+}
+.custom-div-container {
+    margin-bottom: 10px; /* Space below the div */
+}
+
+.my-custom-div {
+    background-color: #f9f9f9; /* Light background color */
+    padding: 10px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text */
+    font-weight: bold; /* Bold text */
+    font-size: 12px; /* Font size */
+}
+ .apui .btn {
+            padding: 4px 8px; /* Adjust padding for smaller button */
+            line-height: 1; /* Adjust line-height for button height */
+            font-size: 10px; /* Change font size if needed */
+        }
+button.buttons-columnVisibility,
+button.buttons-excel,
+button.buttons-pdf,
+button.buttons-csv {
+    font-size: 16px !important; /* Increase font size */
+    padding: 8px 12px !important; /* Increase padding */
+    width: auto !important; /* Adjust width */
+    height: 40px !important; /* Increase height */
+}
+
+button.buttons-columnVisibility i,
+button.buttons-excel i,
+button.buttons-pdf i,
+button.buttons-csv i {
+    font-size: 18px !important; /* Increase icon size */
+}
+
+
+
+
+
+
+
+</style>
+<style>
+/* Styles for main rows */
+.table-main-row, .table-sub-row, .table-not-applicable, .table-green, .table-yellow, .highlight-red, .grey-out, .strike-through {
+    background-color: transparent !important;
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.sub-header {
+    background-color: #f0f8ff !important; /* Light blue background */
+    font-weight: bold;
+    text-align: left;
+}
+
+
+
+
+</style>
+
+<script>
+
+
+$(document).ready(function(){
+    generateReport();
+   
+});
+//Declaring All Variables Globally
+const urlPrefix = '[LL_REPTAG_URLPREFIXFULL /]';
+const detailSubWR = '[LL_REPTAG_$DetailSubWR /]';
+const reportId = '[LL_REPTAG_$ResultsWebReportID /]';
+const baseUrl = '[LL_REPTAG_URLPREFIXFULL /]/info/';
+let expandedRows = {};
+let mainRowTotals = {};
+
+
+// For '+' button for expansion
+const operateFormatter = (value, row) => {
+    if (row.isSubRow) return ''; // Don't show buttons for sub-rows
+    const buttonText = expandedRows[row.id] ? '-' : '+'; // Check if the row is expanded
+    return `<button class="btn btn-primary btn-sm add-row" type="button">${buttonText}</button>`;
+};
+
+function formatRow(value, row, index) {
+    const rowData = encodeURIComponent(JSON.stringify(row));
+    return `<button class="btn btn-primary btn-sm" onclick="toggleSubRows(${index}, '${rowData}')">+</button>`;
+}
+
+
+
+
+//Calling Main Webreport for getting Data
+async function generateReport() {
+    console.log('generateReport called');
+    $(".loader").show(); // Show loader
+    const fullUrl = `${urlPrefix}?func=ll&objId=${detailSubWR}&objAction=RunReport`;
+    try {
+        const data = await fetchData(fullUrl);
+        handleDataResponse(data);
+    } catch (error) {
+        handleError(error);
+    } finally {
+        $(".loader").hide(); // Hide loader
+    }
+}
+
+
+
+
+//Displaying Sub Rows -  Comment
+async function toggleSubRows(index, mainRowJson) {
+    const mainRow = JSON.parse(decodeURIComponent(mainRowJson));
+    const workid = mainRow?.workid;
+    const includeMS = String(mainRow?.map_mapobjid) === String('[LL_REPTAG_$MSWR /]');
+    console.log("WorkID:", workid, "IncludeMS:", includeMS);
+
+    // ... (rest of your existing toggleSubRows code)
+
+    // Try to find the row using the `data-workid` attribute
+    let rowElement = $(`#report tbody tr[data-workid="${workid}"]`);
+
+    
+    if (!rowElement.length) {
+        console.error(`Row not found for WorkID: ${workid}`);
+        return;
+    }
+
+    let btn = rowElement.find("button");
+
+    if (!btn.length) {
+        console.error(`Button not found for WorkID: ${workid}`);
+        return;
+    }
+
+    if (btn.text() === "+") {
+        try {
+            console.log(`🔍 Fetching subrows for WorkID: ${workid}`);
+
+            let subData = await fetchSubRows(workid, includeMS);
+
+            if (!subData || subData.length === 0) {
+                console.warn(`No Subrows found for WorkID: ${workid}`);
+                alert("No Tasks to Display");
+                return;
+            }
+
+            let subRowsHtml = `
+                <tr class="sub-header subrow-${workid}" style="background-color: #f0f8ff; font-weight: bold;">
+                    <td></td>
+                    <td>WF Task Name</td>
+                    <td>Task Performer</td>
+                    <td>Task Start Date</td>
+                    <td>Task Completed Date</td>
+                    <td>Task Due Date</td>
+                    <td>WF Comments</td>
+                </tr>
+            `;
+
+            subData.forEach(sub => {
+                subRowsHtml += `
+                    <tr class="subrow-${workid}">
+                        <td></td>
+                        <td>${sub.WFTitle || "-"}</td>
+                        <td>${sub.Task_Performer || "-"}</td>
+                        <td>${formatDisplayDate(sub.SubWorkTask_DateReady)}</td>
+                        <td>${formatDisplayDate(sub.SubWorkTask_DateDone)}</td>
+                        <td>${sub.Task_DueDate != null ? sub.Task_DueDate : "-"}</td>
+                        <td>${sub.Task_Comments || "-"}</td>
+                    </tr>
+                `;
+                 
+            });
+
+            // Insert after the correct row
+            rowElement.after(subRowsHtml);
+            btn.text("-"); // Change button to collapse state
+
+        } catch (error) {
+            console.error(`Error fetching subrows for WorkID: ${workid}`, error);
+        }
+    } else {
+        // Remove subrows when collapsing
+        $(`.subrow-${workid}`).remove();
+        btn.text("+");
+    }
+}
+
+//Date formatting for Approved Date etc..
+function formatDates(value, row, index, field) {
+    if (!value) return ""; // If there's no date, return empty
+    
+    let formattedDate = value.split('T')[0]; // Extract only the date part (YYYY-MM-DD)
+    return `<span>${formattedDate}</span>`;
+}
+
+function formatDisplayDate(value) {
+    if (!value) return "";
+    const date = new Date(value);
+    if (isNaN(date)) return value; // Return original if invalid
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+}
+
+
+//Redirecting URL for Document Number to open a document
+function formatDocumentNumber(value, row) {
+    if (!row.Document_Number || !row.WF_ValInt) return "-"; 
+
+    let docUrl = `${urlPrefix}/info/${row.WF_ValInt}`;
+    return `<a href="${docUrl}" target="_blank">${row.Document_Number}</a>`; 
+}
+
+//Redirecting URL for Title to Open WF
+function formatTitle(value, row) {
+    if (!row.Title); 
+
+    let docUrl = `${urlPrefix}?func=work.statusheader&workid=${row.workid}&subworkid=${row.subworkid}`;
+    return `<a href="${docUrl}" target="_blank">${row.Title}</a>`; 
+}
+
+
+
+
+// Function to fetch sub rows
+async function fetchSubRows(workid, includeMS = false) {
+    if (!workid) {
+        console.error("fetchSubRows: WorkID is undefined");
+        return [];
+    }
+
+    const includeFlag = includeMS ? 'true' : 'false';
+    const url = `${urlPrefix}?func=ll&objId=${reportId}&inputlabel1=${workid}&IncludeMS=${includeFlag}&objAction=RunReport`;
+
+    console.log("Fetching subrow data from:", url);
+
+    try {
+        const subData = await fetchData(url);
+        return await transformResults(subData.myRows || [], true);
+    } catch (error) {
+        console.error("fetchSubRows Error:", error);
+        return [];
+    }
+}
+
+
+
+
+async function fetchData(url) {
+    console.log(`Fetching data from: ${url}`);
+    try {
+        const response = await $.ajax({ url, dataType: 'json' });
+        if (!response.success) {
+            throw new Error('API call failed');
+        }
+        if (!Array.isArray(response.myRows)) {
+            throw new Error('Unexpected API response format');
+        }
+        return response;
+    } catch (error) {
+        showMessage(`Failed to load data. Error: ${error.message}`);
+        console.error("Error fetching data:", error);  // Log the error for debugging
+        throw error;
+    }
+}
+
+
+function handleDataResponse(data) {
+    console.log("Data received:", data);  // Check the response data
+    const results = data.myRows;
+    if (results.length === 0) {
+        showMessage('No data available.');
+        return;
+    }
+    initializeTable(results);
+}
+
+
+// To Get tableData
+async function initializeTable(results) {
+    console.log("Initializing table with results:", results);  // Check if results are valid
+
+    try {
+        const tableData = await transformResults(results, false);
+        
+        // Check if the table is already initialized
+        if ($('#report').data('bootstrap.table')) {
+            $('#report').bootstrapTable('load', tableData); // Load new data
+        } else {
+            // Initialize the table if not already initialized
+            $('#report').bootstrapTable({
+                data: tableData,
+                pageSize: 50,
+                undefinedText: '',
+                columns: getTableColumns(),
+                rowAttributes: function (row, index) {
+                    return {
+                        'data-workid': row.workid  // Ensure each row has a data-workid attribute
+                    };
+                },
+                onPostBody: function () {
+                    console.log("Table rendered");
+                }
+            
+            
+});
+
+        }
+    } catch (error) {
+        showMessage('Failed to initialize table.');
+    }
+}
+
+
+
+//Columns that are displayed & returned from Another webreport in JSON format
+function getTableColumns() {
+    return [
+        { field: 'expand', title: '', width: 50, formatter: formatRow, align: 'center', filterControl: false },
+        { field: 'SubWork_Title', title: 'Workflow Title', filterControl: 'input' }, // This one has filterControl as input
+        { field: 'Initiator', title: 'WF Owner', filterControl: false },
+        { field: 'SubWork_DateInitiated', title: 'WF Initiated Date', sortable: true, filterControl: false, formatter: formatDisplayDate },
+        { field: 'SubWork_DateCompleted', title: 'WF Completed Date', sortable: true, filterControl: false, formatter: formatDisplayDate },
+        { field: 'Status', title: 'Workflow Status', filterControl: true }
+        
+    ];
+}
+
+
+
+
+
+function handleError(error) {
+    showMessage(`Failed to load data. Error: ${error.message}`);
+}
+
+function showMessage(message) {
+    $(".loader").hide();
+    $("#messageWrapper").text(message).show(10);
+}
+
+
+//Handling entire Data & Logics
+async function transformResults(results, isSubRow = false) {
+    const transformedResults = results.map((result, index) => {
+        if (isSubRow) {
+            return {
+                id: `sub_${result.subwork_subworkid}_${index}`,
+                WFTitle: result.subworktask_title,
+                Task_DueDate: result.late,
+                Task_Performer: result.performer,
+                Task_Comments: result.comments,
+                SubWorkTask_DateReady: result.subworktask_dateready,
+	            SubWorkTask_DateDone: result.subworktask_datedone,
+                isSubRow,
+                dataType: result.Data
+            };
+        } else {
+            const mapObjId = result.map_mapobjid || '';
+            return {
+                id: `main_${index}`,
+                workid: result.subwork_subworkid || `workid_${index}`,
+                SubWork_Title: result.subwork_title || '', 
+                SubWork_DateCompleted: result.subwork_datecompleted || '',
+                Initiator: result.initiator || '',
+                SubWork_DateInitiated: result.subwork_dateinitiated || '',
+                Status: result.status || '',
+                isSubRow,
+                map_mapobjid: mapObjId, // Add map_mapobjid for later check
+            };
+        }
+    });
+    console.log("Transformed Data:", transformedResults);
+    return transformedResults;
+}
+
+
+//To export it to Excel  
+$(document).ready(async function() {
+    await generateReport(); // Load data when the document is ready
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    let exportBtn = document.getElementById("exportCsvBtn");
+
+    if (exportBtn) {
+        exportBtn.addEventListener("click", function () {
+            exportXLSXFile();  
+        });
+    } else {
+        console.error("Error: Export button not found in the DOM!");
+    }
+});
+
+  
+    function exportXLSXFile() {
+
+    let tableRows = [];
+    let headerFields = [];
+
+
+    $('#report thead th').each(function (index, value) {
+        if (index === 0) return; 
+
+        let headerText = $(value).text().trim().replaceAll(',', ';');
+        headerFields.push(headerText);
+    });
+
+    tableRows.push(headerFields);
+
+    $('#report tbody tr').each(function () {
+        let rowData = [];
+        $(this).find("td").each(function (colIndex) {
+            if (colIndex === 0) return; 
+
+            let cellText = $(this).text().trim().replaceAll(',', ';');
+
+            
+            if (colIndex === 5 && !isNaN(cellText) && cellText.length > 5) {
+                cellText = `'${cellText}`;  // Force Excel to treat it as text
+            }
+
+            rowData.push(cellText);
+        });
+
+        tableRows.push(rowData);
+    });
+
+    
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.aoa_to_sheet(tableRows);
+    XLSX.utils.book_append_sheet(wb, ws, "Report");
+
+    let wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    let excelFile = new Blob([new Uint8Array(wbout)], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+
+    
+    let downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(excelFile);
+    downloadLink.download = "Report.xlsx";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}  
+    
+    
+    
+</script>
+
+<body style="font-size: 9px;">
+   
+    
+
+    
+    <header class="header">
+        <div class="header-container">
+            <div class="header-body">
+               
+                <div class="header-title">
+                    Generic Workflow Report
+                </div>
+                <div class="user-login">
+                    [LL_REPTAG_USERNAME /]
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main-content apui">
+    
+<body style="font-size: 9px;">
+        <div id="reportWrapper">
+
+
+<div id="loadingSpinner" style="display:none;">Loading...</div>
+<div id="toolbar">
+    <button id="exportCsvBtn" class="btn btn-success">Export to Excel</button>
+</div>
+
+
+
+        
+        <table id="report"
+       data-sort-stable="true"
+       data-search="true" 
+       data-toolbar="#toolbar"
+       data-pagination="true"
+       data-page-size="25"
+       data-page-list="[25, 50, 100, 150, all]"
+       data-group-by="false"
+       data-filter-control="false"
+       class="table table-hover">
+
+            <thead>
+    <tr>
+        <th data-field="expand"></th>
+        <th data-field="SubWork_Title"></th>
+        <th data-field="Initiator"></th>
+        <th data-field="SubWork_DateInitiated"></th>
+        <th data-field="SubWork_DateCompleted"></th>
+        <th data-field="Status"></th>
+        
+    </tr>
+</thead>
+
+
+        </table>
+        
+        </div>    
+        </body>
+    </div>
+    <div class="loader" style="display: none"></div>
+
+
+
+
+</main>
+</body>
+
+</html>
