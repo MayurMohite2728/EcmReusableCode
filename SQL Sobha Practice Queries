@@ -7,6 +7,7 @@
 7.Get subtypes count and list of all in sql .
 8.Mostly active users in cs 
 9.get current performer from workflow 
+10.Generic get information from workflow for dashboard .
 
 
 
@@ -116,6 +117,68 @@ INNER JOIN KUAF K
     ON K.ID = T.SubWorkTask_PerformerID
 WHERE T.Work_WorkID = 102797;
 
+===================================================================================================10 =================================================
+
+SELECT 
+  subworktask_workid, 
+  (
+    SELECT wad.workaudit_date
+    FROM wworkaudit wad
+    WHERE wad.workaudit_workid = wa.workaudit_workid
+      AND wad.workaudit_taskid = wa.workaudit_taskid
+      AND wad.workaudit_status = 21
+      AND wad.workaudit_taskiternum = wa.workaudit_taskiternum
+    ORDER BY wad.workaudit_date
+    LIMIT 1
+) AS subworktask_dateready, 
+  wa.workaudit_date subworktask_datedone, 
+  ws.subworktask_title, 
+  ABS(
+    EXTRACT(
+      DAY 
+      FROM 
+        (
+          (
+            CASE WHEN wa.workaudit_date IS NULL THEN CURRENT_DATE ELSE wa.workaudit_date END
+          ) - (SELECT wad.workaudit_date
+ FROM wworkaudit wad
+ WHERE wad.workaudit_workid = wa.workaudit_workid
+   AND wad.workaudit_taskid = wa.workaudit_taskid
+   AND wad.workaudit_status = 21
+   AND wad.workaudit_taskiternum = wa.workaudit_taskiternum
+ ORDER BY wad.workaudit_date
+ LIMIT 1)
+        )
+    )
+  ) AS late, 
+  k.FirstName AS performer, 
+  CASE WHEN wa.workaudit_date IS NULL THEN 'In Progress' ELSE 'Completed' END AS status, 
+  CASE WHEN wc.wf_value IS NULL THEN 'Not Applicable' ELSE wc.wf_value END AS comments 
+FROM 
+  wworkaudit wa 
+  JOIN wsubworktask ws ON wa.workaudit_workid = ws.subworktask_workid 
+  AND wa.workaudit_taskid = ws.subworktask_taskid 
+  LEFT JOIN kuaf k ON k.id = wa.workaudit_performerid 
+  LEFT JOIN wfcomments wc ON wc.wf_workflowid = wa.workaudit_workid 
+  AND wc.wf_taskid = wa.workaudit_taskid 
+  AND wa.workaudit_taskiternum = wc.wf_sequence 
+WHERE 
+  wa.workaudit_status = 41 
+  AND wa.workaudit_workid = %1 
+  AND wa.workaudit_taskid = 1 
+  AND %2
+UNION 
+ SELECT subworktask_workid,
+ ws.subworktask_dateready, 
+NULL::timestamp AS subworktask_datedone,
+ ws.subworktask_title,
+ ABS(EXTRACT(DAY FROM (CURRENT_DATE - ws.subworktask_dateready))) AS late, 
+k.FirstName AS performer, 
+CASE WHEN ws.subworktask_datedone IS NULL THEN 'In Progress' ELSE 'In Progress' END AS status, 
+CASE WHEN wc.wf_value IS NULL THEN 'Not Applicable' ELSE wc.wf_value END AS comments 
+FROM wsubworktask ws 
+LEFT JOIN kuaf k ON k.id = ws.subworktask_performerid 
+LEFT JOIN wfcomments wc ON wc.wf_workflowid = ws.subworktask_workid AND wc.wf_taskid = ws.subworktask_taskid AND wc.wf_sequence = ws.subworktask_iternum WHERE ws.subworktask_workid = %1 AND ws.subworktask_taskid = 1 AND ws.subworktask_status IN (1,2) ORDER BY subworktask_title
 
 
 
