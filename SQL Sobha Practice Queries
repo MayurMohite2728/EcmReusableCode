@@ -8,7 +8,7 @@
 8.Mostly active users in cs 
 9.get current performer from workflow 
 10.Generic get information from workflow for dashboard .
-
+10.1 Generic dashboard details fetch query . 
 
 
 
@@ -180,7 +180,17 @@ FROM wsubworktask ws
 LEFT JOIN kuaf k ON k.id = ws.subworktask_performerid 
 LEFT JOIN wfcomments wc ON wc.wf_workflowid = ws.subworktask_workid AND wc.wf_taskid = ws.subworktask_taskid AND wc.wf_sequence = ws.subworktask_iternum WHERE ws.subworktask_workid = %1 AND ws.subworktask_taskid = 1 AND ws.subworktask_status IN (1,2) ORDER BY subworktask_title
 
+==========================================================================10.1 --==========================================
 
+Select SubWork_SubWorkID,SubWork_Title,SubWork_DateInitiated ,SubWork_DateCompleted,
+ CASE 
+        WHEN
+		 SubWork_Status = 1 THEN 'In Progress'
+        ELSE 'Completed'
+    END AS Status, k.firstname as Initiator, wm.Map_MapObjID
+from WSubWork ws JOIN WWork ww on ws.SubWork_SubWorkID = ww.Work_WorkID join KUAF k on ww.Work_OwnerID = k.ID
+JOIN WMap wm on wm.Map_MapID = SubWork_MapID
+where wm.Map_MapObjID = 86803
 
 
 
