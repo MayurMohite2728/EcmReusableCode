@@ -1,0 +1,93 @@
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Multiple Components Example</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+    input, select { padding: 6px; margin: 5px 0; width: 200px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+  
+    function Header({ title }) {
+      return <h1>{title}</h1>;
+    }
+
+    
+    function Counter() {
+      const [count, setCount] = useState(0);
+      return (
+        <div className="card">
+          <h3>Counter: {count}</h3>
+          <button onClick={() => setCount(count + 1)}>+ Increment</button>
+          <button onClick={() => setCount(count - 1)}>- Decrement</button>
+        </div>
+      );
+    }
+
+   
+    function NameForm() {
+      const [name, setName] = useState('');
+
+      return (
+        <div className="card">
+          <h3>Enter your name</h3>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Type here..."
+          />
+          <p>Hello, {name || 'stranger'}!</p>
+        </div>
+      );
+    }
+
+   
+    function StatusSelector() {
+      const [status, setStatus] = useState('Pending');
+
+      return (
+        <div className="card">
+          <h3>Status: {status}</h3>
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+      );
+    }
+
+   
+    function App() {
+      return (
+        <div>
+          <Header title="My Multi-Component App" />
+          <Counter />
+          <NameForm />
+          <StatusSelector />
+        </div>
+      );
+    }
+
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
