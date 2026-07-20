@@ -591,9 +591,16 @@ $(document).ready(function(){
 const urlPrefix = '[LL_REPTAG_URLPREFIXFULL /]';
 const detailSubWR = '[LL_REPTAG_$DetailSubWR /]';
 const reportId = '[LL_REPTAG_$ResultsWebReportID /]';
+// NEW: a separate Web Report that accepts a workid as inputlabel1 and returns that single
+// request's Position Title. WFFORM merge tags only resolve correctly inside a report scoped
+// to one row at render time - they can't take a runtime/per-loop-iteration value the way a
+// client-side JS loop needs, so this has to be its own report + AJAX call, same pattern as
+// reportId/fetchSubRows below.
+const positionReportId = '[LL_REPTAG_$positionReportId /]';
 const baseUrl = '[LL_REPTAG_URLPREFIXFULL /]/info/';
 let expandedRows = {};
 let mainRowTotals = {};
+let allMainRowsData = []; // keeps every main row (all pages) so export isn't limited to what's rendered in the DOM
 
 
 // For '+' button for expansion
@@ -669,6 +676,7 @@ async function toggleSubRows(index, mainRowJson) {
             let subRowsHtml = `
                 <tr class="sub-header subrow-${workid}" style="background-color: #f0f8ff; font-weight: bold;">
                     <td></td>
+                    <td>${workid}</td>
                     <td>WF Task Name</td>
                     <td>Task Performer</td>
                     <td>Task Start Date</td>
@@ -681,6 +689,7 @@ async function toggleSubRows(index, mainRowJson) {
             subData.forEach(sub => {
                 subRowsHtml += `
                     <tr class="subrow-${workid}">
+                         <td></td>
                         <td></td>
                         <td>${sub.WFTitle || "-"}</td>
                         <td>${sub.Task_Performer || "-"}</td>
@@ -771,6 +780,25 @@ async function fetchSubRows(workid, includeMS = false) {
 }
 
 
+// Fetches Position Title for a single workid from the dedicated lookup Web Report
+// (positionReportId). This report just outputs the merge tag's Display value as plain text
+// (e.g. "Jr.Procurement Engineer") - it does NOT return the {success, myRows} JSON wrapper
+// the other reports use, so it must be fetched as text and used directly, not JSON-parsed.
+async function fetchPositionTitle(workid) {
+    if (!workid) return '';
+
+    const url = `${urlPrefix}?func=ll&objId=${positionReportId}&inputlabel1=${workid}&objAction=RunReport`;
+
+    try {
+        const response = await $.ajax({ url, dataType: 'text' });
+        return (response || '').trim();
+    } catch (error) {
+        console.error(`Error fetching Position Title for WorkID: ${workid}`, error);
+        return '';
+    }
+}
+
+
 
 
 async function fetchData(url) {
@@ -809,7 +837,17 @@ async function initializeTable(results) {
 
     try {
         const tableData = await transformResults(results, false);
-        
+
+        // NEW: fetch Position Title per row - one AJAX call each, run in parallel, since a
+        // merge tag can't resolve this per-row on its own (see fetchPositionTitle above).
+        // This runs once, right after the base data loads, so Position Title shows on the
+        // main dashboard without needing to expand anything.
+        await Promise.all(tableData.map(async row => {
+            row.Position_Title = await fetchPositionTitle(row.workid);
+        }));
+
+        allMainRowsData = tableData; // keep full main-row data set (all pages) available for export
+
         // Check if the table is already initialized
         if ($('#report').data('bootstrap.table')) {
             $('#report').bootstrapTable('load', tableData); // Load new data
@@ -844,8 +882,10 @@ async function initializeTable(results) {
 function getTableColumns() {
     return [
         { field: 'expand', title: '', width: 50, formatter: formatRow, align: 'center', filterControl: false },
+        { field: 'workid', title: 'Request ID', filterControl: false }, // was 'subworktask_workid', which doesn't exist on main rows
         { field: 'SubWork_Title', title: 'Workflow Title', filterControl: 'input' }, // This one has filterControl as input
         { field: 'Initiator', title: 'WF Owner', filterControl: false },
+        { field: 'Position_Title', title: 'Position', filterControl: false },
         { field: 'SubWork_DateInitiated', title: 'WF Initiated Date', sortable: true, filterControl: false, formatter: formatDisplayDate },
         { field: 'SubWork_DateCompleted', title: 'WF Completed Date', sortable: true, filterControl: false, formatter: formatDisplayDate },
         { field: 'Status', title: 'Workflow Status', filterControl: true }
@@ -873,6 +913,7 @@ async function transformResults(results, isSubRow = false) {
         if (isSubRow) {
             return {
                 id: `sub_${result.subwork_subworkid}_${index}`,
+                subworktask_workid:result.subwork_subworkid,
                 WFTitle: result.subworktask_title,
                 Task_DueDate: result.late,
                 Task_Performer: result.performer,
@@ -890,6 +931,7 @@ async function transformResults(results, isSubRow = false) {
                 SubWork_Title: result.subwork_title || '', 
                 SubWork_DateCompleted: result.subwork_datecompleted || '',
                 Initiator: result.initiator || '',
+                Position_Title: '', // NEW: filled in afterward by fetchPositionTitle (see initializeTable) - a static merge tag can't resolve this per row
                 SubWork_DateInitiated: result.subwork_dateinitiated || '',
                 Status: result.status || '',
                 isSubRow,
@@ -911,8 +953,17 @@ document.addEventListener("DOMContentLoaded", function () {
     let exportBtn = document.getElementById("exportCsvBtn");
 
     if (exportBtn) {
-        exportBtn.addEventListener("click", function () {
-            exportXLSXFile();  
+        exportBtn.addEventListener("click", async function () {
+            // disable + label the button while the export pulls approval data for every row
+            exportBtn.disabled = true;
+            const originalText = exportBtn.textContent;
+            exportBtn.textContent = "Exporting...";
+            try {
+                await exportXLSXFile();
+            } finally {
+                exportBtn.disabled = false;
+                exportBtn.textContent = originalText;
+            }
         });
     } else {
         console.error("Error: Export button not found in the DOM!");
@@ -920,40 +971,73 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
   
-    function exportXLSXFile() {
+// Walks the full underlying row set (allMainRowsData, all pages) and fetches each row's
+// approval/task data directly, so every exported row includes its task detail columns
+// regardless of expand state. Position Title is already on each row by this point (set in
+// initializeTable), so it just gets included alongside the rest.
+async function exportXLSXFile() {
 
-    let tableRows = [];
-    let headerFields = [];
+    if (!allMainRowsData || allMainRowsData.length === 0) {
+        alert("No data available to export.");
+        return;
+    }
 
+    const headerFields = [
+        "Request ID",
+        "Workflow Title",
+        "WF Owner",
+        "Position",
+        "WF Initiated Date",
+        "WF Completed Date",
+        "Workflow Status",
+        "WF Task Name",
+        "Task Performer",
+        "Task Start Date",
+        "Task Completed Date",
+        "Task Due Date",
+        "WF Comments"
+    ];
 
-    $('#report thead th').each(function (index, value) {
-        if (index === 0) return; 
+    const tableRows = [headerFields];
 
-        let headerText = $(value).text().trim().replaceAll(',', ';');
-        headerFields.push(headerText);
-    });
+    for (const row of allMainRowsData) {
+        const includeMS = String(row.map_mapobjid) === String('[LL_REPTAG_$MSWR /]');
 
-    tableRows.push(headerFields);
+        let subData = [];
+        try {
+            subData = await fetchSubRows(row.workid, includeMS);
+        } catch (error) {
+            console.error(`Error fetching subrows for export, WorkID: ${row.workid}`, error);
+        }
 
-    $('#report tbody tr').each(function () {
-        let rowData = [];
-        $(this).find("td").each(function (colIndex) {
-            if (colIndex === 0) return; 
+        const mainCells = [
+            row.workid != null ? row.workid : "",
+            row.SubWork_Title || "",
+            row.Initiator || "",
+            row.Position_Title || "",
+            formatDisplayDate(row.SubWork_DateInitiated),
+            formatDisplayDate(row.SubWork_DateCompleted),
+            row.Status || ""
+        ];
 
-            let cellText = $(this).text().trim().replaceAll(',', ';');
+        if (!subData || subData.length === 0) {
+            // No tasks/approvals for this request - still emit one row with blank task columns
+            tableRows.push([...mainCells, "", "", "", "", "", ""]);
+        } else {
+            subData.forEach(sub => {
+                tableRows.push([
+                    ...mainCells,
+                    sub.WFTitle || "-",
+                    sub.Task_Performer || "-",
+                    formatDisplayDate(sub.SubWorkTask_DateReady),
+                    formatDisplayDate(sub.SubWorkTask_DateDone),
+                    sub.Task_DueDate != null ? sub.Task_DueDate : "-",
+                    sub.Task_Comments || "-"
+                ]);
+            });
+        }
+    }
 
-            
-            if (colIndex === 5 && !isNaN(cellText) && cellText.length > 5) {
-                cellText = `'${cellText}`;  // Force Excel to treat it as text
-            }
-
-            rowData.push(cellText);
-        });
-
-        tableRows.push(rowData);
-    });
-
-    
     let wb = XLSX.utils.book_new();
     let ws = XLSX.utils.aoa_to_sheet(tableRows);
     XLSX.utils.book_append_sheet(wb, ws, "Report");
@@ -984,7 +1068,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="header-body">
                
                 <div class="header-title">
-                    Generic Workflow Report
+                    MRF Workflow Report
                 </div>
                 <div class="user-login">
                     [LL_REPTAG_USERNAME /]
@@ -1020,8 +1104,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <thead>
     <tr>
         <th data-field="expand"></th>
+        <th data-field="workid"></th>
         <th data-field="SubWork_Title"></th>
         <th data-field="Initiator"></th>
+        <th data-field="Position_Title"></th>
         <th data-field="SubWork_DateInitiated"></th>
         <th data-field="SubWork_DateCompleted"></th>
         <th data-field="Status"></th>
@@ -1044,6 +1130,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 ===========================================================================================15==============================================
 
 [LL_WEBREPORT_INSERTJSON @ALLDATASOURCE /]
