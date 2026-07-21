@@ -1139,7 +1139,6 @@ async function exportXLSXFile() {
 
 =====================================================================================16 =================================================
 
-
 [LL_WEBREPORT_EXCLUDEHTML /]
 <!DOCTYPE html>
 <html>
@@ -1325,6 +1324,7 @@ txt.addEventListener("keyup",function(){
 
             results.style.display="none";
             results.innerHTML="";
+            document.querySelector(".searchIcon").style.display = "block";
             return;
 
         }
@@ -1337,6 +1337,7 @@ txt.addEventListener("keyup",function(){
 
             results.innerHTML="<div class='noData'>No users found</div>";
             results.style.display="block";
+            
             return;
 
         }
@@ -1349,13 +1350,15 @@ txt.addEventListener("keyup",function(){
 
             div.innerHTML=div.innerHTML =
     "<strong>" + user.Name + " " + user.lastname + "</strong><br>" +user.Email +
-    "</span>";
+    "</span>";;
 
             div.onclick=function(){
 
                 txt.value=user.Email;
+                txt.id = user.ID;
 
                 results.style.display="none";
+                document.querySelector(".searchIcon").style.display = "none";
 
                 console.log(user.ID,user.Name);
 
@@ -1393,3 +1396,37 @@ document.addEventListener("click",function(e){
 
 </body>
 </html>
+
+
+============Format SWR============================
+
+[/* Title: Blank Reportview */]
+[LL_WEBREPORT_EXCLUDEHTML /]
+{"Users":[[LL_WEBREPORT_STARTROW /]
+    {"Name":"[LL_REPTAG=FirstName /]",
+     "lastname":"[LL_REPTAG=lastname def:'' /]",
+     "ID":"[LL_REPTAG=ID /]",
+     "Email":"[LL_REPTAG=mailaddress /]"}
+     
+  [LL_WEBREPORT_IF '[LL_REPTAG_ROWNUM /]' != '[LL_REPTAG_TOTALROWS /]' /]
+    ,
+[LL_WEBREPORT_ENDIF /]
+[LL_WEBREPORT_ENDROW /]]}
+===============================================================
+
+============Format query =============================================
+SELECT
+    ID,
+    Name,
+    FirstName,
+    LastName,
+    MailAddress
+FROM KUAF
+WHERE Type = 0
+AND Deleted = 0
+AND (
+    Name ILIKE '%' || %1 || '%'
+    OR FirstName ILIKE '%' || %1 || '%'
+    OR LastName ILIKE '%' || %1 || '%'
+)
+ORDER BY Name;
