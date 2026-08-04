@@ -15,6 +15,7 @@
 14.Generic report dashboard for workflows.
 15. Generic constant for insertjson . 
 16.Generic search box code in js 
+17.IFRAME CODE with WEBREPORT . 
  */]
 
 
@@ -1430,3 +1431,20 @@ AND (
     OR LastName ILIKE '%' || %1 || '%'
 )
 ORDER BY Name;
+===================================================================17 =================================================
+
+<iframe
+
+    src="[LL_REPTAG_URLPREFIXFULL /]?func=ll&objId=132149&objAction=RunReport"
+
+    style="display:block;
+
+           width:100%;
+
+           height:400px;
+
+           border:1px solid #ccc;
+
+           border-radius:4px;">
+</iframe>
+ 
