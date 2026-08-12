@@ -16,6 +16,7 @@
 15. Generic constant for insertjson . 
 16.Generic search box code in js 
 17.IFRAME CODE with WEBREPORT . 
+18.GetReferance folder browse from Webreport . 
  */]
 
 
@@ -1447,4 +1448,18 @@ ORDER BY Name;
 
            border-radius:4px;">
 </iframe>
- 
+===============================================================================18============================================================
+
+function browse_1_1_61_1()
+{
+var		w;
+var		url;
+
+// NOTE: objId=117826 is the browse starting point/container from the
+// example URL provided - update this if documents should be browsed
+// from somewhere else.
+url = "https://otcs.sa11-test.opentext.cloud/cs/cs?func=ll&objId=117826&objAction=targetBrowse&sort=name&selectScreen=%7B0%7D&selectLabel=Select%20%3E&headerLabel=Select%20Item&formName=myForm&fieldPrefix=_1_1_61_1&warehouseApplySubType=%2D1&containersOnly=0";
+
+w = window.open( url, "targetBrowseDlg_1_1_61_1", "height=500,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
+if ( w.focus ) { w.focus(); }
+}
