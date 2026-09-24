@@ -1,0 +1,74 @@
+<style>
+.tour-lp .lp-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 15px;
+}
+.tour-lp .lp-link:hover { text-decoration: none; color: inherit; }
+.tour-lp td { padding: 0 !important; vertical-align: middle; }
+.tour-lp .lp-icon { flex: 0 0 24px; line-height: 0; }
+</style>
+
+<div class="tour-lp">
+<table class="binf-table binf-table-hover">
+
+  <!-- ROW 1 : Initiate LOA Application -->
+  <tr>
+    <td>
+      <a class="lp-link" href="[LL_REPTAG_$LoaInitiatesFlow LLURL:DEFAULTHREF /]" title="Initiate LOA Application">
+        <span class="lp-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+               fill="none" aria-hidden="true" focusable="false">
+            <!-- page -->
+            <path d="M13.5 2.75H6.25A1.75 1.75 0 0 0 4.5 4.5v15a1.75 1.75 0 0 0 1.75 1.75h11.5A1.75 1.75 0 0 0 19.5 19.5V8.75L13.5 2.75Z"
+                  fill="#FFFFFF" stroke="#3B7DD8" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- folded corner -->
+            <path d="M13.5 2.75V8.75H19.5" stroke="#3B7DD8" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- form lines -->
+            <path d="M7.6 11.6h5.6M7.6 14.6h4.6M7.6 17.6h3.2"
+                  stroke="#6D6E71" stroke-width="1.3" stroke-linecap="round"/>
+            <!-- pen -->
+            <path d="M18.9 11.6l2.5 2.5-5.1 5.1-3.1.6.6-3.1 5.1-5.1z"
+                  fill="#F2A33C" stroke="#B4741A" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M13.2 16.7l2.5 2.5" stroke="#B4741A" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>Initiate LOA Application</span>
+      </a>
+    </td>
+  </tr>
+
+  <!-- ROW 2 : LOA Agreement Template (Word document) -->
+  <tr>
+    <td>
+      <a class="lp-link" href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_'293368' LLURL:DOWNLOAD /]" title="LOA Agreement Template (Word)">
+        <span class="lp-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+               fill="none" aria-hidden="true" focusable="false">
+            <!-- page -->
+            <path d="M13.5 2.75H6.25A1.75 1.75 0 0 0 4.5 4.5v15a1.75 1.75 0 0 0 1.75 1.75h11.5A1.75 1.75 0 0 0 19.5 19.5V8.75L13.5 2.75Z"
+                  fill="#FFFFFF" stroke="#2B579A" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- folded corner -->
+            <path d="M13.5 2.75V8.75H19.5" stroke="#2B579A" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- text lines -->
+            <path d="M8 11h8M8 13.4h4.2" stroke="#9AA3AD" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- file-type badge -->
+            <rect x="2.75" y="13.75" width="11.5" height="7.5" rx="1.5" fill="#2B579A"/>
+            <text x="8.5" y="19.55" text-anchor="middle"
+                  font-family="Segoe UI, Arial, Helvetica, sans-serif"
+                  font-size="6.4" font-weight="700" fill="#FFFFFF" letter-spacing="0">W</text>
+          </svg>
+        </span>
+        <span>LOA Agreement Template</span>
+      </a>
+    </td>
+  </tr>
+
+</table>
+</div>
+
+[LL_WEBREPORT_STARTROW /][LL_WEBREPORT_ENDROW /]
