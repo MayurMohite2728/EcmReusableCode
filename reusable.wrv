@@ -1489,3 +1489,19 @@ async function checkAttachmentAndSubmit() {
         alert('Failed to check attachment.');
     }
 }
+
+
+
+===
+
+async function fetchSubRows(workid, includeMS = false) {
+    if (!workid) return [];
+    const url = `${urlPrefix}?func=ll&objId=${reportId}&inputlabel1=${workid}&IncludeMS=${includeMS}&objAction=RunReport`;
+    try {
+        const res = await fetchData(url);
+        return transformSubRows(res.myRows || []);
+    } catch (err) {
+        console.error('fetchSubRows failed for WorkID:', workid, err);
+        return [];
+    }
+}
