@@ -17,6 +17,7 @@
 16.Generic search box code in js 
 17.IFRAME CODE with WEBREPORT . 
 18.GetReferance folder browse from Webreport . 
+19.Ajax calling Api for check attachment . 
  */]
 
 
@@ -1462,4 +1463,29 @@ url = "https://otcs.sa11-test.opentext.cloud/cs/cs?func=ll&objId=117826&objActio
 
 w = window.open( url, "targetBrowseDlg_1_1_61_1", "height=500,width=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,status=yes" );
 if ( w.focus ) { w.focus(); }
+}
+==============================================19 =============================================================================
+
+
+async function checkAttachmentAndSubmit() {
+ 
+    const url = `${urlPrefix}?func=ll&objId=${detailSubWR}&objAction=RunReport`;
+ 
+    try {
+        const data = await fetchData(url);
+ 
+             const count = data?
+       if (count === 0) {
+            alert('Please add attachment.');
+            return;
+        }
+ 
+        if (count > 0) {
+            doFormSubmit();
+        }
+ 
+    } catch (err) {
+        console.error('Attachment count API error:', err);
+        alert('Failed to check attachment.');
+    }
 }
