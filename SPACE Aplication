@@ -1,0 +1,597 @@
+[LL_WEBREPORT_EXCLUDEHTML /]<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPACE - Sobha Process Architect for Collaborative Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--side:#231f20;--ink:#1d1d1f;--muted:#6b6b70;--line:#e3e3e6;--bg:#f6f6f7;--accent:#0f766e;--accent2:#0c5f59;}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Montserrat,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+.app{display:flex;min-height:100vh}
+.side{width:240px;flex:none;background:var(--side);color:#fff;border-radius:14px 0 0 0;margin:12px 0 0 12px;display:flex;flex-direction:column}
+.brand{padding:26px 20px 18px;text-align:center;border-bottom:1px solid #4a4546;margin:0 10px}
+.brand .logo{font-family:Georgia,'Times New Roman',serif;font-size:58px;letter-spacing:2px;line-height:1}
+.brand .tag{font-size:8.5px;opacity:.85;margin-top:4px}
+.role{text-align:center;font-weight:600;font-size:15px;padding:18px 10px 40px}
+.role i{font-weight:700}
+.nav{display:flex;flex-direction:column;gap:14px;padding:0 20px}
+.nav button{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:4px;color:#bdbdbd;font-size:14px;font-weight:500}
+.nav button svg{width:24px;height:24px;flex:none}
+.nav button:hover{color:#fff;background:#2f2a2b}
+.nav button.active{background:#fff;color:#111;font-weight:600}
+.side .foot{margin-top:auto;padding:16px 20px;font-size:11px;color:#8d8d8d}
+.main{flex:1;min-width:0;padding:22px 28px 30px;background:#fff;margin-top:12px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+h1{font-weight:400;font-size:38px;margin:4px 0 18px}
+.company{background:#fff;border:1px solid #eee;padding:14px 18px;font-family:Georgia,'Times New Roman',serif;letter-spacing:3px;font-size:19px;white-space:nowrap}
+.filters{display:grid;grid-template-columns:120px 1fr 1fr auto;gap:14px 26px;align-items:center;margin-bottom:10px}
+.filters label{font-weight:500}
+input,select{font:inherit;font-size:14px;padding:10px 12px;border:1px solid var(--line);border-radius:3px;width:100%;background:#fff;color:var(--ink)}
+.btns{display:flex;gap:6px}
+.btn{all:unset;cursor:pointer;background:#111;color:#fff;font-weight:600;font-size:14px;padding:10px 16px;border-radius:3px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap}
+.btn:hover{background:#333}
+.btn.teal{background:var(--accent)}.btn.teal:hover{background:var(--accent2)}
+.btn.ghost{background:#fff;color:#111;border:1px solid var(--line)}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:18px 0 26px auto;max-width:860px}
+.dd div label{display:block;margin-bottom:8px;font-weight:500}
+.tablewrap{border:1px solid var(--line);border-radius:3px;overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{text-align:left;font-weight:600;padding:13px 14px;border-bottom:1px solid var(--line);background:#fafafa;white-space:nowrap;cursor:pointer;user-select:none}
+th.nosort{cursor:default}
+td{padding:12px 14px;border-bottom:1px solid #eee;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+tr:hover td{background:#f7fbfb}
+td.view,th.view{text-align:center;width:64px;border-left:1px solid var(--line);position:sticky;right:0;background:#fff}
+th.view{background:#fafafa}
+.eye{all:unset;cursor:pointer;padding:4px 6px;border-radius:50%}
+.eye:hover{background:#e7f2f1}
+.pill{display:inline-block;font-size:12px;padding:3px 9px;border-radius:12px;background:#eef3f3;color:#0c5f59}
+.pager{display:flex;justify-content:space-between;align-items:center;padding:12px 4px;font-size:13px;color:var(--muted)}
+.pager .pg{display:flex;gap:6px;align-items:center}
+.pager button{all:unset;cursor:pointer;border:1px solid var(--line);padding:5px 10px;border-radius:3px;color:var(--ink)}
+.pager button[disabled]{opacity:.4;cursor:default}
+.empty,.loading{padding:40px;text-align:center;color:var(--muted)}
+.card{border:1px solid #cfcfd4;border-radius:10px;padding:16px}
+.inner{border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,.12);padding:24px 30px;min-height:500px}
+.bar{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.crumb{font-size:22px;font-weight:600;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.crumb a{color:var(--ink);text-decoration:none;cursor:pointer}
+.crumb a:hover{text-decoration:underline}
+.crumb span.sep{color:#999;font-weight:400}
+.bar .spacer{flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:30px 26px}
+.tile{cursor:pointer;text-align:center;padding:6px;border-radius:8px}
+.tile:hover{background:#f4f6f6}
+.tile .nm{margin-top:10px;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .dt{font-size:12.5px;color:var(--muted);margin-top:3px}
+.folder{position:relative;width:136px;height:96px;margin:0 auto}
+.folder .tab{position:absolute;left:0;top:0;width:60px;height:16px;border-radius:6px 8px 0 0}
+.folder .body{position:absolute;left:0;right:0;top:9px;bottom:0;border-radius:4px 6px 6px 6px}
+.folder .paper{position:absolute;left:6px;right:6px;top:12px;height:4px;background:#fff;border-radius:2px;opacity:.95}
+.folder .count{position:absolute;left:10px;bottom:6px;font-size:14px;color:#222}
+.doc{width:136px;height:96px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.toast{position:fixed;bottom:22px;right:22px;background:#111;color:#fff;padding:12px 18px;border-radius:6px;font-size:14px;display:none;z-index:9}
+.hint{font-size:12.5px;color:var(--muted);margin:-10px 0 18px;display:flex;align-items:flex-start;gap:6px;line-height:1.4}
+.hint svg{flex:none;margin-top:2px}
+.dropzone{position:relative;transition:background .15s}
+.dropzone.drop-over{background:#effaf8;outline:3px dashed var(--accent);outline-offset:-6px;border-radius:12px}
+.dropzone.drop-over::after{content:attr(data-drop);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;padding:12px 22px;border-radius:24px;font-weight:600;font-size:14px;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.18);white-space:nowrap}
+.tile.drop-over{background:#d9f2ee;outline:2px dashed var(--accent)}
+.ovl{position:fixed;inset:0;background:rgba(20,20,22,.45);display:flex;align-items:center;justify-content:center;z-index:20}
+.modal{background:#fff;border-radius:10px;width:min(1040px,94vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.modal header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.modal header h2{margin:0;font-size:19px;font-weight:600;flex:1}
+.modal .x{all:unset;cursor:pointer;font-size:22px;color:#666;padding:0 6px}
+.modal .mb{padding:16px 24px;overflow:auto;flex:1}
+.modal .mb.drop-over{background:#effaf8;outline:3px dashed var(--accent);outline-offset:-8px}
+.modal footer{padding:14px 24px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.modal footer .sp{flex:1;font-size:13px;color:var(--muted)}
+.uptbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.uptbl th{background:#fafafa;padding:9px 8px;font-size:12.5px;cursor:default}
+.uptbl td{padding:7px 8px;max-width:none;white-space:normal;vertical-align:middle}
+.uptbl input,.uptbl select{padding:7px 8px;font-size:13px}
+.uptbl .fn{font-size:11.5px;color:var(--muted);margin-top:3px;word-break:break-all}
+.uptbl .rm{all:unset;cursor:pointer;color:#999;font-size:18px;padding:0 4px}
+.prog{height:6px;background:#eee;border-radius:3px;overflow:hidden;min-width:90px}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.st{font-size:12px;margin-top:4px;color:var(--muted)}
+.st.ok{color:#1b7d3a}.st.bad{color:#b3261e}.st.warn{color:#9a6700}
+.deptpick{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.deptpick select{max-width:360px}
+.cmenu{position:relative}
+.cm-list{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.14);min-width:210px;z-index:15;padding:6px 0}
+.cm-list button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 16px;font-size:14px;color:var(--ink)}
+.cm-list button:hover{background:#eef6f5}
+.doc{position:relative}
+.doc .thumb{width:120px;height:92px;border:1px solid #d9dcdf;border-radius:6px;overflow:hidden;background:#fff;display:flex;align-items:flex-start;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.doc .thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.doc .tbadge{position:absolute;right:6px;bottom:-4px;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.5px}
+.fi{display:inline-block;vertical-align:middle;margin-right:8px}
+.nf label{display:block;font-weight:600;margin:4px 0 6px}
+.nf .msg{color:#b3261e;font-size:13px;min-height:18px;margin-top:8px}
+.err{background:#fdecea;color:#8a1c12;padding:12px 16px;border-radius:4px;margin-bottom:14px;display:none}
+@media (max-width:1100px){.dd{margin-left:0}.filters{grid-template-columns:1fr 1fr}.side{width:220px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="logo">SPACE</div><div class="tag">Sobha Process Architect for Collaborative Ecosystem</div></div>
+    <div class="role">Role: <i id="roleName">Business User</i></div>
+    <nav class="nav" id="nav">
+      <button data-tab="master" class="active"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="17" height="14" rx="2"/><rect x="5" y="9" width="5" height="2" fill="#231f20"/><rect x="5" y="13" width="11" height="1.6" fill="#231f20"/><path d="M15 2h7v7h-7z" opacity=".9"/></svg>Master List</button>
+      <button data-tab="km"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="17" height="14" rx="2"/><rect x="5" y="9" width="5" height="2" fill="#231f20"/><rect x="5" y="13" width="11" height="1.6" fill="#231f20"/><path d="M15 2h7v7h-7z" opacity=".9"/></svg>Knowledge Management</button>
+      <button data-tab="repo"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="17" height="14" rx="2"/><rect x="5" y="9" width="5" height="2" fill="#231f20"/><rect x="5" y="13" width="11" height="1.6" fill="#231f20"/><path d="M15 2h7v7h-7z" opacity=".9"/></svg>Central Repository</button>
+    </nav>
+    <div class="foot" id="userFoot"></div>
+  </aside>
+
+  <main class="main">
+    <div class="err" id="err"></div>
+
+    <!-- MASTER LIST -->
+    <section id="tab-master">
+      <div class="top"><h1>All Documents</h1><div class="company">SOBHA UAQ PROPERTIES</div></div>
+      <div class="filters">
+        <label>Search</label>
+        <input id="fNo" placeholder="Document No.">
+        <input id="fName" placeholder="Document Name">
+        <div class="btns">
+          <button class="btn" id="btnExport"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M5 20h14v-2H5v2zM12 2l-1.4 1.4L15.2 8H13v8h-2V8H8.8l4.6-4.6z" transform="rotate(180 12 11)"/></svg>Export</button>
+          <button class="btn" id="btnAdd"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M6 2h9l5 5v15H6z"/></svg>Create File Note</button>
+        </div>
+      </div>
+      <div class="dd">
+        <div><label>Department:</label><select id="fDept"><option value="">Select</option></select></div>
+        <div><label>Document Level:</label><select id="fLevel"><option value="">Select</option></select></div>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr>
+            <th data-k="name">Document Name</th><th data-k="no">Document Number</th><th data-k="ver">Version Number</th><th data-k="date">Date</th><th data-k="dept">Department</th><th data-k="level">Document Level</th><th class="view nosort">View</th>
+          </tr></thead>
+          <tbody id="rows"><tr><td colspan="7" class="loading">Loading documents…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="pager"><div id="pgInfo"></div><div class="pg"><button id="pgPrev">&#9664;</button><span id="pgNum"></span><button id="pgNext">&#9654;</button><select id="pgSize" style="width:auto"><option>10</option><option selected>25</option><option>50</option><option>100</option></select></div></div>
+    </section>
+
+    <!-- KNOWLEDGE MANAGEMENT -->
+    <section id="tab-km" hidden>
+      <div class="top"><h1>Knowledge Management</h1><div class="company">SOBHA UAQ PROPERTIES</div></div>
+      <div class="card"><div class="inner" id="kmBrowser"></div></div>
+    </section>
+
+    <!-- CENTRAL REPOSITORY -->
+    <section id="tab-repo" hidden>
+      <div class="top"><h1>Central Repository</h1><div class="company">SOBHA UAQ PROPERTIES</div></div>
+      <div class="card"><div class="inner" id="repoBrowser"></div></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  /* ---------- Configuration ---------- */
+  var CFG = {
+    base: '/cs/cs',
+    repoId: 388498,        /* SPACE > Central Repository */
+    kmId: 387064,          /* SPACE > Knowledge Management */
+    catId: 388597,         /* Category: SPACE Document Properties */
+    attrNo: 2, attrLevel: 3, attrDate: 4,
+    fileNoteUrl: '/cs/cs/displayform/2009/122657/127100/127527/?viewid=127661&readonly=false&sedit=false&objId=123327&objAction=EditForm&nexturl=%2Fcs%2Fcs%2Fapi%2Fv1%2Fnodes%2F191232%2Foutput%3Fformat%3Dwebreport'  /* Create File Note form */
+  };
+  var TICKET = '[LL_REPTAG_OTCSTICKET /]';
+  var COLORS = [['#f47c7c','#fda4a4'],['#4ec5c1','#8fe0db'],['#7b3fb5','#b06ee0'],['#ff8a3d','#ffb27a'],['#f5b800','#ffe066'],['#1565c0','#2f8be0'],['#2e7d32','#4fb556'],['#64b5f6','#a8d8fb'],['#57bb6a','#a7dfa9'],['#f08ed6','#ffbdf0'],['#ef6c00','#ff9a3d'],['#d32f2f','#f2553a'],['#9aa0a6','#c7cbcf'],['#00796b','#26a69a'],['#ad1f8a','#d65bc0']];
+
+  /* ---------- helpers ---------- */
+  function $(id){return document.getElementById(id);}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(function(){t.style.display='none';},2500);}
+  function showErr(m){var e=$('err');e.textContent=m;e.style.display='block';}
+  function api(path){
+    return fetch(CFG.base+'/api/'+path,{headers:{OTCSTicket:TICKET},credentials:'same-origin'}).then(function(r){
+      var nt=r.headers.get('OTCSTicket'); if(nt) TICKET=nt;
+      if(!r.ok) return r.json().catch(function(){return {};}).then(function(j){throw new Error(j.error||('HTTP '+r.status));});
+      return r.json();
+    });
+  }
+  function listChildren(id){
+    var out=[];
+    function page(p){
+      return api('v2/nodes/'+id+'/nodes?limit=500&page='+p+'&sort=name'+
+        '&fields='+encodeURIComponent('properties{id,name,type,type_name,container,container_size,modify_date,mime_type,parent_id,size_formatted,size}')+
+        '&fields=categories'+
+        '&fields='+encodeURIComponent('versions{version_number,version_number_major,version_number_minor}')
+      ).then(function(j){
+        (j.results||[]).forEach(function(r){out.push(r.data);});
+        var pg=j.collection&&j.collection.paging;
+        if(pg && pg.page_total && p<pg.page_total) return page(p+1);
+        return out;
+      });
+    }
+    return page(1);
+  }
+  function fmtDate(iso){ if(!iso) return ''; var d=new Date(iso.length===19?iso:iso); if(isNaN(d)) return ''; var p=function(n){return (n<10?'0':'')+n;}; return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear(); }
+  function shortDate(iso){ if(!iso) return ''; var d=new Date(iso); return isNaN(d)?'':d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+  function catVal(d,a){ var cs=d.categories||[]; for(var i=0;i<cs.length;i++){ var v=cs[i][CFG.catId+'_'+a]; if(v!==undefined && v!==null) return Array.isArray(v)?v[0]:v; } return ''; }
+  function verOf(d){ var v=d.versions; if(!v) return ''; if(!Array.isArray(v)) v=[v]; var m=0; v.forEach(function(x){ if(x && x.version_number>m) m=x.version_number; }); return m||''; }
+  function stripExt(n){ return n.replace(/\.(txt|pdf|docx?|xlsx?|pptx?|msg|vsdx?)$/i,''); }
+  function url(q){ return CFG.base+'?'+q; }
+  function viewUrl(id,mime){ return /pdf|word|excel|powerpoint|officedocument|image|tiff/i.test(mime||'') ? url('func=doc.ViewDoc&nodeId='+id) : url('func=ll&objId='+id+'&objAction=Open'); }
+  function propsUrl(id){ return url('func=ll&objId='+id+'&objAction=properties'); }
+  function browseUrl(id){ return CFG.base+'/app/nodes/'+id; }
+  function addDocUrl(parent){ return url('func=ll&objType=144&objAction=create&parentId='+parent+'&nextURL='+encodeURIComponent(location.pathname+location.search)); }
+
+  /* ---------- tabs ---------- */
+  var loaded={};
+  function switchTab(t){
+    [].forEach.call(document.querySelectorAll('#nav button'),function(b){b.classList.toggle('active',b.getAttribute('data-tab')===t);});
+    ['master','km','repo'].forEach(function(x){$('tab-'+x).hidden=(x!==t);});
+    try{ history.replaceState(null,'',location.pathname+location.search.replace(/&tab=\w+/,'')+'&tab='+t); }catch(e){}
+    if(t==='repo' && !loaded.repo){ loaded.repo=true; repo.open(CFG.repoId,'CentralRepository'); }
+    if(t==='km' && !loaded.km){ loaded.km=true; km.open(CFG.kmId,'Knowledge Management'); }
+  }
+  [].forEach.call(document.querySelectorAll('#nav button'),function(b){b.onclick=function(){switchTab(b.getAttribute('data-tab'));};});
+
+  /* ---------- MASTER LIST ---------- */
+  var ALL=[], VIEW=[], page=1, sortK='date', sortDir=-1;
+  function walk(folderId, dept){
+    return listChildren(folderId).then(function(items){
+      var subs=[];
+      items.forEach(function(d){
+        var p=d.properties;
+        if(p.container){ subs.push(walk(p.id, dept||p.name)); }
+        else if(dept){
+          ALL.push({id:p.id,name:stripExt(p.name),fullName:p.name,no:catVal(d,CFG.attrNo),level:catVal(d,CFG.attrLevel),
+            dateIso:catVal(d,CFG.attrDate)||p.modify_date,ver:verOf(d),dept:dept,deptId:null,type:p.type,mime:p.mime_type});
+        }
+      });
+      return Promise.all(subs);
+    });
+  }
+  var DEPTS={};
+  function refreshMaster(){ ALL=[]; return walk(CFG.repoId,null).then(applyFilters); }
+  function loadMaster(){
+    ALL=[];
+    listChildren(CFG.repoId).then(function(depts){
+      var sel=$('fDept'); depts.filter(function(d){return d.properties.container;}).forEach(function(d){
+        DEPTS[d.properties.name]=d.properties.id; var o=document.createElement('option');o.value=d.properties.name;o.textContent=d.properties.name;sel.appendChild(o);
+      });
+      return walk(CFG.repoId,null);
+    }).then(function(){
+      var lv={}; ALL.forEach(function(r){ if(r.level) lv[r.level]=1; });
+      ['Policy','Process','Procedure','Guideline','Authority Matrix','Work Instruction','Form / Template'].forEach(function(l){lv[l]=1;});
+      Object.keys(lv).forEach(function(l){var o=document.createElement('option');o.value=l;o.textContent=l;$('fLevel').appendChild(o);});
+      applyFilters();
+    }).catch(function(e){ showErr('Could not load documents: '+e.message); $('rows').innerHTML='<tr><td colspan="7" class="empty">Unable to load documents.</td></tr>'; });
+  }
+  function applyFilters(){
+    var no=$('fNo').value.trim().toLowerCase(), nm=$('fName').value.trim().toLowerCase(), dp=$('fDept').value, lv=$('fLevel').value;
+    VIEW=ALL.filter(function(r){
+      return (!no||String(r.no).toLowerCase().indexOf(no)>-1)&&(!nm||r.name.toLowerCase().indexOf(nm)>-1)&&(!dp||r.dept===dp)&&(!lv||r.level===lv);
+    });
+    VIEW.sort(function(a,b){ var x=sortK==='date'?a.dateIso:a[sortK], y=sortK==='date'?b.dateIso:b[sortK]; x=x==null?'':x; y=y==null?'':y; return (x>y?1:x<y?-1:0)*sortDir; });
+    page=1; render();
+  }
+  function render(){
+    var size=+$('pgSize').value, pages=Math.max(1,Math.ceil(VIEW.length/size)); if(page>pages) page=pages;
+    var slice=VIEW.slice((page-1)*size,page*size);
+    $('rows').innerHTML = slice.length? slice.map(function(r){
+      return '<tr><td title="'+esc(r.name)+'"><a href="'+url('func=ll&objId='+r.id+'&objAction=Open')+'" target="_blank" style="color:inherit;text-decoration:none">'+fileIcon(r.fullName,r.mime,18)+esc(r.name)+'</a></td><td>'+esc(r.no)+'</td><td>'+esc(r.ver)+'</td><td>'+esc(fmtDate(r.dateIso))+'</td><td>'+esc(r.dept)+'</td><td>'+(r.level?'<span class="pill">'+esc(r.level)+'</span>':'')+'</td>'+
+        '<td class="view"><a class="eye" title="View document" href="'+viewUrl(r.id,r.mime)+'" target="_blank"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></a></td></tr>';
+    }).join('') : '<tr><td colspan="7" class="empty">No documents match the selected filters.</td></tr>';
+    $('pgInfo').textContent = VIEW.length? ('Showing '+((page-1)*size+1)+'–'+Math.min(page*size,VIEW.length)+' of '+VIEW.length+' documents') : '0 documents';
+    $('pgNum').textContent = page+' / '+pages;
+    $('pgPrev').disabled = page<=1; $('pgNext').disabled = page>=pages;
+    [].forEach.call(document.querySelectorAll('th[data-k]'),function(th){ var k=th.getAttribute('data-k'); th.textContent=th.textContent.replace(/ [▲▼]$/,'')+(k===sortK?(sortDir>0?' ▲':' ▼'):''); });
+  }
+  var deb; ['fNo','fName'].forEach(function(id){ $(id).addEventListener('input',function(){clearTimeout(deb);deb=setTimeout(applyFilters,200);}); });
+  ['fDept','fLevel'].forEach(function(id){ $(id).addEventListener('change',applyFilters); });
+  $('pgSize').onchange=function(){page=1;render();};
+  $('pgPrev').onclick=function(){page--;render();}; $('pgNext').onclick=function(){page++;render();};
+  [].forEach.call(document.querySelectorAll('th[data-k]'),function(th){ th.onclick=function(){ var k=th.getAttribute('data-k'); if(sortK===k) sortDir=-sortDir; else {sortK=k;sortDir=1;} applyFilters(); }; });
+  $('btnExport').onclick=function(){
+    var rows=[['Document Name','Document Number','Version Number','Date','Department','Document Level','Content Server ID']].concat(VIEW.map(function(r){return [r.name,r.no,r.ver,fmtDate(r.dateIso),r.dept,r.level,r.id];}));
+    var csv='﻿'+rows.map(function(r){return r.map(function(c){c=String(c==null?'':c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(',');}).join('\r\n');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='SPACE_Master_List_'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); a.remove();
+    toast('Exported '+VIEW.length+' documents');
+  };
+  function masterTarget(){ var dp=$('fDept').value; return dp&&DEPTS[dp]?{id:DEPTS[dp],name:dp}:{id:null,name:''}; }
+  $('btnAdd').onclick=function(){ location.href=CFG.fileNoteUrl; };
+  (function(){ var tw=document.querySelector('#tab-master .tablewrap'); tw.classList.add('dropzone'); tw.setAttribute('data-drop','Drop files to upload'); makeDrop(tw,function(files){ var t=masterTarget(); UP.open(t.id,t.name,files,refreshMaster); }); })();
+
+  /* ---------- FOLDER BROWSER (Central Repository / KM) ---------- */
+  function Browser(el, rootName){
+    var self={stack:[]};
+    self.open=function(id,name){ var i=self.stack.map(function(s){return s.id;}).indexOf(id); if(i>-1) self.stack=self.stack.slice(0,i+1); else self.stack.push({id:id,name:name}); self.render(); };
+    self.render=function(){
+      var cur=self.stack[self.stack.length-1];
+      var crumbs=self.stack.map(function(s,i){return (i?'<span class="sep">›</span>':'')+'<a data-id="'+s.id+'">'+esc(s.name)+'</a>';}).join('');
+      el.innerHTML='<div class="bar"><div class="crumb">'+crumbs+'</div><div class="spacer"></div>'+
+        '<a class="btn ghost" href="'+browseUrl(cur.id)+'" target="_blank">Open in Content Server</a>'+
+        '<div class="cmenu"><button class="btn teal" data-up="1">+ Create or upload <svg width="10" height="10" viewBox="0 0 10 10" fill="#fff"><path d="M1 3l4 4 4-4z"/></svg></button>'+
+        '<div class="cm-list" hidden><button data-act="folder"><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5b800"><path d="M2 5a2 2 0 0 1 2-2h5l2 2h9a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/></svg>Create folder</button>'+
+        '<button data-act="doc"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3-3 3 3"/></svg>Add document</button></div></div></div>'+
+        '<div class="hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg><span>Drag and drop files here to upload to <b>'+esc(cur.name)+'</b>, or drop them on a folder</span></div><div class="loading">Loading…</div>';
+      (function(){ var b=el.querySelector('[data-up]'), m=el.querySelector('.cm-list');
+        b.onclick=function(e){ e.stopPropagation(); m.hidden=!m.hidden; };
+        document.addEventListener('click',function h(){ m.hidden=true; if(!m.isConnected) document.removeEventListener('click',h); });
+        m.querySelector('[data-act=folder]').onclick=function(){ m.hidden=true; newFolder(cur.id,cur.name,afterUpload); };
+        m.querySelector('[data-act=doc]').onclick=function(){ m.hidden=true; UP.pick(cur.id,cur.name,afterUpload); };
+      })();
+      el.setAttribute('data-drop','Drop files to upload to '+cur.name);
+      [].forEach.call(el.querySelectorAll('.crumb a'),function(a){a.onclick=function(){self.open(+a.getAttribute('data-id'));};});
+      if(!el._dropWired){ el._dropWired=true; el.classList.add('dropzone'); makeDrop(el,function(files){ var c=self.stack[self.stack.length-1]; UP.open(c.id,c.name,files,afterUpload); }); }
+      listChildren(cur.id).then(function(items){
+        var box=el.querySelector('.loading');
+        if(!items.length){ box.className='empty'; box.textContent='This folder is empty.'; return; }
+        var g=document.createElement('div'); g.className='grid';
+        items.sort(function(a,b){return (b.properties.container-a.properties.container)||a.properties.name.localeCompare(b.properties.name);});
+        items.forEach(function(d,i){
+          var p=d.properties, t=document.createElement('div'); t.className='tile';
+          if(p.container){
+            var c=COLORS[i%COLORS.length];
+            t.innerHTML='<div class="folder"><div class="tab" style="background:'+c[0]+'"></div><div class="body" style="background:linear-gradient(180deg,'+c[1]+','+c[0]+')"></div><div class="paper"></div><div class="count">'+(p.container_size||0)+'</div></div><div class="nm" title="'+esc(p.name)+'">'+esc(p.name)+'</div><div class="dt">'+shortDate(p.modify_date)+'</div>';
+            t.onclick=function(){ self.open(p.id,p.name); };
+            makeDrop(t,function(files){ UP.open(p.id,p.name,files,afterUpload); },true);
+          } else {
+            var no=catVal(d,CFG.attrNo);
+            t.innerHTML='<div class="doc">'+fileIcon(p.name,p.mime_type,64)+'</div><div class="nm" title="'+esc(p.name)+'">'+esc(stripExt(p.name))+'</div><div class="dt">'+esc(no||shortDate(p.modify_date))+'</div>';
+            t.onclick=function(){ window.open(viewUrl(p.id,p.mime_type),'_blank'); };
+            PV.watch(t.querySelector('.doc'),p);
+          }
+          g.appendChild(t);
+        });
+        box.replaceWith(g);
+      }).catch(function(e){ var box=el.querySelector('.loading'); if(box){box.className='empty';box.textContent='Unable to load: '+e.message;} });
+    };
+    function afterUpload(){ self.render(); if(typeof refreshMaster==='function') refreshMaster(); }
+    return self;
+  }
+  var repo=Browser($('repoBrowser')), km=Browser($('kmBrowser'));
+
+  /* ---------- DRAG & DROP ---------- */
+  function hasFiles(e){ var t=e.dataTransfer&&e.dataTransfer.types; return t && [].indexOf.call(t,'Files')>-1; }
+  function droppedFiles(e){
+    var dt=e.dataTransfer, out=[], skipped=0;
+    if(dt.items && dt.items.length){ [].forEach.call(dt.items,function(it){ if(it.kind!=='file') return; var en=it.webkitGetAsEntry&&it.webkitGetAsEntry(); if(en&&en.isDirectory){skipped++;return;} var f=it.getAsFile(); if(f) out.push(f); }); }
+    else out=[].slice.call(dt.files||[]);
+    if(skipped) toast(skipped+' folder(s) skipped – drop files only');
+    return out;
+  }
+  function makeDrop(el,onFiles,stop){
+    var depth=0;
+    el.addEventListener('dragenter',function(e){ if(!hasFiles(e)) return; e.preventDefault(); if(stop) e.stopPropagation(); depth++; el.classList.add('drop-over'); if(stop){ var p=el.closest('.dropzone'); if(p) p.classList.remove('drop-over'); } });
+    el.addEventListener('dragover',function(e){ if(!hasFiles(e)) return; e.preventDefault(); if(stop) e.stopPropagation(); e.dataTransfer.dropEffect='copy'; });
+    el.addEventListener('dragleave',function(e){ if(!hasFiles(e)) return; if(stop) e.stopPropagation(); depth=Math.max(0,depth-1); if(!depth) el.classList.remove('drop-over'); });
+    el.addEventListener('drop',function(e){ if(!hasFiles(e)) return; e.preventDefault(); e.stopPropagation(); depth=0; el.classList.remove('drop-over'); var p=el.closest('.dropzone'); if(p) p.classList.remove('drop-over'); var f=droppedFiles(e); if(f.length) onFiles(f); });
+  }
+  /* stop the browser opening a file dropped outside a drop zone */
+  window.addEventListener('dragover',function(e){ if(hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('drop',function(e){ if(hasFiles(e)) e.preventDefault(); });
+
+  /* ---------- UPLOAD (Smart View style) ---------- */
+  var REQ=null;
+  function loadReq(ovl){
+    var done=function(){ if(!ovl.isConnected||!REQ) return; [['no',1],['lv',2],['dt',3]].forEach(function(x){ var th=ovl.querySelectorAll('.uptbl th')[x[1]]; if(REQ[x[0]] && th && th.textContent.indexOf('*')<0) th.textContent+=' *'; }); };
+    if(REQ) return done();
+    api('v1/forms/nodes/categories/create?id='+CFG.repoId+'&category_id='+CFG.catId).then(function(j){
+      var p=(j.forms&&j.forms[0]&&j.forms[0].schema&&j.forms[0].schema.properties)||{}, k=function(a){ return !!(p[CFG.catId+'_'+a]&&p[CFG.catId+'_'+a].required); };
+      REQ={no:k(CFG.attrNo),lv:k(CFG.attrLevel),dt:k(CFG.attrDate)}; done();
+    }).catch(function(){ REQ={}; });
+  }
+  var LEVELS=['Policy','Process','Procedure','Guideline','Authority Matrix','Work Instruction','Form / Template'];
+  function fmtSize(b){ return b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB'; }
+  function today(){ var d=new Date(),p=function(n){return (n<10?'0':'')+n;}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+  function xhrSend(method,path,fd,onProg){
+    return new Promise(function(res,rej){
+      var x=new XMLHttpRequest(); x.open(method,CFG.base+'/api/'+path); x.setRequestHeader('OTCSTicket',TICKET);
+      if(x.upload&&onProg) x.upload.onprogress=function(e){ if(e.lengthComputable) onProg(e.loaded/e.total); };
+      x.onload=function(){ var nt=x.getResponseHeader('OTCSTicket'); if(nt) TICKET=nt; var j={}; try{j=JSON.parse(x.responseText);}catch(err){} if(x.status>=200&&x.status<300) res(j); else rej(new Error(j.error||('HTTP '+x.status))); };
+      x.onerror=function(){ rej(new Error('Network error')); };
+      x.send(fd);
+    });
+  }
+  function catBody(r){ var c={}; if(r.no) c[CFG.catId+'_'+CFG.attrNo]=r.no; if(r.level) c[CFG.catId+'_'+CFG.attrLevel]=r.level; if(r.date) c[CFG.catId+'_'+CFG.attrDate]=r.date+'T00:00:00'; return c; }
+  var UP=(function(){
+    var input=document.createElement('input'); input.type='file'; input.multiple=true; input.style.display='none'; document.body.appendChild(input);
+    var S=null;
+    function pick(parentId,parentName,onDone){
+      input.value='';
+      input.onchange=function(){ var f=[].slice.call(input.files||[]); if(!f.length) return; if(S&&S.ovl.isConnected){ add(f); } else open(parentId,parentName,f,onDone); };
+      input.click();
+    }
+    function open(parentId,parentName,files,onDone){
+      if(S&&S.ovl.isConnected){ add(files); return; }
+      S={parentId:parentId,parentName:parentName,onDone:onDone,rows:[],existing:{},busy:false,done:false};
+      var ovl=document.createElement('div'); ovl.className='ovl'; S.ovl=ovl;
+      ovl.innerHTML='<div class="modal" role="dialog" aria-label="Upload documents"><header><h2>Upload documents</h2><button class="x" title="Close">×</button></header>'+
+        '<div class="mb"><div class="deptpick"></div><table class="uptbl"><thead><tr><th style="width:30%">Document Name</th><th>Document Number</th><th>Document Level</th><th>Effective Date</th><th style="width:150px">Status</th><th></th></tr></thead><tbody></tbody></table>'+
+        '<div class="hint" style="margin:14px 0 0">You can drag more files into this window.</div></div>'+
+        '<footer><button class="btn ghost" data-more>+ Add files</button><span class="sp"></span><button class="btn ghost" data-cancel>Cancel</button><button class="btn teal" data-go>Upload</button></footer></div>';
+      document.body.appendChild(ovl);
+      ovl.querySelector('.x').onclick=close; ovl.querySelector('[data-cancel]').onclick=close;
+      ovl.querySelector('[data-more]').onclick=function(){ pick(S.parentId,S.parentName,S.onDone); };
+      ovl.querySelector('[data-go]').onclick=go;
+      ovl.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+      makeDrop(ovl.querySelector('.mb'),function(f){ add(f); });
+      renderTarget(); add(files); loadReq(ovl);
+    }
+    function renderTarget(){
+      var box=S.ovl.querySelector('.deptpick');
+      if(S.parentId){ box.innerHTML='<span>Upload to:</span><b>'+esc(S.parentName)+'</b>'; loadExisting(); return; }
+      var opts=Object.keys(DEPTS).map(function(n){return '<option value="'+DEPTS[n]+'">'+esc(n)+'</option>';}).join('');
+      box.innerHTML='<label style="font-weight:600;white-space:nowrap">Department *</label><select><option value="">Select department…</option>'+opts+'</select>';
+      box.querySelector('select').onchange=function(){ S.parentId=+this.value||null; S.parentName=this.options[this.selectedIndex].text; loadExisting(); };
+    }
+    function loadExisting(){
+      S.existing={}; if(!S.parentId){ S.rows.forEach(markRow); return; }
+      var pid=S.parentId;
+      listChildren(pid).then(function(items){ if(!S||S.parentId!==pid) return; items.forEach(function(d){ if(!d.properties.container) S.existing[d.properties.name.toLowerCase()]=d.properties.id; }); S.rows.forEach(markRow); });
+    }
+    function markRow(r){
+      if(r.state) return;
+      var id=S.existing[(r.nameIn.value||'').trim().toLowerCase()];
+      r.verOf=id||null;
+      r.st.className='st'+(id?' warn':''); r.st.textContent=id?'Exists – will add a new version':'Ready';
+    }
+    function add(files){
+      var tb=S.ovl.querySelector('tbody');
+      files.forEach(function(f){
+        var tr=document.createElement('tr');
+        tr.innerHTML='<td><input class="nm" value="'+esc(f.name)+'"><div class="fn">'+esc(fmtSize(f.size))+'</div></td>'+
+          '<td><input class="no" placeholder="e.g. SUAQP-HR-POL05"></td>'+
+          '<td><select class="lv"><option value="">Select</option>'+LEVELS.map(function(l){return '<option>'+esc(l)+'</option>';}).join('')+'</select></td>'+
+          '<td><input class="dt" type="date" value="'+today()+'"></td>'+
+          '<td><div class="prog"><i></i></div><div class="st">Ready</div></td><td><button class="rm" title="Remove">×</button></td>';
+        tb.appendChild(tr);
+        var r={file:f,tr:tr,nameIn:tr.querySelector('.nm'),bar:tr.querySelector('.prog i'),st:tr.querySelector('.st'),state:null};
+        r.nameIn.addEventListener('input',function(){ markRow(r); });
+        tr.querySelector('.rm').onclick=function(){ if(S.busy) return; S.rows.splice(S.rows.indexOf(r),1); tr.remove(); count(); };
+        S.rows.push(r); markRow(r);
+      });
+      count();
+    }
+    function count(){ var n=S.rows.filter(function(r){return r.state!=='ok';}).length; S.ovl.querySelector('.sp').textContent=S.rows.length+' file(s) selected'; S.ovl.querySelector('[data-go]').style.display=n?'':'none'; }
+    function go(){
+      if(S.busy) return;
+      if(!S.parentId){ toast('Please select a department'); S.ovl.querySelector('.deptpick select').focus(); return; }
+      var todo=S.rows.filter(function(r){return r.state!=='ok';}); if(!todo.length) return;
+      var missing=0;
+      todo.forEach(function(r){ ['no','lv','dt'].forEach(function(f){ var inp=r.tr.querySelector('.'+f); var bad=REQ&&REQ[f]&&!inp.value.trim(); inp.style.borderColor=bad?'#b3261e':''; if(bad) missing++; }); });
+      if(missing){ toast('Please fill the required fields (marked *)'); return; }
+      S.busy=true; S.ovl.querySelector('[data-go]').textContent='Uploading…';
+      [].forEach.call(S.ovl.querySelectorAll('.deptpick select'),function(s){s.disabled=true;});
+      var i=0, ok=0, bad=0;
+      (function next(){
+        if(i>=todo.length){ return finish(ok,bad); }
+        var r=todo[i++];
+        var vals={name:(r.nameIn.value||r.file.name).trim(),no:r.tr.querySelector('.no').value.trim(),level:r.tr.querySelector('.lv').value,date:r.tr.querySelector('.dt').value};
+        [].forEach.call(r.tr.querySelectorAll('input,select,button'),function(x){x.disabled=true;});
+        r.st.className='st'; r.st.textContent='Uploading…';
+        var prog=function(p){ r.bar.style.width=Math.round(p*100)+'%'; };
+        var fd=new FormData(), cats=catBody(vals), p;
+        if(r.verOf){
+          fd.append('file',r.file,r.file.name);
+          p=xhrSend('POST','v2/nodes/'+r.verOf+'/versions',fd,prog).then(function(){
+            if(!Object.keys(cats).length) return;
+            var b=new URLSearchParams(); b.set('body',JSON.stringify(cats));
+            return fetch(CFG.base+'/api/v2/nodes/'+r.verOf+'/categories/'+CFG.catId,{method:'PUT',headers:{OTCSTicket:TICKET,'Content-Type':'application/x-www-form-urlencoded'},body:b});
+          }).then(function(){ return 'New version added'; });
+        } else {
+          var body={type:144,parent_id:S.parentId,name:vals.name};
+          if(Object.keys(cats).length) body.roles={categories:cats};
+          fd.append('body',JSON.stringify(body)); fd.append('file',r.file,r.file.name);
+          p=xhrSend('POST','v2/nodes',fd,prog).then(function(){ return 'Uploaded'; });
+        }
+        p.then(function(msg){ ok++; r.state='ok'; r.bar.style.width='100%'; r.st.className='st ok'; r.st.textContent='✓ '+msg; })
+         .catch(function(e){ bad++; r.state='err'; r.bar.style.background='#b3261e'; r.st.className='st bad'; r.st.textContent=e.message;
+           [].forEach.call(r.tr.querySelectorAll('input,select,button'),function(x){x.disabled=false;}); })
+         .then(next);
+      })();
+    }
+    function finish(ok,bad){
+      S.busy=false; S.done=S.done||ok>0;
+      var g=S.ovl.querySelector('[data-go]'); g.textContent=bad?'Retry failed':'Upload';
+      count();
+      if(ok) toast(ok+' document(s) uploaded to '+S.parentName);
+      if(!bad){ setTimeout(close,900); }
+    }
+    function close(){ if(!S||S.busy) return; var s=S; S=null; s.ovl.remove(); if(s.done&&s.onDone) s.onDone(); }
+    return {pick:pick,open:open};
+  })();
+
+  /* ---------- FILE TYPE ICONS ---------- */
+  function fileType(name,mime){
+    var e=((name||'').match(/\.([a-z0-9]+)$/i)||[,''])[1].toLowerCase(); mime=mime||'';
+    if(e==='pdf'||/pdf/.test(mime)) return {l:'PDF',c:'#d93025',k:'pdf'};
+    if(/^docx?$|^dotx?$|^rtf$|^odt$/.test(e)||/word/.test(mime)) return {l:'DOC',c:'#2b579a',k:'office'};
+    if(/^xlsx?$|^xlsm$|^csv$|^ods$/.test(e)||/excel|spreadsheet/.test(mime)) return {l:'XLS',c:'#217346',k:'office'};
+    if(/^pptx?$|^odp$/.test(e)||/powerpoint|presentation/.test(mime)) return {l:'PPT',c:'#d24726',k:'office'};
+    if(/^(png|jpe?g|gif|bmp|webp|svg)$/.test(e)||/^image\//.test(mime)) return {l:'IMG',c:'#8e44ad',k:'image'};
+    if(/^tiff?$/.test(e)) return {l:'TIF',c:'#8e44ad',k:'office'};
+    if(/^(msg|eml)$/.test(e)) return {l:'MSG',c:'#0078d4',k:'other'};
+    if(/^(zip|rar|7z)$/.test(e)) return {l:'ZIP',c:'#a67c00',k:'other'};
+    if(/^(vsdx?)$/.test(e)) return {l:'VSD',c:'#3955a3',k:'office'};
+    if(/^(dwg|dxf)$/.test(e)) return {l:'DWG',c:'#c0392b',k:'other'};
+    if(/^(txt|log|md)$/.test(e)||/^text\//.test(mime)) return {l:'TXT',c:'#5f6368',k:'other'};
+    return {l:(e||'FILE').toUpperCase().slice(0,4),c:'#80868b',k:'other'};
+  }
+  function fileIcon(name,mime,h){
+    var t=fileType(name,mime), w=Math.round(h*0.8);
+    return '<svg class="fi" width="'+w+'" height="'+h+'" viewBox="0 0 48 60" aria-label="'+t.l+' file"><path d="M4 1h28l14 14v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z" fill="#fff" stroke="#c4c7cb" stroke-width="2"/><path d="M32 1v14h14" fill="#eceef0" stroke="#c4c7cb" stroke-width="2"/>'+
+      (h>=40?'<rect x="9" y="20" width="22" height="2.5" fill="#d5d8db"/><rect x="9" y="26" width="28" height="2.5" fill="#d5d8db"/>':'')+
+      '<rect x="0" y="34" width="40" height="17" rx="2" fill="'+t.c+'"/><text x="20" y="46.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#fff">'+t.l+'</text></svg>';
+  }
+
+  /* ---------- LIVE PREVIEWS ---------- */
+  var PV=(function(){
+    var q=[], active=0, MAX=3, cache={}, pdfP=null;
+    var io=('IntersectionObserver' in window)? new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); q.push(e.target); pump(); } }); },{rootMargin:'200px'}) : null;
+    function watch(el,p){ el._p=p; if(fileType(p.name,p.mime_type).k==='other') return; if(io) io.observe(el); else { q.push(el); pump(); } }
+    function pump(){ while(active<MAX && q.length){ var el=q.shift(); active++; load(el).catch(function(){}).then(function(){ active--; pump(); }); } }
+    function show(el,src){ if(!el.isConnected||!src) return; var t=fileType(el._p.name,el._p.mime_type); el.innerHTML='<div class="thumb"><img alt="Preview of '+esc(el._p.name)+'" src="'+src+'"></div><span class="tbadge" style="background:'+t.c+'">'+t.l+'</span>'; }
+    function getBlob(path){ return fetch(CFG.base+'/api/'+path,{headers:{OTCSTicket:TICKET}}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.blob(); }); }
+    function pdfLib(){
+      if(!pdfP) pdfP=new Promise(function(res,rej){ if(window.pdfjsLib) return res(window.pdfjsLib); var s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'; s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; res(window.pdfjsLib); }; s.onerror=rej; document.head.appendChild(s); });
+      return pdfP;
+    }
+    function load(el){
+      var p=el._p, key=p.id+'|'+p.modify_date, t=fileType(p.name,p.mime_type);
+      if(cache[key]) { show(el,cache[key]); return Promise.resolve(); }
+      var big=(p.size||0)>25*1048576, job;
+      if(t.k==='image' && !big) job=getBlob('v2/nodes/'+p.id+'/content').then(function(b){ return URL.createObjectURL(b); });
+      else if(t.k==='pdf' && !big) job=Promise.all([pdfLib(),getBlob('v2/nodes/'+p.id+'/content').then(function(b){return b.arrayBuffer();})]).then(function(a){
+          return a[0].getDocument({data:a[1]}).promise.then(function(doc){ return doc.getPage(1); }).then(function(pg){
+            var v0=pg.getViewport({scale:1}), vp=pg.getViewport({scale:240/v0.width}), c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+            return pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise.then(function(){ return c.toDataURL('image/png'); });
+          });
+        });
+      else job=getBlob('v1/nodes/'+p.id+'/thumbnails/medium/content').then(function(b){ if(!/^image\//.test(b.type)) throw 0; return URL.createObjectURL(b); });
+      return job.then(function(src){ cache[key]=src; show(el,src); });
+    }
+    return {watch:watch};
+  })();
+
+  /* ---------- CREATE FOLDER ---------- */
+  function newFolder(parentId,parentName,onDone){
+    var ovl=document.createElement('div'); ovl.className='ovl';
+    ovl.innerHTML='<div class="modal nf" role="dialog" aria-label="Create folder" style="width:min(480px,94vw)"><header><h2>Create folder</h2><button class="x" title="Close">×</button></header>'+
+      '<div class="mb"><div style="font-size:13px;color:var(--muted);margin-bottom:12px">In: <b style="color:var(--ink)">'+esc(parentName)+'</b></div>'+
+      '<label for="nfName">Folder name *</label><input id="nfName" maxlength="248" autocomplete="off">'+
+      '<label for="nfDesc" style="margin-top:14px">Description</label><input id="nfDesc" autocomplete="off"><div class="msg"></div></div>'+
+      '<footer><span class="sp"></span><button class="btn ghost" data-cancel>Cancel</button><button class="btn teal" data-go>Create</button></footer></div>';
+    document.body.appendChild(ovl);
+    var nm=ovl.querySelector('#nfName'), ds=ovl.querySelector('#nfDesc'), msg=ovl.querySelector('.msg'), go=ovl.querySelector('[data-go]'), busy=false;
+    function close(){ if(!busy) ovl.remove(); }
+    ovl.querySelector('.x').onclick=close; ovl.querySelector('[data-cancel]').onclick=close;
+    ovl.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); if(e.key==='Enter') submit(); });
+    go.onclick=submit; setTimeout(function(){ nm.focus(); },30);
+    function submit(){
+      if(busy) return; var n=nm.value.trim();
+      if(!n){ msg.textContent='Please enter a folder name.'; nm.focus(); return; }
+      if(/[:]/.test(n)){ msg.textContent='Folder name cannot contain ":"'; return; }
+      busy=true; go.textContent='Creating…'; msg.textContent='';
+      var fd=new FormData(); fd.append('body',JSON.stringify({type:0,parent_id:parentId,name:n,description:ds.value.trim()}));
+      xhrSend('POST','v2/nodes',fd).then(function(j){
+        var id=j.results&&j.results.data&&j.results.data.properties&&j.results.data.properties.id;
+        if(parentId===CFG.repoId && id){ DEPTS[n]=id; var o=document.createElement('option'); o.value=n; o.textContent=n; $('fDept').appendChild(o); }
+        busy=false; ovl.remove(); toast('Folder "'+n+'" created'); if(onDone) onDone();
+      }).catch(function(e){ busy=false; go.textContent='Create'; msg.textContent=/exists|already/i.test(e.message)?'A folder or item with this name already exists here.':e.message; });
+    }
+  }
+
+  /* ---------- user ---------- */
+  api('v1/auth').then(function(j){ var d=j.data||{}; var n=((d.first_name||'')+' '+(d.last_name||'')).trim()||d.name; $('userFoot').textContent='Signed in as '+n; }).catch(function(){});
+
+  /* ---------- start ---------- */
+  loadMaster();
+  var m=location.search.match(/[&?]tab=(\w+)/); if(m && m[1]!=='master') switchTab(m[1]);
+})();
+</script>
+</body>
+</html>
